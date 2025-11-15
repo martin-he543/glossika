@@ -16,10 +16,11 @@ interface ClozeCourseDetailProps {
 
 export default function ClozeCourseDetail({ course, appState, updateState, onBack }: ClozeCourseDetailProps) {
   const [activeTab, setActiveTab] = useState<'practice' | 'library' | 'statistics'>('practice');
+  const [activeMode, setActiveMode] = useState<'continue' | 'learn' | 'review' | 'speed' | null>(null);
   const [currentSentence, setCurrentSentence] = useState<ClozeSentence | null>(null);
   const [userAnswer, setUserAnswer] = useState('');
   const [feedback, setFeedback] = useState<{ correct: boolean } | null>(null);
-  const [showQuestionSelector, setShowQuestionSelector] = useState(true);
+  const [showQuestionSelector, setShowQuestionSelector] = useState(false);
   const [questionCount, setQuestionCount] = useState(0);
   const [questionsAnswered, setQuestionsAnswered] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
@@ -32,6 +33,15 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
 
   const sentences = appState.clozeSentences.filter(s => s.courseId === course.id);
   const availableSentences = sentences.filter(s => s.masteryLevel < 5);
+  const newSentences = sentences.filter(s => s.masteryLevel === 0);
+  const reviewSentences = sentences.filter(s => s.masteryLevel > 0 && s.masteryLevel < 5);
+  
+  // Determine what "Continue" should do
+  const getContinueMode = (): 'learn' | 'review' => {
+    if (reviewSentences.length > 0) return 'review';
+    if (newSentences.length > 0) return 'learn';
+    return 'learn'; // Default to learn if nothing available
+  };
 
   useEffect(() => {
     if (!showQuestionSelector && !showSummary && availableSentences.length > 0 && questionCount > 0) {
@@ -42,12 +52,36 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
         loadNextSentence();
       }
     }
-  }, [showQuestionSelector, showSummary, questionCount, availableSentences.length]);
+  }, [showQuestionSelector, showSummary, questionCount, availableSentences.length, activeMode]);
 
   const loadPracticeSentences = () => {
-    const shuffled = availableSentences.sort(() => Math.random() - 0.5).slice(0, questionCount);
+    let sentencesToUse: ClozeSentence[] = [];
+    
+    if (activeMode === 'learn') {
+      sentencesToUse = newSentences.sort(() => Math.random() - 0.5).slice(0, questionCount);
+    } else if (activeMode === 'review') {
+      sentencesToUse = reviewSentences.sort(() => Math.random() - 0.5).slice(0, questionCount);
+    } else {
+      sentencesToUse = availableSentences.sort(() => Math.random() - 0.5).slice(0, questionCount);
+    }
+    
+    const shuffled = sentencesToUse;
     setPracticeSentences(shuffled);
     setCurrentIndex(0);
+  };
+
+  const handleModeSelect = (mode: 'continue' | 'learn' | 'review' | 'speed') => {
+    if (mode === 'continue') {
+      const continueMode = getContinueMode();
+      setActiveMode(continueMode as 'learn' | 'review' | 'speed' | null);
+      setShowQuestionSelector(true);
+    } else if (mode === 'speed') {
+      setActiveMode('speed' as 'continue' | 'learn' | 'review' | 'speed' | null);
+      // Speed review will be handled separately
+    } else {
+      setActiveMode(mode as 'continue' | 'learn' | 'review' | 'speed' | null);
+      setShowQuestionSelector(true);
+    }
   };
 
   const loadNextSentence = () => {
@@ -109,12 +143,15 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
     setCorrectCount(0);
     setNewSentencesLearned(0);
     setCurrentIndex(0);
-    loadPracticeSentences();
+    setPracticeSentences([]);
+    setCurrentSentence(null);
+    // loadPracticeSentences will be called by useEffect
   };
 
   const handleSummaryClose = () => {
     setShowSummary(false);
-    setShowQuestionSelector(true);
+    setShowQuestionSelector(false);
+    setActiveMode(null);
     setQuestionCount(0);
     setQuestionsAnswered(0);
     setCorrectCount(0);
@@ -208,12 +245,71 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
       <div className="tab-content">
         {activeTab === 'practice' && (
           <div>
+            {!showQuestionSelector && !showSummary && activeMode !== 'speed' && (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px', marginBottom: '24px' }}>
+                <button
+                  className={`btn ${activeMode === null || activeMode === 'continue' ? 'btn-primary' : ''}`}
+                  onClick={() => handleModeSelect('continue')}
+                  style={{ padding: '16px', fontSize: '16px', fontWeight: 600 }}
+                >
+                  Continue
+                </button>
+                <button
+                  className={`btn ${activeMode === 'learn' ? 'btn-primary' : ''}`}
+                  onClick={() => handleModeSelect('learn')}
+                  style={{ padding: '16px', fontSize: '16px', fontWeight: 600 }}
+                >
+                  Learn Sentences
+                </button>
+                <button
+                  className={`btn ${activeMode === 'review' ? 'btn-review' : ''}`}
+                  onClick={() => handleModeSelect('review')}
+                  style={{ padding: '16px', fontSize: '16px', fontWeight: 600 }}
+                >
+                  Review Sentences
+                </button>
+                <button
+                  className={`btn ${(activeMode as string) === 'speed' ? 'btn-quick-review' : ''}`}
+                  onClick={() => handleModeSelect('speed')}
+                  style={{ padding: '16px', fontSize: '16px', fontWeight: 600 }}
+                >
+                  Speed Review Sentences
+                </button>
+              </div>
+            )}
+
+            {activeMode === 'speed' && (
+              <div className="card">
+                <h2 style={{ marginBottom: '16px' }}>Speed Review Sentences</h2>
+                <p style={{ color: '#656d76', marginBottom: '24px' }}>
+                  Test your sentence knowledge with a timed challenge!
+                </p>
+                <p style={{ color: '#656d76', marginBottom: '24px' }}>
+                  Speed Review for sentences is coming soon. For now, use Review Sentences mode.
+                </p>
+                <button className="btn btn-primary" onClick={() => setActiveMode(null)}>
+                  Back
+                </button>
+              </div>
+            )}
+
             {showQuestionSelector ? (
               <QuestionCountSelector
-                maxQuestions={availableSentences.length}
-                defaultCount={Math.min(20, availableSentences.length)}
+                maxQuestions={
+                  activeMode === 'learn' ? newSentences.length :
+                  activeMode === 'review' ? reviewSentences.length :
+                  availableSentences.length
+                }
+                defaultCount={Math.min(20, 
+                  activeMode === 'learn' ? newSentences.length :
+                  activeMode === 'review' ? reviewSentences.length :
+                  availableSentences.length
+                )}
                 onStart={handleStart}
-                onCancel={() => {}}
+                onCancel={() => {
+                  setShowQuestionSelector(false);
+                  setActiveMode(null);
+                }}
               />
             ) : showSummary ? (
               <LessonSummary
@@ -376,6 +472,7 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
       {showSettings && (
         <ClozeCourseSettings
           course={course}
+          sentences={sentences}
           onClose={() => setShowSettings(false)}
           onUpdate={refreshData}
         />

@@ -10,10 +10,11 @@ import LessonSummary from './LessonSummary';
 interface ReviewWordsProps {
   courseId: string;
   words: Word[];
+  course?: { nativeLanguage: string; targetLanguage: string };
   onUpdate: () => void;
 }
 
-export default function ReviewWords({ courseId, words, onUpdate }: ReviewWordsProps) {
+export default function ReviewWords({ courseId, words, course, onUpdate }: ReviewWordsProps) {
   const [reviewWords, setReviewWords] = useState<Word[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [mode, setMode] = useState<'multiple' | 'type'>('multiple');
@@ -152,7 +153,10 @@ export default function ReviewWords({ courseId, words, onUpdate }: ReviewWordsPr
     if (wasNew && isCorrect) {
       setNewWordsLearned(prev => prev + 1);
       // Award XP for learning a new word
-      leaderboard.awardWordXP(courseId);
+      leaderboard.awardWordXP(courseId, newSrsLevel);
+    } else if (!wasNew) {
+      // Award XP for reviewing
+      leaderboard.awardReviewXP(courseId, newSrsLevel);
     }
 
     setCorrectCount(prev => prev + (isCorrect ? 1 : 0));
@@ -350,13 +354,13 @@ export default function ReviewWords({ courseId, words, onUpdate }: ReviewWordsPr
           className={`btn ${direction === 'native-to-target' ? 'btn-primary' : ''}`}
           onClick={() => setDirection('native-to-target')}
         >
-          Native → Target
+          {course ? `${course.nativeLanguage} → ${course.targetLanguage}` : 'Native → Target'}
         </button>
         <button
           className={`btn ${direction === 'target-to-native' ? 'btn-primary' : ''}`}
           onClick={() => setDirection('target-to-native')}
         >
-          Target → Native
+          {course ? `${course.targetLanguage} → ${course.nativeLanguage}` : 'Target → Native'}
         </button>
       </div>
 

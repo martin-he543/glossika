@@ -2,14 +2,16 @@ import { useState, useEffect, useCallback } from 'react';
 import { Word } from '../types';
 import { storage } from '../storage';
 import { updateSRSLevel, getMasteryLevel, calculateNextReview, getWordsDueForReview } from '../utils/srs';
+import { leaderboard } from '../utils/leaderboard';
 
 interface FlashcardsProps {
   courseId: string;
   words: Word[];
+  course?: { nativeLanguage: string; targetLanguage: string };
   onUpdate: () => void;
 }
 
-export default function Flashcards({ courseId, words, onUpdate }: FlashcardsProps) {
+export default function Flashcards({ courseId, words, course, onUpdate }: FlashcardsProps) {
   const [flashcardWords, setFlashcardWords] = useState<Word[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
@@ -60,6 +62,9 @@ export default function Flashcards({ courseId, words, onUpdate }: FlashcardsProp
       nextReview,
       lastReviewed: Date.now(),
     });
+
+    // Award XP for flashcard review
+    leaderboard.awardFlashcardXP(courseId, newSrsLevel);
 
     onUpdate();
 
@@ -139,13 +144,13 @@ export default function Flashcards({ courseId, words, onUpdate }: FlashcardsProp
           className={`btn ${direction === 'native-to-target' ? 'btn-primary' : ''}`}
           onClick={() => setDirection('native-to-target')}
         >
-          Native → Target
+          {course ? `${course.nativeLanguage} → ${course.targetLanguage}` : 'Native → Target'}
         </button>
         <button
           className={`btn ${direction === 'target-to-native' ? 'btn-primary' : ''}`}
           onClick={() => setDirection('target-to-native')}
         >
-          Target → Native
+          {course ? `${course.targetLanguage} → ${course.nativeLanguage}` : 'Target → Native'}
         </button>
       </div>
 

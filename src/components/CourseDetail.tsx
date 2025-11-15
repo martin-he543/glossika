@@ -10,6 +10,7 @@ import SpeedReview from './SpeedReview';
 import Flashcards from './Flashcards';
 import DifficultWords from './DifficultWords';
 import CourseSettings from './CourseSettings';
+import LearnWordsModal from './LearnWordsModal';
 
 interface CourseDetailProps {
   appState: AppState;
@@ -21,6 +22,8 @@ export default function CourseDetail({ appState, updateState }: CourseDetailProp
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('learn');
   const [showSettings, setShowSettings] = useState(false);
+  const [showLearnModal, setShowLearnModal] = useState(false);
+  const [learnModalMode, setLearnModalMode] = useState<'learn' | 'review' | 'speed' | 'flashcards' | 'difficult'>('learn');
 
   const course = appState.courses.find(c => c.id === courseId);
   const words = appState.words.filter(w => w.courseId === courseId);
@@ -163,58 +166,69 @@ export default function CourseDetail({ appState, updateState }: CourseDetailProp
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px', marginBottom: '24px' }}>
         <button
           className={`btn ${activeTab === 'learn' ? 'btn-primary' : ''}`}
-          onClick={() => setActiveTab('learn')}
+          onClick={() => {
+            setLearnModalMode('learn');
+            setShowLearnModal(true);
+          }}
           style={{ padding: '16px', fontSize: '16px', fontWeight: 600 }}
         >
           Learn New Words
         </button>
         <button
-          className={`btn ${activeTab === 'review' ? 'btn-primary' : ''}`}
-          onClick={() => setActiveTab('review')}
+          className={`btn ${activeTab === 'review' ? 'btn-review' : ''}`}
+          onClick={() => {
+            setLearnModalMode('review');
+            setShowLearnModal(true);
+          }}
           style={{ padding: '16px', fontSize: '16px', fontWeight: 600 }}
         >
           Review
         </button>
         <button
-          className={`btn ${activeTab === 'speed' ? 'btn-primary' : ''}`}
-          onClick={() => setActiveTab('speed')}
+          className={`btn ${activeTab === 'speed' ? 'btn-quick-review' : ''}`}
+          onClick={() => {
+            setLearnModalMode('speed');
+            setShowLearnModal(true);
+          }}
           style={{ padding: '16px', fontSize: '16px', fontWeight: 600 }}
         >
           Speed Review
         </button>
         <button
-          className={`btn ${activeTab === 'flashcards' ? 'btn-primary' : ''}`}
-          onClick={() => setActiveTab('flashcards')}
+          className={`btn ${activeTab === 'flashcards' ? 'btn-flashcards' : ''}`}
+          onClick={() => {
+            setLearnModalMode('flashcards');
+            setShowLearnModal(true);
+          }}
           style={{ padding: '16px', fontSize: '16px', fontWeight: 600 }}
         >
           Flashcards
         </button>
         <button
-          className={`btn ${activeTab === 'difficult' ? 'btn-primary' : ''}`}
-          onClick={() => setActiveTab('difficult')}
+          className={`btn ${activeTab === 'difficult' ? 'btn-difficult' : ''}`}
+          onClick={() => {
+            setLearnModalMode('difficult');
+            setShowLearnModal(true);
+          }}
           style={{ padding: '16px', fontSize: '16px', fontWeight: 600 }}
         >
           Difficult Words
         </button>
       </div>
 
-      <div>
-        {activeTab === 'learn' && (
-          <LearnWords courseId={course.id} words={words} onUpdate={refreshData} />
-        )}
-        {activeTab === 'review' && (
-          <ReviewWords courseId={course.id} words={words} onUpdate={refreshData} />
-        )}
-        {activeTab === 'speed' && (
-          <SpeedReview courseId={course.id} words={words} onUpdate={refreshData} />
-        )}
-        {activeTab === 'flashcards' && (
-          <Flashcards courseId={course.id} words={words} onUpdate={refreshData} />
-        )}
-        {activeTab === 'difficult' && (
-          <DifficultWords courseId={course.id} words={words} onUpdate={refreshData} />
-        )}
-      </div>
+      {showLearnModal && (
+        <LearnWordsModal
+          courseId={course.id}
+          words={words}
+          course={course}
+          mode={learnModalMode}
+          onClose={() => {
+            setShowLearnModal(false);
+            refreshData();
+          }}
+          onUpdate={refreshData}
+        />
+      )}
 
       {showSettings && (
         <CourseSettings

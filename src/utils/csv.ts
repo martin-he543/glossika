@@ -12,8 +12,10 @@ export function parseCSV(
 ): Promise<CSVRow[]> {
   return new Promise((resolve, reject) => {
     const rows: CSVRow[] = [];
-    let totalBytes = 0;
-    let processedBytes = 0;
+    let totalBytes = file.size || 0;
+    let rowCount = 0;
+    let lastProgressUpdate = 0;
+    let progressUpdateInterval = 0;
 
     // Auto-detect delimiter if not provided
     let detectedDelimiter = delimiter;
@@ -27,28 +29,67 @@ export function parseCSV(
       }
     }
 
-    // Get file size for progress tracking
-    if (file.size) {
-      totalBytes = file.size;
-    }
-
+    // Use chunk callback for better performance on large files
+    // For files > 10MB, use chunk mode; otherwise use step mode for more frequent updates
+    const useChunkMode = totalBytes > 10 * 1024 * 1024; // 10MB threshold
+    
     Papa.parse(file, {
       header: true,
       skipEmptyLines: true,
       delimiter: detectedDelimiter,
       transformHeader: (header) => header.trim().toLowerCase(),
-      // Process in chunks for large files to avoid blocking
+      // Use chunk mode for large files, step mode for smaller files
+      ...(useChunkMode ? {} : {
+        step: (result) => {
+          if (result.data) {
+            rows.push(result.data as CSVRow);
+            rowCount++;
+            
+            // Update progress more frequently for smaller files
+            if (onProgress && totalBytes > 0) {
+              const now = Date.now();
+              if (now - lastProgressUpdate > 50 || progressUpdateInterval === 0) {
+                // Estimate progress based on row count
+                const estimatedBytesPerRow = totalBytes / Math.max(1000, rowCount * 10); // Estimate based on sample
+                const processedBytes = rowCount * estimatedBytesPerRow;
+                const progress = Math.min(95, Math.floor((processedBytes / totalBytes) * 100));
+                
+                requestAnimationFrame(() => {
+                  onProgress(progress);
+                });
+                
+                lastProgressUpdate = now;
+              }
+              progressUpdateInterval = (progressUpdateInterval + 1) % 100;
+            }
+          }
+        },
+      }),
+      // Process in chunks for very large files
       chunk: (results) => {
         if (results.data) {
-          rows.push(...(results.data as CSVRow[]));
-        }
-        
-        // Update progress if callback provided
-        if (onProgress && totalBytes > 0) {
-          // Estimate progress based on file position (approximate)
-          processedBytes += results.data ? JSON.stringify(results.data).length : 0;
-          const progress = Math.min(95, Math.floor((processedBytes / totalBytes) * 100));
-          onProgress(progress);
+          const chunkRows = results.data as CSVRow[];
+          rows.push(...chunkRows);
+          rowCount += chunkRows.length;
+          
+          // Update progress for chunked processing
+          if (onProgress && totalBytes > 0) {
+            const now = Date.now();
+            if (now - lastProgressUpdate > 200 || progressUpdateInterval === 0) {
+              // More accurate progress for chunked processing
+              // Estimate based on file position (PapaParse processes sequentially)
+              const estimatedBytesPerRow = totalBytes / Math.max(10000, rowCount * 5);
+              const processedBytes = rowCount * estimatedBytesPerRow;
+              const progress = Math.min(95, Math.floor((processedBytes / totalBytes) * 100));
+              
+              requestAnimationFrame(() => {
+                onProgress(progress);
+              });
+              
+              lastProgressUpdate = now;
+            }
+            progressUpdateInterval = (progressUpdateInterval + 1) % 50;
+          }
         }
       },
       // More lenient parsing - continue even with errors
@@ -57,7 +98,7 @@ export function parseCSV(
         console.warn('CSV parsing warning:', error);
       },
       complete: (results) => {
-        // Combine chunked data with any remaining data
+        // Combine step data with any chunk data
         const allRows = rows.length > 0 ? rows : (results.data as CSVRow[] || []);
         
         if (onProgress) {
@@ -253,14 +294,45 @@ export function createClozeFromTatoeba(rows: CSVRow[], courseId: string): ClozeS
   return sentences;
 }
 
-export function createKanjiFromCSV(rows: CSVRow[], language: 'japanese' | 'chinese'): Kanji[] {
+export function createKanjiFromCSV(
+  rows: CSVRow[], 
+  language: 'japanese' | 'chinese',
+  courseId: string,
+  characterCol?: string,
+  meaningCol?: string,
+  pronunciationCol?: string,
+  levelCol?: string
+): Kanji[] {
   const kanji: Kanji[] = [];
   const now = Date.now();
 
   for (const row of rows) {
-    const character = row['character'] || row['kanji'] || row['hanzi'] || '';
-    const meaning = row['meaning'] || row['meanings'] || '';
-    const pronunciation = row['pronunciation'] || row['reading'] || row['pinyin'] || '';
+    // Use specified columns or try common variations
+    const character = characterCol 
+      ? (row[characterCol] || '')
+      : (row['character'] || row['kanji'] || row['hanzi'] || '');
+    
+    const meaning = meaningCol
+      ? (row[meaningCol] || '')
+      : (row['meaning'] || row['meanings'] || '');
+    
+    const pronunciation = pronunciationCol
+      ? (row[pronunciationCol] || '')
+      : (row['pronunciation'] || row['reading'] || row['pinyin'] || '');
+    
+    // Parse level if level column is specified
+    let level = 1; // Default to level 1
+    if (levelCol && row[levelCol]) {
+      const parsedLevel = parseInt(row[levelCol], 10);
+      if (!isNaN(parsedLevel) && parsedLevel > 0) {
+        level = parsedLevel;
+      }
+    } else if (row['level'] || row['lvl']) {
+      const parsedLevel = parseInt(row['level'] || row['lvl'] || '1', 10);
+      if (!isNaN(parsedLevel) && parsedLevel > 0) {
+        level = parsedLevel;
+      }
+    }
 
     if (!character || !meaning) continue;
 
@@ -269,13 +341,18 @@ export function createKanjiFromCSV(rows: CSVRow[], language: 'japanese' | 'chine
       character,
       meaning,
       pronunciation,
+      mnemonic: '', // Can be added later
+      radicalIds: [], // Can be added later
       language,
-      createdAt: now,
-      srsLevel: 0,
-      masteryLevel: 0,
-      waniKaniLevel: 1, // Start at level 1
+      level: Math.min(60, Math.max(1, level)), // Clamp between 1-60
+      srsStage: 'locked',
       correctCount: 0,
       wrongCount: 0,
+      createdAt: now,
+      // Legacy properties for backward compatibility
+      srsLevel: 0,
+      masteryLevel: 0,
+      waniKaniLevel: level,
     });
   }
 

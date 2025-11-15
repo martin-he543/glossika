@@ -10,10 +10,11 @@ import LessonSummary from './LessonSummary';
 interface LearnWordsProps {
   courseId: string;
   words: Word[];
+  course?: { nativeLanguage: string; targetLanguage: string };
   onUpdate: () => void;
 }
 
-export default function LearnWords({ courseId, words, onUpdate }: LearnWordsProps) {
+export default function LearnWords({ courseId, words, course, onUpdate }: LearnWordsProps) {
   const [mode, setMode] = useState<'multiple' | 'type'>('multiple');
   const [currentWord, setCurrentWord] = useState<Word | null>(null);
   const [options, setOptions] = useState<string[]>([]);
@@ -286,13 +287,13 @@ export default function LearnWords({ courseId, words, onUpdate }: LearnWordsProp
           className={`btn ${direction === 'native-to-target' ? 'btn-primary' : ''}`}
           onClick={() => setDirection('native-to-target')}
         >
-          {words[0]?.native || 'Native'} → {words[0]?.target || 'Target'}
+          {course ? `${course.nativeLanguage} → ${course.targetLanguage}` : (words[0]?.native || 'Native') + ' → ' + (words[0]?.target || 'Target')}
         </button>
         <button
           className={`btn ${direction === 'target-to-native' ? 'btn-primary' : ''}`}
           onClick={() => setDirection('target-to-native')}
         >
-          {words[0]?.target || 'Target'} → {words[0]?.native || 'Native'}
+          {course ? `${course.targetLanguage} → ${course.nativeLanguage}` : (words[0]?.target || 'Target') + ' → ' + (words[0]?.native || 'Native')}
         </button>
       </div>
 

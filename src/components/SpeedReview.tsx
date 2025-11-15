@@ -2,25 +2,27 @@ import { useState, useEffect, useCallback } from 'react';
 import { Word } from '../types';
 import { storage } from '../storage';
 import { updateSRSLevel, getMasteryLevel, calculateNextReview } from '../utils/srs';
+import { leaderboard } from '../utils/leaderboard';
 import KeyboardShortcuts from './KeyboardShortcuts';
 
 interface SpeedReviewProps {
   courseId: string;
   words: Word[];
+  course?: { nativeLanguage: string; targetLanguage: string };
   onUpdate: () => void;
 }
 
-export default function SpeedReview({ courseId, words, onUpdate }: SpeedReviewProps) {
+export default function SpeedReview({ courseId, words, course, onUpdate }: SpeedReviewProps) {
   const [isActive, setIsActive] = useState(false);
   const [countdown, setCountdown] = useState(3);
-  const [timeLeft, setTimeLeft] = useState(60);
+  const [timeLeft, setTimeLeft] = useState(0); // Will be set from timeMinutes
   const [currentWord, setCurrentWord] = useState<Word | null>(null);
   const [options, setOptions] = useState<string[]>([]);
   const [selectedAnswer, setSelectedAnswer] = useState<string>('');
   const [score, setScore] = useState(0);
   const [total, setTotal] = useState(0);
   const [reviewWords, setReviewWords] = useState<Word[]>([]);
-  const [wordCount, setWordCount] = useState(20);
+  const [timeMinutes, setTimeMinutes] = useState(5);
   const [direction, setDirection] = useState<'native-to-target' | 'target-to-native'>('native-to-target');
 
   useEffect(() => {
@@ -41,8 +43,7 @@ export default function SpeedReview({ courseId, words, onUpdate }: SpeedReviewPr
   const startSession = () => {
     const wordsToReview = words
       .filter(w => w.srsLevel > 0)
-      .sort(() => Math.random() - 0.5)
-      .slice(0, wordCount);
+      .sort(() => Math.random() - 0.5);
 
     if (wordsToReview.length === 0) {
       alert('No words available for speed review. Learn some words first!');
@@ -51,7 +52,7 @@ export default function SpeedReview({ courseId, words, onUpdate }: SpeedReviewPr
 
     setReviewWords(wordsToReview);
     setCountdown(3);
-    setTimeLeft(60);
+    setTimeLeft(timeMinutes * 60); // Convert minutes to seconds
     setScore(0);
     setTotal(0);
     setIsActive(true);
@@ -131,6 +132,9 @@ export default function SpeedReview({ courseId, words, onUpdate }: SpeedReviewPr
       lastReviewed: Date.now(),
     });
 
+    // Award XP for speed review question
+    leaderboard.awardSpeedReviewXP(courseId);
+
     onUpdate();
   };
 
@@ -164,19 +168,22 @@ export default function SpeedReview({ courseId, words, onUpdate }: SpeedReviewPr
         <div className="card">
           <h2 style={{ marginBottom: '16px' }}>Speed Review</h2>
           <p style={{ color: '#656d76', marginBottom: '24px' }}>
-            Test your vocabulary with a quick 60-second challenge!
+            Test your vocabulary with a timed challenge!
           </p>
 
           <div className="form-group">
-            <label className="form-label">Number of words to review</label>
+            <label className="form-label">Time (minutes)</label>
             <input
               type="number"
               className="input"
-              value={wordCount}
-              onChange={(e) => setWordCount(parseInt(e.target.value) || 20)}
+              value={timeMinutes}
+              onChange={(e) => setTimeMinutes(Math.max(1, parseInt(e.target.value) || 5))}
               min={1}
-              max={words.length}
+              max={60}
             />
+            <div style={{ fontSize: '12px', color: '#656d76', marginTop: '4px' }}>
+              How long do you want to review? (1-60 minutes)
+            </div>
           </div>
 
           <div style={{ marginBottom: '16px' }}>
@@ -186,13 +193,13 @@ export default function SpeedReview({ courseId, words, onUpdate }: SpeedReviewPr
                 className={`btn ${direction === 'native-to-target' ? 'btn-primary' : ''}`}
                 onClick={() => setDirection('native-to-target')}
               >
-                Native → Target
+                {course ? `${course.nativeLanguage} → ${course.targetLanguage}` : 'Native → Target'}
               </button>
               <button
                 className={`btn ${direction === 'target-to-native' ? 'btn-primary' : ''}`}
                 onClick={() => setDirection('target-to-native')}
               >
-                Target → Native
+                {course ? `${course.targetLanguage} → ${course.nativeLanguage}` : 'Target → Native'}
               </button>
             </div>
           </div>

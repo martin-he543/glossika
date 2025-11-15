@@ -20,6 +20,7 @@ export default function ClozePractice({ appState, updateState }: ClozePracticePr
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
   const [showSettings, setShowSettings] = useState(false);
+  const [activeMode, setActiveMode] = useState<'continue' | 'learn' | 'review' | 'speed' | null>(null);
   
   // Practice state (only when a course is selected)
   const [direction, setDirection] = useState<'native-to-target' | 'target-to-native'>('native-to-target');
@@ -46,6 +47,15 @@ export default function ClozePractice({ appState, updateState }: ClozePracticePr
     ? (appState.clozeSentences || []).filter(s => s.courseId === selectedCourseId)
     : [];
   const availableSentences = courseSentences.filter(s => s.masteryLevel < 5);
+  const newSentences = courseSentences.filter(s => s.masteryLevel === 0);
+  const reviewSentences = courseSentences.filter(s => s.masteryLevel > 0 && s.masteryLevel < 5);
+  
+  // Determine what "Continue" should do
+  const getContinueMode = (): 'learn' | 'review' => {
+    if (reviewSentences.length > 0) return 'review';
+    if (newSentences.length > 0) return 'learn';
+    return 'learn'; // Default to learn if nothing available
+  };
 
   // Generate cloze text for a sentence
   const generateClozeText = useCallback((sentence: ClozeSentence, dir: 'native-to-target' | 'target-to-native'): { text: string; answer: string } => {
@@ -72,7 +82,17 @@ export default function ClozePractice({ appState, updateState }: ClozePracticePr
 
   // Initialize practice session
   const handleStart = (count: number) => {
-    const shuffled = availableSentences.sort(() => Math.random() - 0.5).slice(0, count);
+    let sentencesToUse: ClozeSentence[] = [];
+    
+    if (activeMode === 'learn') {
+      sentencesToUse = newSentences.sort(() => Math.random() - 0.5).slice(0, count);
+    } else if (activeMode === 'review') {
+      sentencesToUse = reviewSentences.sort(() => Math.random() - 0.5).slice(0, count);
+    } else {
+      sentencesToUse = availableSentences.sort(() => Math.random() - 0.5).slice(0, count);
+    }
+    
+    const shuffled = sentencesToUse;
     
     setQuestionCount(count);
     setShowQuestionSelector(false);
@@ -229,7 +249,8 @@ export default function ClozePractice({ appState, updateState }: ClozePracticePr
 
   const handleSummaryClose = () => {
     setShowSummary(false);
-    setShowQuestionSelector(true);
+    setShowQuestionSelector(false);
+    setActiveMode(null);
     setQuestionCount(0);
     setQuestionsAnswered(0);
     setCorrectCount(0);
@@ -260,7 +281,22 @@ export default function ClozePractice({ appState, updateState }: ClozePracticePr
 
   const handleCourseClick = (courseId: string) => {
     setSelectedCourseId(courseId);
-    setShowQuestionSelector(true);
+    setActiveMode(null);
+    setShowQuestionSelector(false);
+  };
+
+  const handleModeSelect = (mode: 'continue' | 'learn' | 'review' | 'speed') => {
+    if (mode === 'continue') {
+      const continueMode = getContinueMode();
+      setActiveMode(continueMode);
+      setShowQuestionSelector(true);
+    } else if (mode === 'speed') {
+      setActiveMode('speed');
+      // Speed review will be handled separately
+    } else {
+      setActiveMode(mode);
+      setShowQuestionSelector(true);
+    }
   };
 
   const handleBackToCourses = () => {
@@ -377,7 +413,7 @@ export default function ClozePractice({ appState, updateState }: ClozePracticePr
     <div>
       <div className="card-header">
         <div>
-          <button className="btn" onClick={handleBackToCourses} style={{ marginRight: '12px' }}>
+          <button className="btn" onClick={handleBackToCourses} style={{ marginBottom: '8px' }}>
             ← Back to Courses
           </button>
           <h1 className="card-title" style={{ display: 'inline' }}>{selectedCourse?.name}</h1>
@@ -386,6 +422,54 @@ export default function ClozePractice({ appState, updateState }: ClozePracticePr
           Settings
         </button>
       </div>
+
+            {!showQuestionSelector && !showSummary && (activeMode as string) !== 'speed' && activeMode !== null && (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px', marginBottom: '24px' }}>
+          <button
+            className={`btn ${activeMode === null || activeMode === 'continue' ? 'btn-primary' : ''}`}
+            onClick={() => handleModeSelect('continue')}
+            style={{ padding: '16px', fontSize: '16px', fontWeight: 600 }}
+          >
+            Continue
+          </button>
+          <button
+            className={`btn ${activeMode === 'learn' ? 'btn-primary' : ''}`}
+            onClick={() => handleModeSelect('learn')}
+            style={{ padding: '16px', fontSize: '16px', fontWeight: 600 }}
+          >
+            Learn Sentences
+          </button>
+          <button
+            className={`btn ${activeMode === 'review' ? 'btn-review' : ''}`}
+            onClick={() => handleModeSelect('review')}
+            style={{ padding: '16px', fontSize: '16px', fontWeight: 600 }}
+          >
+            Review Sentences
+          </button>
+          <button
+            className={`btn ${activeMode === 'speed' ? 'btn-quick-review' : ''}`}
+            onClick={() => handleModeSelect('speed')}
+            style={{ padding: '16px', fontSize: '16px', fontWeight: 600 }}
+          >
+            Speed Review Sentences
+          </button>
+        </div>
+      )}
+
+      {activeMode === 'speed' && (
+        <div className="card">
+          <h2 style={{ marginBottom: '16px' }}>Speed Review Sentences</h2>
+          <p style={{ color: '#656d76', marginBottom: '24px' }}>
+            Test your sentence knowledge with a timed challenge!
+          </p>
+          <p style={{ color: '#656d76', marginBottom: '24px' }}>
+            Speed Review for sentences is coming soon. For now, use Review Sentences mode.
+          </p>
+          <button className="btn btn-primary" onClick={() => setActiveMode(null)}>
+            Back
+          </button>
+        </div>
+      )}
 
       {showQuestionSelector && (
         <div className="card" style={{ marginBottom: '16px' }}>
@@ -396,13 +480,13 @@ export default function ClozePractice({ appState, updateState }: ClozePracticePr
                 className={`btn ${direction === 'native-to-target' ? 'btn-primary' : ''}`}
                 onClick={() => setDirection('native-to-target')}
               >
-                Native → Target
+                {selectedCourse ? `${selectedCourse.nativeLanguage} → ${selectedCourse.targetLanguage}` : 'Native → Target'}
               </button>
               <button
                 className={`btn ${direction === 'target-to-native' ? 'btn-primary' : ''}`}
                 onClick={() => setDirection('target-to-native')}
               >
-                Target → Native
+                {selectedCourse ? `${selectedCourse.targetLanguage} → ${selectedCourse.nativeLanguage}` : 'Target → Native'}
               </button>
             </div>
           </div>
@@ -411,10 +495,21 @@ export default function ClozePractice({ appState, updateState }: ClozePracticePr
 
       {showQuestionSelector ? (
         <QuestionCountSelector
-          maxQuestions={availableSentences.length}
-          defaultCount={Math.min(20, availableSentences.length)}
+          maxQuestions={
+            activeMode === 'learn' ? newSentences.length :
+            activeMode === 'review' ? reviewSentences.length :
+            availableSentences.length
+          }
+          defaultCount={Math.min(20, 
+            activeMode === 'learn' ? newSentences.length :
+            activeMode === 'review' ? reviewSentences.length :
+            availableSentences.length
+          )}
           onStart={handleStart}
-          onCancel={() => {}}
+          onCancel={() => {
+            setShowQuestionSelector(false);
+            setActiveMode(null);
+          }}
         />
       ) : showSummary ? (
         <LessonSummary

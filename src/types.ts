@@ -50,6 +50,19 @@ export interface ClozeCourse {
   author?: string;
 }
 
+export interface CharacterCourse {
+  id: string;
+  name: string;
+  language: 'japanese' | 'chinese';
+  createdAt: number;
+  isPublic: boolean;
+  tags: string[];
+  description?: string;
+  characterCount: number;
+  author?: string;
+  levels?: number[]; // Array of level numbers that exist in this course (e.g. [1, 2, 3])
+}
+
 export interface ClozeSentence {
   id: string;
   native: string;
@@ -64,20 +77,72 @@ export interface ClozeSentence {
   wrongCount: number;
 }
 
+// Glyphy SRS stages
+export type GlyphySRSStage = 'apprentice' | 'guru' | 'master' | 'enlightened' | 'burned' | 'locked';
+
+// Radical (foundational component)
+export interface Radical {
+  id: string;
+  character: string;
+  meaning: string;
+  mnemonic: string;
+  mnemonicImage?: string; // URL or base64
+  language: 'japanese' | 'chinese';
+  level: number; // 1-60
+  srsStage: GlyphySRSStage;
+  unlockedAt?: number;
+  nextReview?: number;
+  lastReviewed?: number;
+  correctCount: number;
+  wrongCount: number;
+  createdAt: number;
+}
+
+// Kanji (character)
 export interface Kanji {
   id: string;
   character: string;
   meaning: string;
-  pronunciation: string;
+  pronunciation: string; // On'yomi and Kun'yomi for Japanese
+  mnemonic: string;
+  mnemonicImage?: string; // URL or base64
+  radicalIds: string[]; // IDs of radicals that make up this kanji
   language: 'japanese' | 'chinese';
-  createdAt: number;
-  srsLevel: number;
-  masteryLevel: number;
-  waniKaniLevel: number; // 1-60 like WaniKani
+  level: number; // 1-60
+  srsStage: GlyphySRSStage;
+  unlockedAt?: number;
+  nextReview?: number;
+  lastReviewed?: number;
   correctCount: number;
   wrongCount: number;
+  createdAt: number;
   exampleSentences?: string[];
   exampleWords?: string[];
+  // Legacy properties for backward compatibility with old Glyphy component
+  srsLevel?: number;
+  masteryLevel?: number;
+  waniKaniLevel?: number;
+}
+
+// Vocabulary (word built from kanji)
+export interface Vocabulary {
+  id: string;
+  word: string;
+  meaning: string;
+  pronunciation: string;
+  kanjiIds: string[]; // IDs of kanji that make up this vocabulary
+  mnemonic?: string;
+  mnemonicImage?: string; // URL or base64
+  language: 'japanese' | 'chinese';
+  level: number; // 1-60
+  srsStage: GlyphySRSStage;
+  unlockedAt?: number;
+  nextReview?: number;
+  lastReviewed?: number;
+  correctCount: number;
+  wrongCount: number;
+  createdAt: number;
+  exampleSentences?: string[];
 }
 
 export interface User {
@@ -86,9 +151,22 @@ export interface User {
   createdAt: number;
 }
 
+export interface UserProfile {
+  userId: string;
+  username: string;
+  email: string;
+  avatar?: string; // URL or base64
+  isPublic: boolean;
+  followers: string[]; // Array of user IDs
+  following: string[]; // Array of user IDs
+  createdAt: number;
+  updatedAt: number;
+}
+
 export interface LeaderboardEntry {
   userId: string;
   userEmail: string;
+  username?: string;
   courseId?: string; // undefined for overall leaderboard
   xp: number;
   wordsLearned: number;
@@ -102,6 +180,9 @@ export interface AppState {
   courseProgress: CourseProgress[];
   clozeSentences: ClozeSentence[];
   clozeCourses: ClozeCourse[];
+  characterCourses: CharacterCourse[];
   kanji: Kanji[];
+  radicals: Radical[];
+  vocabulary: Vocabulary[];
   currentCourseId?: string;
 }

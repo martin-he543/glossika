@@ -30,8 +30,15 @@ export default function Glyphy({ appState, updateState }: GlyphyProps) {
   const [additionalColumns, setAdditionalColumns] = useState<string[]>([]);
 
   const kanji = appState.kanji.filter(k => k.language === language);
-  const newKanji = kanji.filter(k => k.srsLevel === 0);
-  const reviewKanji = kanji.filter(k => k.srsLevel > 0);
+  // Support both old (srsLevel) and new (srsStage) interfaces
+  const newKanji = kanji.filter(k => {
+    if (k.srsLevel !== undefined) return k.srsLevel === 0;
+    return k.srsStage === 'locked' || k.srsStage === 'apprentice';
+  });
+  const reviewKanji = kanji.filter(k => {
+    if (k.srsLevel !== undefined) return k.srsLevel > 0;
+    return k.srsStage !== 'locked' && k.srsStage !== 'burned';
+  });
 
   useEffect(() => {
     if (activeTab === 'learn' && newKanji.length > 0) {
@@ -189,26 +196,36 @@ export default function Glyphy({ appState, updateState }: GlyphyProps) {
   const updateKanjiProgress = (isCorrect: boolean) => {
     if (!currentKanji) return;
 
-    const newSrsLevel = isCorrect ? currentKanji.srsLevel + 1 : Math.max(0, currentKanji.srsLevel - 1);
-    const newMasteryLevel = Math.min(5, Math.floor(newSrsLevel / 2));
-    
-    // WaniKani level progression: level up when mastery reaches 5 and srsLevel is high enough
-    let newWaniKaniLevel = currentKanji.waniKaniLevel || 1;
-    if (newMasteryLevel >= 5 && newSrsLevel >= 10 && isCorrect) {
-      // Level up: need to master all kanji at current level first (simplified - just increment)
-      // In real WaniKani, you need to master all radicals, then kanji, then vocab at a level
-      if (newWaniKaniLevel < 60) {
-        newWaniKaniLevel = Math.min(60, newWaniKaniLevel + 1);
+    // Support both old and new interfaces
+    if (currentKanji.srsLevel !== undefined) {
+      // Old interface - update legacy properties
+      const newSrsLevel = isCorrect ? (currentKanji.srsLevel || 0) + 1 : Math.max(0, (currentKanji.srsLevel || 0) - 1);
+      const newMasteryLevel = Math.min(5, Math.floor(newSrsLevel / 2));
+      
+      let newWaniKaniLevel = currentKanji.waniKaniLevel || 1;
+      if (newMasteryLevel >= 5 && newSrsLevel >= 10 && isCorrect) {
+        if (newWaniKaniLevel < 60) {
+          newWaniKaniLevel = Math.min(60, newWaniKaniLevel + 1);
+        }
       }
-    }
 
-    storage.updateKanji(currentKanji.id, {
-      srsLevel: newSrsLevel,
-      masteryLevel: newMasteryLevel,
-      waniKaniLevel: newWaniKaniLevel,
-      correctCount: currentKanji.correctCount + (isCorrect ? 1 : 0),
-      wrongCount: currentKanji.wrongCount + (isCorrect ? 0 : 1),
-    });
+      storage.updateKanji(currentKanji.id, {
+        srsLevel: newSrsLevel,
+        masteryLevel: newMasteryLevel,
+        waniKaniLevel: newWaniKaniLevel,
+        correctCount: currentKanji.correctCount + (isCorrect ? 1 : 0),
+        wrongCount: currentKanji.wrongCount + (isCorrect ? 0 : 1),
+      });
+    } else {
+      // New interface - update using Glyphy SRS
+      const { updateSRSProgress } = require('../utils/glyphySRS');
+      const updates = updateSRSProgress(currentKanji, isCorrect);
+      storage.updateKanji(currentKanji.id, {
+        ...updates,
+        correctCount: currentKanji.correctCount + (isCorrect ? 1 : 0),
+        wrongCount: currentKanji.wrongCount + (isCorrect ? 0 : 1),
+      });
+    }
 
     updateState({ kanji: storage.load().kanji });
   };
@@ -236,7 +253,10 @@ export default function Glyphy({ appState, updateState }: GlyphyProps) {
 
       // Parse CSV with progress tracking
       const rows = await parseCSV(selectedFile, (progress) => {
-        setProgress(Math.min(40, progress * 0.4)); // 40% for parsing
+        // Use requestAnimationFrame for smooth progress updates
+        requestAnimationFrame(() => {
+          setProgress(Math.min(40, progress * 0.4)); // 40% for parsing
+        });
       }, fileDelimiter);
 
       // Detect additional columns
@@ -261,12 +281,19 @@ export default function Glyphy({ appState, updateState }: GlyphyProps) {
         const end = Math.min(start + BATCH_SIZE, rows.length);
         const batch = rows.slice(start, end);
         
-        const batchKanji = createKanjiFromCSV(batch, language);
+        const batchKanji = createKanjiFromCSV(batch, language, `glyphy-${language}`, undefined, undefined, undefined, undefined);
         allKanji.push(...batchKanji);
         
-        // Update progress: 50-90% for processing
+        // Update progress with requestAnimationFrame for smooth UI updates
         const progressPercent = 50 + Math.floor(((i + 1) / totalBatches) * 40);
-        setProgress(progressPercent);
+        requestAnimationFrame(() => {
+          setProgress(progressPercent);
+        });
+        
+        // Yield to browser for large files
+        if (i % 10 === 0 && i > 0) {
+          await new Promise(resolve => setTimeout(resolve, 0));
+        }
       }
 
       // Save in batches to avoid localStorage issues
@@ -279,7 +306,14 @@ export default function Glyphy({ appState, updateState }: GlyphyProps) {
         }
         
         const saveProgress = 90 + Math.floor((i / allKanji.length) * 10);
-        setProgress(Math.min(99, saveProgress));
+        requestAnimationFrame(() => {
+          setProgress(Math.min(99, saveProgress));
+        });
+        
+        // Yield to browser periodically for large files
+        if (i % (SAVE_BATCH_SIZE * 5) === 0 && i > 0) {
+          await new Promise(resolve => setTimeout(resolve, 0));
+        }
       }
 
       setProgress(100);
@@ -292,14 +326,20 @@ export default function Glyphy({ appState, updateState }: GlyphyProps) {
     }
   };
 
-  // Calculate WaniKani level stats
+  // Calculate level stats (support both old and new interfaces)
   const levelStats = Array.from({ length: 60 }, (_, i) => {
     const level = i + 1;
-    const kanjiAtLevel = kanji.filter(k => (k.waniKaniLevel || 1) === level);
+    const kanjiAtLevel = kanji.filter(k => {
+      if (k.waniKaniLevel !== undefined) return (k.waniKaniLevel || 1) === level;
+      return k.level === level;
+    });
     return {
       level,
       total: kanjiAtLevel.length,
-      mastered: kanjiAtLevel.filter(k => k.masteryLevel >= 5).length,
+      mastered: kanjiAtLevel.filter(k => {
+        if (k.masteryLevel !== undefined) return k.masteryLevel >= 5;
+        return k.srsStage === 'master' || k.srsStage === 'enlightened' || k.srsStage === 'burned';
+      }).length,
     };
   });
 
@@ -310,8 +350,14 @@ export default function Glyphy({ appState, updateState }: GlyphyProps) {
   const stats = {
     total: kanji.length,
     new: newKanji.length,
-    learning: kanji.filter(k => k.srsLevel > 0 && k.srsLevel < 5).length,
-    mastered: kanji.filter(k => k.srsLevel >= 5).length,
+    learning: kanji.filter(k => {
+      if (k.srsLevel !== undefined) return k.srsLevel > 0 && k.srsLevel < 5;
+      return k.srsStage === 'apprentice' || k.srsStage === 'guru';
+    }).length,
+    mastered: kanji.filter(k => {
+      if (k.srsLevel !== undefined) return k.srsLevel >= 5;
+      return k.srsStage === 'master' || k.srsStage === 'enlightened' || k.srsStage === 'burned';
+    }).length,
     totalCorrect: kanji.reduce((sum, k) => sum + k.correctCount, 0),
     totalWrong: kanji.reduce((sum, k) => sum + k.wrongCount, 0),
     currentLevel,
@@ -623,7 +669,7 @@ export default function Glyphy({ appState, updateState }: GlyphyProps) {
         {activeTab === 'statistics' && (
           <div>
             <div className="card" style={{ marginBottom: '16px' }}>
-              <h3 style={{ marginBottom: '12px' }}>WaniKani Level: {stats.currentLevel}</h3>
+              <h3 style={{ marginBottom: '12px' }}>Level: {stats.currentLevel}</h3>
               <div className="progress-bar" style={{ marginBottom: '8px' }}>
                 <div className="progress-fill" style={{ width: `${stats.nextLevelTotal > 0 ? (stats.nextLevelProgress / stats.nextLevelTotal) * 100 : 0}%` }} />
               </div>

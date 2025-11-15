@@ -94,7 +94,7 @@ export default function Leaderboard({ appState }: LeaderboardProps) {
                         {index === 2 && ' 🥉'}
                       </td>
                       <td style={{ padding: '12px', fontWeight: isCurrentUser ? 600 : 400 }}>
-                        {entry.userEmail}
+                        {entry.username || entry.userEmail}
                         {isCurrentUser && <span style={{ marginLeft: '8px', color: '#0969da' }}>(You)</span>}
                       </td>
                       <td style={{ padding: '12px', textAlign: 'right', fontWeight: isCurrentUser ? 600 : 400 }}>
@@ -119,10 +119,19 @@ export default function Leaderboard({ appState }: LeaderboardProps) {
         <h3 style={{ fontSize: '16px', marginBottom: '12px' }}>How to Earn XP</h3>
         <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
           <li style={{ padding: '8px 0', borderBottom: '1px solid #d0d7de' }}>
-            <strong>+10 XP</strong> for each word learned (when srsLevel goes from 0 to 1+)
+            <strong>+5-20 XP</strong> for each word learned (progressive based on SRS stage)
           </li>
           <li style={{ padding: '8px 0', borderBottom: '1px solid #d0d7de' }}>
-            <strong>+10 XP</strong> for each sentence learned (when masteryLevel goes from 0 to 1+)
+            <strong>+5 XP</strong> for each sentence learned
+          </li>
+          <li style={{ padding: '8px 0', borderBottom: '1px solid #d0d7de' }}>
+            <strong>+2-7 XP</strong> for each word reviewed (progressive based on SRS level)
+          </li>
+          <li style={{ padding: '8px 0', borderBottom: '1px solid #d0d7de' }}>
+            <strong>+1-4 XP</strong> for each flashcard reviewed
+          </li>
+          <li style={{ padding: '8px 0' }}>
+            <strong>+1 XP</strong> per question in Speed Review
           </li>
         </ul>
       </div>

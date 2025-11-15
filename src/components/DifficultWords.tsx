@@ -6,10 +6,11 @@ import KeyboardShortcuts from './KeyboardShortcuts';
 interface DifficultWordsProps {
   courseId: string;
   words: Word[];
+  course?: { nativeLanguage: string; targetLanguage: string };
   onUpdate: () => void;
 }
 
-export default function DifficultWords({ courseId, words, onUpdate }: DifficultWordsProps) {
+export default function DifficultWords({ courseId, words, course, onUpdate }: DifficultWordsProps) {
   const [mode, setMode] = useState<'multiple' | 'type'>('multiple');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [options, setOptions] = useState<string[]>([]);
@@ -191,13 +192,13 @@ export default function DifficultWords({ courseId, words, onUpdate }: DifficultW
           className={`btn ${direction === 'native-to-target' ? 'btn-primary' : ''}`}
           onClick={() => setDirection('native-to-target')}
         >
-          Native → Target
+          {course ? `${course.nativeLanguage} → ${course.targetLanguage}` : 'Native → Target'}
         </button>
         <button
           className={`btn ${direction === 'target-to-native' ? 'btn-primary' : ''}`}
           onClick={() => setDirection('target-to-native')}
         >
-          Target → Native
+          {course ? `${course.targetLanguage} → ${course.nativeLanguage}` : 'Target → Native'}
         </button>
       </div>
 

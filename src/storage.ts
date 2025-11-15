@@ -1,4 +1,4 @@
-import { AppState, Course, Word, CourseProgress, ClozeSentence, ClozeCourse, Kanji } from './types';
+import { AppState, Course, Word, CourseProgress, ClozeSentence, ClozeCourse, CharacterCourse, Kanji, Radical, Vocabulary } from './types';
 
 const STORAGE_KEY = 'glossika_app_state';
 
@@ -10,7 +10,10 @@ export const storage = {
       courseProgress: [],
       clozeSentences: [],
       clozeCourses: [],
+      characterCourses: [],
       kanji: [],
+      radicals: [],
+      vocabulary: [],
     };
 
     try {
@@ -24,7 +27,10 @@ export const storage = {
           courseProgress: parsed.courseProgress || [],
           clozeSentences: parsed.clozeSentences || [],
           clozeCourses: parsed.clozeCourses || [],
+          characterCourses: parsed.characterCourses || [],
           kanji: parsed.kanji || [],
+          radicals: parsed.radicals || [],
+          vocabulary: parsed.vocabulary || [],
           currentCourseId: parsed.currentCourseId,
         };
       }
@@ -170,6 +176,94 @@ export const storage = {
       state.kanji[index] = { ...state.kanji[index], ...updates };
       this.save(state);
     }
+  },
+
+  deleteKanji(id: string): void {
+    const state = this.load();
+    if (!state.kanji) state.kanji = [];
+    state.kanji = state.kanji.filter(k => k.id !== id);
+    this.save(state);
+  },
+
+  // Radical operations
+  addRadical(radical: Radical): void {
+    const state = this.load();
+    if (!state.radicals) state.radicals = [];
+    state.radicals.push(radical);
+    this.save(state);
+  },
+
+  updateRadical(id: string, updates: Partial<Radical>): void {
+    const state = this.load();
+    if (!state.radicals) state.radicals = [];
+    const index = state.radicals.findIndex(r => r.id === id);
+    if (index !== -1) {
+      state.radicals[index] = { ...state.radicals[index], ...updates };
+      this.save(state);
+    }
+  },
+
+  deleteRadical(id: string): void {
+    const state = this.load();
+    if (!state.radicals) state.radicals = [];
+    state.radicals = state.radicals.filter(r => r.id !== id);
+    this.save(state);
+  },
+
+  // Vocabulary operations
+  addVocabulary(vocab: Vocabulary): void {
+    const state = this.load();
+    if (!state.vocabulary) state.vocabulary = [];
+    state.vocabulary.push(vocab);
+    this.save(state);
+  },
+
+  updateVocabulary(id: string, updates: Partial<Vocabulary>): void {
+    const state = this.load();
+    if (!state.vocabulary) state.vocabulary = [];
+    const index = state.vocabulary.findIndex(v => v.id === id);
+    if (index !== -1) {
+      state.vocabulary[index] = { ...state.vocabulary[index], ...updates };
+      this.save(state);
+    }
+  },
+
+  deleteVocabulary(id: string): void {
+    const state = this.load();
+    if (!state.vocabulary) state.vocabulary = [];
+    state.vocabulary = state.vocabulary.filter(v => v.id !== id);
+    this.save(state);
+  },
+
+  // CharacterCourse operations
+  addCharacterCourse(course: CharacterCourse): void {
+    const state = this.load();
+    if (!state.characterCourses) state.characterCourses = [];
+    state.characterCourses.push(course);
+    this.save(state);
+  },
+
+  updateCharacterCourse(courseId: string, updates: Partial<CharacterCourse>): void {
+    const state = this.load();
+    if (!state.characterCourses) state.characterCourses = [];
+    const index = state.characterCourses.findIndex(c => c.id === courseId);
+    if (index !== -1) {
+      state.characterCourses[index] = { ...state.characterCourses[index], ...updates };
+      this.save(state);
+    }
+  },
+
+  deleteCharacterCourse(courseId: string): void {
+    const state = this.load();
+    if (!state.characterCourses) state.characterCourses = [];
+    if (!state.kanji) state.kanji = [];
+    // Delete all kanji associated with this course (by language)
+    const course = state.characterCourses.find(c => c.id === courseId);
+    if (course) {
+      state.kanji = state.kanji.filter(k => k.language !== course.language);
+    }
+    state.characterCourses = state.characterCourses.filter(c => c.id !== courseId);
+    this.save(state);
   },
 };
 

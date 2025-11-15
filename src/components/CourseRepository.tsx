@@ -13,11 +13,13 @@ export default function CourseRepository({ appState, updateState }: CourseReposi
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedLanguage, setSelectedLanguage] = useState<string>('all');
   const [selectedTag, setSelectedTag] = useState<string>('all');
-  const [courseType, setCourseType] = useState<'words' | 'cloze'>('words');
+  const [courseType, setCourseType] = useState<'words' | 'sentences' | 'characters'>('words');
 
   const publicCourses = courseType === 'words' 
     ? appState.courses.filter(c => c.isPublic)
-    : (appState.clozeCourses || []).filter(c => c.isPublic);
+    : courseType === 'sentences'
+    ? (appState.clozeCourses || []).filter(c => c.isPublic)
+    : []; // Character courses are handled differently (by language)
   
   // Get unique languages and tags
   const languages = Array.from(new Set(publicCourses.flatMap(c => [c.nativeLanguage, c.targetLanguage])));
@@ -68,7 +70,7 @@ export default function CourseRepository({ appState, updateState }: CourseReposi
       });
 
       navigate(`/course/${newCourse.id}`);
-    } else {
+    } else if (courseType === 'sentences') {
       const clozeCourse = course as ClozeCourse;
       // Copy cloze course and sentences to user's collection
       const newCourse: ClozeCourse = {
@@ -98,8 +100,7 @@ export default function CourseRepository({ appState, updateState }: CourseReposi
         clozeSentences: storage.load().clozeSentences,
       });
 
-      // Navigate to ClozePractice - we'll need to handle this differently
-      window.location.href = '/clozepractice';
+      navigate(`/cloze-course/${newCourse.id}`);
     }
   };
 
@@ -123,10 +124,16 @@ export default function CourseRepository({ appState, updateState }: CourseReposi
               Word Courses
             </button>
             <button
-              className={`btn ${courseType === 'cloze' ? 'btn-primary' : ''}`}
-              onClick={() => setCourseType('cloze')}
+              className={`btn ${courseType === 'sentences' ? 'btn-primary' : ''}`}
+              onClick={() => setCourseType('sentences')}
             >
-              Cloze Courses
+              Sentence Courses
+            </button>
+            <button
+              className={`btn ${courseType === 'characters' ? 'btn-primary' : ''}`}
+              onClick={() => setCourseType('characters')}
+            >
+              Character Courses
             </button>
           </div>
         </div>
@@ -170,7 +177,13 @@ export default function CourseRepository({ appState, updateState }: CourseReposi
         </div>
       </div>
 
-      {filteredCourses.length === 0 ? (
+      {courseType === 'characters' ? (
+        <div className="card">
+          <p style={{ textAlign: 'center', color: '#656d76', padding: '32px' }}>
+            Character courses are created through the Glyphy interface. Import Kanji/Hanzi CSV files there.
+          </p>
+        </div>
+      ) : filteredCourses.length === 0 ? (
         <div className="card">
           <p style={{ textAlign: 'center', color: '#656d76', padding: '32px' }}>
             {publicCourses.length === 0

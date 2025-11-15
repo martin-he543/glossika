@@ -110,6 +110,50 @@ body {
   border-color: #2c974b;
 }
 
+.btn-review {
+  background-color: #87ceeb;
+  color: #ffffff;
+  border-color: #87ceeb;
+}
+
+.btn-review:hover {
+  background-color: #6bb6d6;
+  border-color: #6bb6d6;
+}
+
+.btn-quick-review {
+  background-color: #ff4444;
+  color: #ffffff;
+  border-color: #ff4444;
+}
+
+.btn-quick-review:hover {
+  background-color: #e63939;
+  border-color: #e63939;
+}
+
+.btn-difficult {
+  background-color: #ffd700;
+  color: #24292f;
+  border-color: #ffd700;
+}
+
+.btn-difficult:hover {
+  background-color: #e6c200;
+  border-color: #e6c200;
+}
+
+.btn-flashcards {
+  background-color: #9370db;
+  color: #ffffff;
+  border-color: #9370db;
+}
+
+.btn-flashcards:hover {
+  background-color: #7b5fb8;
+  border-color: #7b5fb8;
+}
+
 .btn-danger {
   background-color: #da3633;
   color: #ffffff;
