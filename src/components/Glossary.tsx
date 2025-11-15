@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { AppState } from '../types';
 import { storage } from '../storage';
 import Papa from 'papaparse';
@@ -8,12 +8,23 @@ interface GlossaryProps {
   updateState: (updates: Partial<AppState>) => void;
 }
 
+type WordSortField = 'native' | 'target' | 'course' | 'mastery' | 'srsLevel' | 'correct' | 'wrong';
+type SentenceSortField = 'native' | 'target' | 'course' | 'mastery' | 'correct' | 'wrong';
+type CharacterSortField = 'character' | 'meaning' | 'pronunciation' | 'language' | 'srsLevel' | 'correct' | 'wrong';
+type SortDirection = 'asc' | 'desc';
+
 export default function Glossary({ appState, updateState }: GlossaryProps) {
   const [activeTab, setActiveTab] = useState<'words' | 'sentences' | 'characters'>('words');
   const [selectedCourse, setSelectedCourse] = useState<string>('all');
   const [selectedClozeCourse, setSelectedClozeCourse] = useState<string>('all');
   const [selectedLanguage, setSelectedLanguage] = useState<'japanese' | 'chinese' | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [wordSortField, setWordSortField] = useState<WordSortField>('native');
+  const [wordSortDirection, setWordSortDirection] = useState<SortDirection>('asc');
+  const [sentenceSortField, setSentenceSortField] = useState<SentenceSortField>('native');
+  const [sentenceSortDirection, setSentenceSortDirection] = useState<SortDirection>('asc');
+  const [characterSortField, setCharacterSortField] = useState<CharacterSortField>('character');
+  const [characterSortDirection, setCharacterSortDirection] = useState<SortDirection>('asc');
 
   const allWords = appState.words.filter(w => w.srsLevel > 0);
   const allSentences = appState.clozeSentences || [];
@@ -21,27 +32,171 @@ export default function Glossary({ appState, updateState }: GlossaryProps) {
   const courses = appState.courses;
   const clozeCourses = appState.clozeCourses || [];
 
-  const filteredWords = allWords.filter(word => {
-    const matchesCourse = selectedCourse === 'all' || word.courseId === selectedCourse;
-    const matchesSearch = word.native.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      word.target.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCourse && matchesSearch;
-  });
+  const filteredWords = useMemo(() => {
+    const filtered = allWords.filter(word => {
+      const matchesCourse = selectedCourse === 'all' || word.courseId === selectedCourse;
+      const matchesSearch = word.native.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        word.target.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesCourse && matchesSearch;
+    });
+    
+    return [...filtered].sort((a, b) => {
+      let comparison = 0;
+      const courseA = courses.find(c => c.id === a.courseId);
+      const courseB = courses.find(c => c.id === b.courseId);
+      
+      switch (wordSortField) {
+        case 'native':
+          comparison = a.native.localeCompare(b.native);
+          break;
+        case 'target':
+          comparison = a.target.localeCompare(b.target);
+          break;
+        case 'course':
+          comparison = (courseA?.name || '').localeCompare(courseB?.name || '');
+          break;
+        case 'mastery':
+          const masteryOrder = { seed: 0, sprout: 1, seedling: 2, plant: 3, tree: 4 };
+          const aMastery = masteryOrder[a.masteryLevel] || 0;
+          const bMastery = masteryOrder[b.masteryLevel] || 0;
+          comparison = aMastery - bMastery;
+          break;
+        case 'srsLevel':
+          comparison = a.srsLevel - b.srsLevel;
+          break;
+        case 'correct':
+          comparison = a.correctCount - b.correctCount;
+          break;
+        case 'wrong':
+          comparison = a.wrongCount - b.wrongCount;
+          break;
+      }
+      
+      return wordSortDirection === 'asc' ? comparison : -comparison;
+    });
+  }, [allWords, selectedCourse, searchQuery, wordSortField, wordSortDirection, courses]);
+  
+  const handleWordSort = (field: WordSortField) => {
+    if (wordSortField === field) {
+      setWordSortDirection(wordSortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setWordSortField(field);
+      setWordSortDirection('asc');
+    }
+  };
+  
+  const getWordSortIcon = (field: WordSortField) => {
+    if (wordSortField !== field) return '↕️';
+    return wordSortDirection === 'asc' ? '↑' : '↓';
+  };
 
-  const filteredSentences = allSentences.filter(sentence => {
-    const matchesCourse = selectedClozeCourse === 'all' || sentence.courseId === selectedClozeCourse;
-    const matchesSearch = sentence.native.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      sentence.target.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCourse && matchesSearch;
-  });
+  const filteredSentences = useMemo(() => {
+    const filtered = allSentences.filter(sentence => {
+      const matchesCourse = selectedClozeCourse === 'all' || sentence.courseId === selectedClozeCourse;
+      const matchesSearch = sentence.native.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        sentence.target.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesCourse && matchesSearch;
+    });
+    
+    return [...filtered].sort((a, b) => {
+      let comparison = 0;
+      const courseA = clozeCourses.find(c => c.id === a.courseId);
+      const courseB = clozeCourses.find(c => c.id === b.courseId);
+      
+      switch (sentenceSortField) {
+        case 'native':
+          comparison = a.native.localeCompare(b.native);
+          break;
+        case 'target':
+          comparison = a.target.localeCompare(b.target);
+          break;
+        case 'course':
+          comparison = (courseA?.name || '').localeCompare(courseB?.name || '');
+          break;
+        case 'mastery':
+          comparison = a.masteryLevel - b.masteryLevel;
+          break;
+        case 'correct':
+          comparison = a.correctCount - b.correctCount;
+          break;
+        case 'wrong':
+          comparison = a.wrongCount - b.wrongCount;
+          break;
+      }
+      
+      return sentenceSortDirection === 'asc' ? comparison : -comparison;
+    });
+  }, [allSentences, selectedClozeCourse, searchQuery, sentenceSortField, sentenceSortDirection, clozeCourses]);
+  
+  const handleSentenceSort = (field: SentenceSortField) => {
+    if (sentenceSortField === field) {
+      setSentenceSortDirection(sentenceSortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSentenceSortField(field);
+      setSentenceSortDirection('asc');
+    }
+  };
+  
+  const getSentenceSortIcon = (field: SentenceSortField) => {
+    if (sentenceSortField !== field) return '↕️';
+    return sentenceSortDirection === 'asc' ? '↑' : '↓';
+  };
 
-  const filteredCharacters = allCharacters.filter(kanji => {
-    const matchesLanguage = selectedLanguage === 'all' || kanji.language === selectedLanguage;
-    const matchesSearch = kanji.character.includes(searchQuery) ||
-      kanji.meaning.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      kanji.pronunciation.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesLanguage && matchesSearch;
-  });
+  const filteredCharacters = useMemo(() => {
+    const filtered = allCharacters.filter(kanji => {
+      const matchesLanguage = selectedLanguage === 'all' || kanji.language === selectedLanguage;
+      const matchesSearch = kanji.character.includes(searchQuery) ||
+        kanji.meaning.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        kanji.pronunciation.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesLanguage && matchesSearch;
+    });
+    
+    return [...filtered].sort((a, b) => {
+      let comparison = 0;
+      
+      switch (characterSortField) {
+        case 'character':
+          comparison = a.character.localeCompare(b.character);
+          break;
+        case 'meaning':
+          comparison = a.meaning.localeCompare(b.meaning);
+          break;
+        case 'pronunciation':
+          comparison = a.pronunciation.localeCompare(b.pronunciation);
+          break;
+        case 'language':
+          comparison = a.language.localeCompare(b.language);
+          break;
+        case 'srsLevel':
+          const aLevel = typeof a.srsLevel === 'number' ? a.srsLevel : 0;
+          const bLevel = typeof b.srsLevel === 'number' ? b.srsLevel : 0;
+          comparison = aLevel - bLevel;
+          break;
+        case 'correct':
+          comparison = a.correctCount - b.correctCount;
+          break;
+        case 'wrong':
+          comparison = a.wrongCount - b.wrongCount;
+          break;
+      }
+      
+      return characterSortDirection === 'asc' ? comparison : -comparison;
+    });
+  }, [allCharacters, selectedLanguage, searchQuery, characterSortField, characterSortDirection]);
+  
+  const handleCharacterSort = (field: CharacterSortField) => {
+    if (characterSortField === field) {
+      setCharacterSortDirection(characterSortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setCharacterSortField(field);
+      setCharacterSortDirection('asc');
+    }
+  };
+  
+  const getCharacterSortIcon = (field: CharacterSortField) => {
+    if (characterSortField !== field) return '↕️';
+    return characterSortDirection === 'asc' ? '↑' : '↓';
+  };
 
 
   const handleExportCSV = () => {
@@ -177,13 +332,48 @@ export default function Glossary({ appState, updateState }: GlossaryProps) {
                   <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                     <thead>
                       <tr style={{ borderBottom: '2px solid #d0d7de' }}>
-                        <th style={{ padding: '8px', textAlign: 'left' }}>Native</th>
-                        <th style={{ padding: '8px', textAlign: 'left' }}>Target</th>
-                        <th style={{ padding: '8px', textAlign: 'left' }}>Course</th>
-                        <th style={{ padding: '8px', textAlign: 'left' }}>Mastery</th>
-                        <th style={{ padding: '8px', textAlign: 'left' }}>SRS Level</th>
-                        <th style={{ padding: '8px', textAlign: 'left' }}>Correct</th>
-                        <th style={{ padding: '8px', textAlign: 'left' }}>Wrong</th>
+                        <th 
+                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none' }}
+                          onClick={() => handleWordSort('native')}
+                        >
+                          Native {getWordSortIcon('native')}
+                        </th>
+                        <th 
+                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none' }}
+                          onClick={() => handleWordSort('target')}
+                        >
+                          Target {getWordSortIcon('target')}
+                        </th>
+                        <th 
+                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none' }}
+                          onClick={() => handleWordSort('course')}
+                        >
+                          Course {getWordSortIcon('course')}
+                        </th>
+                        <th 
+                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none' }}
+                          onClick={() => handleWordSort('mastery')}
+                        >
+                          Mastery {getWordSortIcon('mastery')}
+                        </th>
+                        <th 
+                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none' }}
+                          onClick={() => handleWordSort('srsLevel')}
+                        >
+                          SRS Level {getWordSortIcon('srsLevel')}
+                        </th>
+                        <th 
+                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none' }}
+                          onClick={() => handleWordSort('correct')}
+                        >
+                          Correct {getWordSortIcon('correct')}
+                        </th>
+                        <th 
+                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none' }}
+                          onClick={() => handleWordSort('wrong')}
+                        >
+                          Wrong {getWordSortIcon('wrong')}
+                        </th>
                         <th style={{ padding: '8px', textAlign: 'center' }}>Actions</th>
                       </tr>
                     </thead>
@@ -424,14 +614,49 @@ export default function Glossary({ appState, updateState }: GlossaryProps) {
                   <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                     <thead>
                       <tr style={{ borderBottom: '2px solid #d0d7de' }}>
-                        <th style={{ padding: '8px', textAlign: 'left' }}>Character</th>
-                        <th style={{ padding: '8px', textAlign: 'left' }}>Meaning</th>
-                        <th style={{ padding: '8px', textAlign: 'left' }}>Pronunciation</th>
-                        <th style={{ padding: '8px', textAlign: 'left' }}>Language</th>
-                        <th style={{ padding: '8px', textAlign: 'left' }}>SRS Level</th>
+                        <th 
+                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none' }}
+                          onClick={() => handleCharacterSort('character')}
+                        >
+                          Character {getCharacterSortIcon('character')}
+                        </th>
+                        <th 
+                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none' }}
+                          onClick={() => handleCharacterSort('meaning')}
+                        >
+                          Meaning {getCharacterSortIcon('meaning')}
+                        </th>
+                        <th 
+                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none' }}
+                          onClick={() => handleCharacterSort('pronunciation')}
+                        >
+                          Pronunciation {getCharacterSortIcon('pronunciation')}
+                        </th>
+                        <th 
+                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none' }}
+                          onClick={() => handleCharacterSort('language')}
+                        >
+                          Language {getCharacterSortIcon('language')}
+                        </th>
+                        <th 
+                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none' }}
+                          onClick={() => handleCharacterSort('srsLevel')}
+                        >
+                          SRS Level {getCharacterSortIcon('srsLevel')}
+                        </th>
                         <th style={{ padding: '8px', textAlign: 'left' }}>Mastery</th>
-                        <th style={{ padding: '8px', textAlign: 'left' }}>Correct</th>
-                        <th style={{ padding: '8px', textAlign: 'left' }}>Wrong</th>
+                        <th 
+                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none' }}
+                          onClick={() => handleCharacterSort('correct')}
+                        >
+                          Correct {getCharacterSortIcon('correct')}
+                        </th>
+                        <th 
+                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none' }}
+                          onClick={() => handleCharacterSort('wrong')}
+                        >
+                          Wrong {getCharacterSortIcon('wrong')}
+                        </th>
                         <th style={{ padding: '8px', textAlign: 'center' }}>Actions</th>
                       </tr>
                     </thead>

@@ -348,6 +348,10 @@ export function createKanjiFromCSV(
       srsStage: 'locked',
       correctCount: 0,
       wrongCount: 0,
+      meaningCorrect: 0,
+      meaningWrong: 0,
+      readingCorrect: 0,
+      readingWrong: 0,
       createdAt: now,
       // Legacy properties for backward compatibility
       srsLevel: 0,

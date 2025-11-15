@@ -4,9 +4,11 @@ import { AppState, Course } from '../types';
 import { storage } from '../storage';
 import { LANGUAGES } from '../utils/languages';
 import { parseCSV, createWordsFromCSV } from '../utils/csv';
+import { getOverallStreak } from '../utils/activityTracking';
 import CreateCourseModal from './CreateCourseModal';
 import CreateClozeCourseModal from './CreateClozeCourseModal';
 import CreateCharacterCourseModal from './CreateCharacterCourseModal';
+import ActivityHeatmap from './ActivityHeatmap';
 
 interface DashboardProps {
   appState: AppState;
@@ -26,21 +28,10 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
     } else if (type === 'sentences') {
       navigate(`/cloze-course/${courseId}`);
     } else if (type === 'characters') {
-      navigate(`/wanikani`);
+      navigate(`/character-course/${courseId}/practice`);
     }
   };
 
-  const handleDeleteCourse = (e: React.MouseEvent, courseId: string) => {
-    e.stopPropagation();
-    if (confirm('Are you sure you want to delete this course?')) {
-      storage.deleteCourse(courseId);
-      updateState({
-        courses: storage.load().courses,
-        words: storage.load().words,
-        courseProgress: storage.load().courseProgress,
-      });
-    }
-  };
 
   const wordCourses = appState.courses || [];
   const sentenceCourses = appState.clozeCourses || [];
@@ -105,7 +96,29 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
           </p>
         </div>
       ) : (
-        <div className="grid">
+        <>
+          {/* Universal Streak and Heatmap */}
+          <div className="card" style={{ marginBottom: '24px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                {(() => {
+                  const overallStreak = getOverallStreak();
+                  return overallStreak ? (
+                    <div style={{ fontSize: '24px', fontWeight: 600 }}>
+                      🔥 {overallStreak.currentStreak} day streak
+                    </div>
+                  ) : (
+                    <div style={{ fontSize: '24px', fontWeight: 600, color: '#656d76' }}>
+                      🔥 Start your streak!
+                    </div>
+                  );
+                })()}
+              </div>
+            </div>
+            <ActivityHeatmap days={365} />
+          </div>
+
+          <div className="grid">
           {/* Word Courses */}
           {(courseTypeFilter === 'all' || courseTypeFilter === 'words') && wordCourses.map(course => {
             const progress = appState.courseProgress.find(p => p.courseId === course.id);
@@ -119,7 +132,50 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
                 key={course.id}
                 className="course-card"
                 onClick={() => handleCourseClick(course.id, 'words')}
+                style={{ position: 'relative' }}
               >
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (confirm(`Are you sure you want to delete "${course.name}"? This will permanently delete the course and all its words. This action cannot be undone.`)) {
+                      storage.deleteCourse(course.id);
+                      updateState({
+                        courses: storage.load().courses,
+                        words: storage.load().words,
+                        courseProgress: storage.load().courseProgress,
+                      });
+                    }
+                  }}
+                  style={{
+                    position: 'absolute',
+                    top: '8px',
+                    right: '8px',
+                    background: 'none',
+                    border: 'none',
+                    fontSize: '20px',
+                    color: '#da3633',
+                    cursor: 'pointer',
+                    padding: '4px',
+                    borderRadius: '4px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '24px',
+                    height: '24px',
+                    transition: 'background-color 0.2s',
+                    zIndex: 10,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = '#ffebe9';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                  }}
+                  title="Delete course"
+                  aria-label="Delete course"
+                >
+                  ×
+                </button>
                 <div className="course-card-title">{course.name}</div>
                 <div className="course-card-meta">
                   {course.nativeLanguage} → {course.targetLanguage}
@@ -138,13 +194,6 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
                 <div className="course-card-meta">
                   {learned} / {total} words learned
                 </div>
-                <button
-                  className="btn btn-danger"
-                  style={{ marginTop: '12px', width: '100%' }}
-                  onClick={(e) => handleDeleteCourse(e, course.id)}
-                >
-                  Delete Course
-                </button>
               </div>
             );
           })}
@@ -161,7 +210,49 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
                 key={course.id}
                 className="course-card"
                 onClick={() => handleCourseClick(course.id, 'sentences')}
+                style={{ position: 'relative' }}
               >
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (confirm(`Are you sure you want to delete "${course.name}"? This will permanently delete the course and all its sentences. This action cannot be undone.`)) {
+                      storage.deleteClozeCourse(course.id);
+                      updateState({
+                        clozeCourses: storage.load().clozeCourses,
+                        clozeSentences: storage.load().clozeSentences,
+                      });
+                    }
+                  }}
+                  style={{
+                    position: 'absolute',
+                    top: '8px',
+                    right: '8px',
+                    background: 'none',
+                    border: 'none',
+                    fontSize: '20px',
+                    color: '#da3633',
+                    cursor: 'pointer',
+                    padding: '4px',
+                    borderRadius: '4px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '24px',
+                    height: '24px',
+                    transition: 'background-color 0.2s',
+                    zIndex: 10,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = '#ffebe9';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                  }}
+                  title="Delete course"
+                  aria-label="Delete course"
+                >
+                  ×
+                </button>
                 <div className="course-card-title">{course.name}</div>
                 <div className="course-card-meta">
                   {course.nativeLanguage} → {course.targetLanguage}
@@ -180,22 +271,6 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
                 <div className="course-card-meta">
                   {learned} / {total} sentences learned
                 </div>
-                <button
-                  className="btn btn-danger"
-                  style={{ marginTop: '12px', width: '100%' }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (confirm('Are you sure you want to delete this course?')) {
-                      storage.deleteClozeCourse(course.id);
-                      updateState({
-                        clozeCourses: storage.load().clozeCourses,
-                        clozeSentences: storage.load().clozeSentences,
-                      });
-                    }
-                  }}
-                >
-                  Delete Course
-                </button>
               </div>
             );
           })}
@@ -212,7 +287,49 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
                 key={course.id}
                 className="course-card"
                 onClick={() => handleCourseClick(course.id, 'characters')}
+                style={{ position: 'relative' }}
               >
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (confirm(`Are you sure you want to delete "${course.name}"? This will permanently delete the course and all its characters. This action cannot be undone.`)) {
+                      storage.deleteCharacterCourse(course.id);
+                      updateState({
+                        characterCourses: storage.load().characterCourses,
+                        kanji: storage.load().kanji,
+                      });
+                    }
+                  }}
+                  style={{
+                    position: 'absolute',
+                    top: '8px',
+                    right: '8px',
+                    background: 'none',
+                    border: 'none',
+                    fontSize: '20px',
+                    color: '#da3633',
+                    cursor: 'pointer',
+                    padding: '4px',
+                    borderRadius: '4px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '24px',
+                    height: '24px',
+                    transition: 'background-color 0.2s',
+                    zIndex: 10,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = '#ffebe9';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                  }}
+                  title="Delete course"
+                  aria-label="Delete course"
+                >
+                  ×
+                </button>
                 <div className="course-card-title">{course.name}</div>
                 <div className="course-card-meta">
                   {course.language === 'japanese' ? 'Japanese' : 'Chinese'} Characters
@@ -224,26 +341,11 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
                 <div className="course-card-meta">
                   {learned} / {total} characters learned
                 </div>
-                <button
-                  className="btn btn-danger"
-                  style={{ marginTop: '12px', width: '100%' }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (confirm(`Are you sure you want to delete "${course.name}"? This action cannot be undone.`)) {
-                      storage.deleteCharacterCourse(course.id);
-                      updateState({
-                        characterCourses: storage.load().characterCourses,
-                        kanji: storage.load().kanji,
-                      });
-                    }
-                  }}
-                >
-                  Delete Course
-                </button>
               </div>
             );
           })}
-        </div>
+          </div>
+        </>
       )}
 
       {showCreateModal && (
@@ -283,7 +385,7 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
               kanji: storage.load().kanji,
             });
             setShowCreateCharacterModal(false);
-            navigate(`/wanikani`);
+            navigate(`/character-course/${course.id}`);
           }}
         />
       )}

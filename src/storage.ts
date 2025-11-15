@@ -1,4 +1,4 @@
-import { AppState, Course, Word, CourseProgress, ClozeSentence, ClozeCourse, CharacterCourse, Kanji, Radical, Vocabulary } from './types';
+import { AppState, Course, Word, CourseProgress, ClozeSentence, ClozeCourse, CharacterCourse, Kanji, Radical, Vocabulary, StudyActivity, CourseStreak } from './types';
 
 const STORAGE_KEY = 'glossika_app_state';
 
@@ -14,6 +14,8 @@ export const storage = {
       kanji: [],
       radicals: [],
       vocabulary: [],
+      studyActivity: [],
+      courseStreaks: [],
     };
 
     try {
@@ -31,6 +33,8 @@ export const storage = {
           kanji: parsed.kanji || [],
           radicals: parsed.radicals || [],
           vocabulary: parsed.vocabulary || [],
+          studyActivity: parsed.studyActivity || [],
+          courseStreaks: parsed.courseStreaks || [],
           currentCourseId: parsed.currentCourseId,
         };
       }
@@ -165,6 +169,14 @@ export const storage = {
     const state = this.load();
     if (!state.kanji) state.kanji = [];
     state.kanji.push(kanji);
+    this.save(state);
+  },
+
+  addKanjiBatch(kanjiArray: Kanji[]): void {
+    if (kanjiArray.length === 0) return;
+    const state = this.load();
+    if (!state.kanji) state.kanji = [];
+    state.kanji.push(...kanjiArray);
     this.save(state);
   },
 

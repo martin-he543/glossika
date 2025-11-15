@@ -165,7 +165,7 @@ export default function CreateCharacterCourseModal({ onClose, onSuccess }: Creat
       };
 
       // Process characters in batches for large files
-      const BATCH_SIZE = 1000;
+      const BATCH_SIZE = 200; // Smaller batches for better responsiveness
       const totalBatches = Math.ceil(rows.length / BATCH_SIZE);
       const allKanji: any[] = [];
       
@@ -191,10 +191,8 @@ export default function CreateCharacterCourseModal({ onClose, onSuccess }: Creat
           setProgress(progressPercent);
         });
         
-        // Yield to browser for large files
-        if (i % 10 === 0 && i > 0) {
-          await new Promise(resolve => setTimeout(resolve, 0));
-        }
+        // Yield to browser after each batch for smooth UI updates
+        await new Promise(resolve => setTimeout(resolve, 0));
       }
       
       if (allKanji.length === 0) {
@@ -209,22 +207,19 @@ export default function CreateCharacterCourseModal({ onClose, onSuccess }: Creat
 
       // Save in batches to avoid localStorage issues
       setProgress(90);
-      const SAVE_BATCH_SIZE = 500;
+      const SAVE_BATCH_SIZE = 100; // Smaller batches for better responsiveness
       for (let i = 0; i < allKanji.length; i += SAVE_BATCH_SIZE) {
         const batch = allKanji.slice(i, i + SAVE_BATCH_SIZE);
-        batch.forEach(kanji => {
-          storage.addKanji(kanji);
-        });
+        // Use batch add function instead of individual adds
+        storage.addKanjiBatch(batch);
         
-        const saveProgress = 90 + Math.floor((i / allKanji.length) * 10);
+        const saveProgress = 90 + Math.floor(((i + batch.length) / allKanji.length) * 10);
         requestAnimationFrame(() => {
           setProgress(Math.min(99, saveProgress));
         });
         
-        // Yield to browser periodically for large files
-        if (i % (SAVE_BATCH_SIZE * 5) === 0 && i > 0) {
-          await new Promise(resolve => setTimeout(resolve, 0));
-        }
+        // Yield to browser after each batch for smooth UI updates
+        await new Promise(resolve => setTimeout(resolve, 0));
       }
 
       storage.addCharacterCourse(course);

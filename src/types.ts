@@ -95,6 +95,10 @@ export interface Radical {
   lastReviewed?: number;
   correctCount: number;
   wrongCount: number;
+  meaningCorrect: number; // Separate tracking for meaning reviews
+  meaningWrong: number;
+  readingCorrect: number; // For radicals, this is character recognition
+  readingWrong: number;
   createdAt: number;
 }
 
@@ -115,6 +119,10 @@ export interface Kanji {
   lastReviewed?: number;
   correctCount: number;
   wrongCount: number;
+  meaningCorrect: number; // Separate tracking for meaning reviews
+  meaningWrong: number;
+  readingCorrect: number; // Separate tracking for reading reviews
+  readingWrong: number;
   createdAt: number;
   exampleSentences?: string[];
   exampleWords?: string[];
@@ -141,6 +149,10 @@ export interface Vocabulary {
   lastReviewed?: number;
   correctCount: number;
   wrongCount: number;
+  meaningCorrect: number; // Separate tracking for meaning reviews
+  meaningWrong: number;
+  readingCorrect: number; // Separate tracking for reading reviews
+  readingWrong: number;
   createdAt: number;
   exampleSentences?: string[];
 }
@@ -174,6 +186,19 @@ export interface LeaderboardEntry {
   lastUpdated: number;
 }
 
+export interface StudyActivity {
+  courseId: string;
+  date: string; // YYYY-MM-DD format
+  count: number; // Number of items studied on this date
+}
+
+export interface CourseStreak {
+  courseId: string;
+  currentStreak: number; // Days in current streak
+  longestStreak: number; // Longest streak ever
+  lastStudied: string; // YYYY-MM-DD format
+}
+
 export interface AppState {
   courses: Course[];
   words: Word[];
@@ -184,5 +209,7 @@ export interface AppState {
   kanji: Kanji[];
   radicals: Radical[];
   vocabulary: Vocabulary[];
+  studyActivity: StudyActivity[]; // Track study days
+  courseStreaks: CourseStreak[]; // Track streaks per course
   currentCourseId?: string;
 }

@@ -11,6 +11,7 @@ import Flashcards from './Flashcards';
 import DifficultWords from './DifficultWords';
 import CourseSettings from './CourseSettings';
 import LearnWordsModal from './LearnWordsModal';
+import LevelDetailModal from './LevelDetailModal';
 
 interface CourseDetailProps {
   appState: AppState;
@@ -20,10 +21,11 @@ interface CourseDetailProps {
 export default function CourseDetail({ appState, updateState }: CourseDetailProps) {
   const { courseId } = useParams<{ courseId: string }>();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('learn');
+  const [activeTab, setActiveTab] = useState<string | null>(null);
   const [showSettings, setShowSettings] = useState(false);
   const [showLearnModal, setShowLearnModal] = useState(false);
   const [learnModalMode, setLearnModalMode] = useState<'learn' | 'review' | 'speed' | 'flashcards' | 'difficult'>('learn');
+  const [selectedLevel, setSelectedLevel] = useState<number | null>(null);
 
   const course = appState.courses.find(c => c.id === courseId);
   const words = appState.words.filter(w => w.courseId === courseId);
@@ -138,7 +140,25 @@ export default function CourseDetail({ appState, updateState }: CourseDetailProp
           <h3 style={{ fontSize: '16px', marginBottom: '12px' }}>Levels</h3>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '12px' }}>
             {stats.levelStats.map(({ level, total, learned, mastered }) => (
-              <div key={level} style={{ padding: '12px', border: '1px solid #d0d7de', borderRadius: '4px' }}>
+              <div 
+                key={level} 
+                style={{ 
+                  padding: '12px', 
+                  border: '1px solid #d0d7de', 
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                }}
+                onClick={() => setSelectedLevel(level)}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#f6f8fa';
+                  e.currentTarget.style.borderColor = '#0969da';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = 'transparent';
+                  e.currentTarget.style.borderColor = '#d0d7de';
+                }}
+              >
                 <div style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '8px' }}>Level {level}</div>
                 <div style={{ fontSize: '12px', color: '#656d76', marginBottom: '4px' }}>
                   Total: {total}
@@ -146,7 +166,7 @@ export default function CourseDetail({ appState, updateState }: CourseDetailProp
                 <div style={{ fontSize: '12px', color: '#656d76', marginBottom: '4px' }}>
                   Learned: {learned}
                 </div>
-                <div style={{ fontSize: '12px', color: '#656d76' }}>
+                <div style={{ fontSize: '12px', color: '#656d76', marginBottom: '4px' }}>
                   Mastered: {mastered}
                 </div>
                 {total > 0 && (
@@ -157,6 +177,9 @@ export default function CourseDetail({ appState, updateState }: CourseDetailProp
                     />
                   </div>
                 )}
+                <div style={{ fontSize: '11px', color: '#656d76', marginTop: '8px', textAlign: 'center' }}>
+                  Click to view words
+                </div>
               </div>
             ))}
           </div>
@@ -165,52 +188,92 @@ export default function CourseDetail({ appState, updateState }: CourseDetailProp
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px', marginBottom: '24px' }}>
         <button
-          className={`btn ${activeTab === 'learn' ? 'btn-primary' : ''}`}
+          className={`btn ${showLearnModal && learnModalMode === 'learn' ? 'btn-learn' : ''}`}
           onClick={() => {
             setLearnModalMode('learn');
+            setActiveTab('learn');
             setShowLearnModal(true);
           }}
-          style={{ padding: '16px', fontSize: '16px', fontWeight: 600 }}
+          style={{ 
+            padding: '16px', 
+            fontSize: '16px', 
+            fontWeight: 600,
+            backgroundColor: showLearnModal && learnModalMode === 'learn' ? '#2da44e' : undefined,
+            color: showLearnModal && learnModalMode === 'learn' ? '#ffffff' : undefined,
+            borderColor: showLearnModal && learnModalMode === 'learn' ? '#2da44e' : undefined
+          }}
         >
-          Learn New Words
+          Learn
         </button>
         <button
-          className={`btn ${activeTab === 'review' ? 'btn-review' : ''}`}
+          className={`btn ${showLearnModal && learnModalMode === 'review' ? 'btn-review' : ''}`}
           onClick={() => {
             setLearnModalMode('review');
+            setActiveTab('review');
             setShowLearnModal(true);
           }}
-          style={{ padding: '16px', fontSize: '16px', fontWeight: 600 }}
+          style={{ 
+            padding: '16px', 
+            fontSize: '16px', 
+            fontWeight: 600,
+            backgroundColor: showLearnModal && learnModalMode === 'review' ? '#87ceeb' : undefined,
+            color: showLearnModal && learnModalMode === 'review' ? '#ffffff' : undefined,
+            borderColor: showLearnModal && learnModalMode === 'review' ? '#87ceeb' : undefined
+          }}
         >
           Review
         </button>
         <button
-          className={`btn ${activeTab === 'speed' ? 'btn-quick-review' : ''}`}
+          className={`btn ${showLearnModal && learnModalMode === 'speed' ? 'btn-quick-review' : ''}`}
           onClick={() => {
             setLearnModalMode('speed');
+            setActiveTab('speed');
             setShowLearnModal(true);
           }}
-          style={{ padding: '16px', fontSize: '16px', fontWeight: 600 }}
+          style={{ 
+            padding: '16px', 
+            fontSize: '16px', 
+            fontWeight: 600,
+            backgroundColor: showLearnModal && learnModalMode === 'speed' ? '#ff4444' : undefined,
+            color: showLearnModal && learnModalMode === 'speed' ? '#ffffff' : undefined,
+            borderColor: showLearnModal && learnModalMode === 'speed' ? '#ff4444' : undefined
+          }}
         >
           Speed Review
         </button>
         <button
-          className={`btn ${activeTab === 'flashcards' ? 'btn-flashcards' : ''}`}
+          className={`btn ${showLearnModal && learnModalMode === 'flashcards' ? 'btn-flashcards' : ''}`}
           onClick={() => {
             setLearnModalMode('flashcards');
+            setActiveTab('flashcards');
             setShowLearnModal(true);
           }}
-          style={{ padding: '16px', fontSize: '16px', fontWeight: 600 }}
+          style={{ 
+            padding: '16px', 
+            fontSize: '16px', 
+            fontWeight: 600,
+            backgroundColor: showLearnModal && learnModalMode === 'flashcards' ? '#9370db' : undefined,
+            color: showLearnModal && learnModalMode === 'flashcards' ? '#ffffff' : undefined,
+            borderColor: showLearnModal && learnModalMode === 'flashcards' ? '#9370db' : undefined
+          }}
         >
           Flashcards
         </button>
         <button
-          className={`btn ${activeTab === 'difficult' ? 'btn-difficult' : ''}`}
+          className={`btn ${showLearnModal && learnModalMode === 'difficult' ? 'btn-difficult' : ''}`}
           onClick={() => {
             setLearnModalMode('difficult');
+            setActiveTab('difficult');
             setShowLearnModal(true);
           }}
-          style={{ padding: '16px', fontSize: '16px', fontWeight: 600 }}
+          style={{ 
+            padding: '16px', 
+            fontSize: '16px', 
+            fontWeight: 600,
+            backgroundColor: showLearnModal && learnModalMode === 'difficult' ? '#ffd700' : undefined,
+            color: showLearnModal && learnModalMode === 'difficult' ? '#24292f' : undefined,
+            borderColor: showLearnModal && learnModalMode === 'difficult' ? '#ffd700' : undefined
+          }}
         >
           Difficult Words
         </button>
@@ -224,6 +287,7 @@ export default function CourseDetail({ appState, updateState }: CourseDetailProp
           mode={learnModalMode}
           onClose={() => {
             setShowLearnModal(false);
+            setActiveTab(null);
             refreshData();
           }}
           onUpdate={refreshData}
@@ -235,6 +299,15 @@ export default function CourseDetail({ appState, updateState }: CourseDetailProp
           course={course}
           onClose={() => setShowSettings(false)}
           onUpdate={refreshData}
+        />
+      )}
+
+      {selectedLevel !== null && (
+        <LevelDetailModal
+          level={selectedLevel}
+          words={words}
+          course={course}
+          onClose={() => setSelectedLevel(null)}
         />
       )}
     </div>

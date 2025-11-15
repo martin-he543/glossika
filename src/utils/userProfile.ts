@@ -223,8 +223,10 @@ export const userProfile = {
     
     return profiles
       .filter(p => 
-        p.username.toLowerCase().includes(lowerQuery) ||
-        p.email.toLowerCase().includes(lowerQuery)
+        p.isPublic && (
+          p.username.toLowerCase().includes(lowerQuery) ||
+          p.email.toLowerCase().includes(lowerQuery)
+        )
       )
       .slice(0, limit);
   },

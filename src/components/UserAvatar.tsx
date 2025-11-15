@@ -10,11 +10,35 @@ interface UserAvatarProps {
 
 export default function UserAvatar({ onLogout }: UserAvatarProps) {
   const [showDropdown, setShowDropdown] = useState(false);
+  const [avatarKey, setAvatarKey] = useState(0);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const currentUser = auth.getCurrentUser();
   const profile = currentUser ? userProfile.getCurrentProfile() : null;
   const avatarUrl = userProfile.getAvatarUrl(profile);
+  
+  // Force re-render when avatar changes by listening to storage changes
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setAvatarKey(prev => prev + 1);
+    };
+    
+    // Listen for custom event that can be dispatched when avatar is updated
+    window.addEventListener('avatarUpdated', handleStorageChange);
+    
+    // Also check periodically (fallback)
+    const interval = setInterval(() => {
+      const newProfile = currentUser ? userProfile.getCurrentProfile() : null;
+      if (newProfile?.avatar !== profile?.avatar) {
+        setAvatarKey(prev => prev + 1);
+      }
+    }, 1000);
+    
+    return () => {
+      window.removeEventListener('avatarUpdated', handleStorageChange);
+      clearInterval(interval);
+    };
+  }, [currentUser, profile?.avatar]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -64,6 +88,7 @@ export default function UserAvatar({ onLogout }: UserAvatarProps) {
         aria-label="User menu"
       >
         <img
+          key={avatarKey}
           src={avatarUrl}
           alt={profile.username}
           className="user-avatar-image"
@@ -74,6 +99,7 @@ export default function UserAvatar({ onLogout }: UserAvatarProps) {
         <div className="user-avatar-dropdown">
           <div className="user-avatar-dropdown-header">
             <img
+              key={avatarKey}
               src={avatarUrl}
               alt={profile.username}
               className="user-avatar-dropdown-image"

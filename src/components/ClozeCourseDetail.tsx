@@ -84,14 +84,14 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
     }
   };
 
-  const loadNextSentence = () => {
+  const loadNextSentence = useCallback(() => {
     if (practiceSentences.length === 0) return;
     if (currentIndex < practiceSentences.length) {
       setCurrentSentence(practiceSentences[currentIndex]);
       setUserAnswer('');
       setFeedback(null);
     }
-  };
+  }, [currentIndex, practiceSentences]);
 
   const handleAnswer = useCallback(() => {
     if (!currentSentence || !userAnswer.trim() || feedback) return;
@@ -124,16 +124,27 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
   }, [currentSentence, userAnswer, feedback]);
 
   const handleNext = useCallback(() => {
-    if (feedback) {
-      if (questionsAnswered >= questionCount) {
-        setShowSummary(true);
-      } else if (currentIndex < practiceSentences.length - 1) {
-        setCurrentIndex(prev => prev + 1);
-      } else {
-        setShowSummary(true);
-      }
+    if (!feedback) return;
+    
+    setFeedback(null);
+    setUserAnswer('');
+    const nextIndex = currentIndex + 1;
+    setCurrentIndex(nextIndex);
+    setQuestionsAnswered(prev => prev + 1);
+    
+    if (nextIndex >= questionCount || nextIndex >= practiceSentences.length) {
+      setShowSummary(true);
+    } else {
+      // Load next sentence after state updates
+      setTimeout(() => {
+        if (nextIndex < practiceSentences.length) {
+          setCurrentSentence(practiceSentences[nextIndex]);
+          setUserAnswer('');
+          setFeedback(null);
+        }
+      }, 100);
     }
-  }, [feedback, questionsAnswered, questionCount, currentIndex, practiceSentences.length]);
+  }, [feedback, questionCount, currentIndex, practiceSentences]);
 
   const handleStart = (count: number) => {
     setQuestionCount(count);

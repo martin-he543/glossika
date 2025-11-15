@@ -18,6 +18,8 @@ export default function ClozeCourseSettings({ course, sentences, onClose, onUpda
   const [author, setAuthor] = useState(course.author || '');
   const [searchQuery, setSearchQuery] = useState('');
   const [deletingSentenceId, setDeletingSentenceId] = useState<string | null>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState('');
 
   const filteredSentences = sentences.filter(s => 
     s.native.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -316,7 +318,7 @@ export default function ClozeCourseSettings({ course, sentences, onClose, onUpda
             <h2 style={{ fontSize: '20px', fontWeight: 600, marginBottom: '16px', paddingBottom: '8px', borderBottom: '1px solid #d0d7de', color: '#d1242f' }}>
               Danger Zone
             </h2>
-            <div className="card" style={{ border: '1px solid #d1242f' }}>
+            <div className="card" style={{ border: '1px solid #d1242f', backgroundColor: '#fff8f8' }}>
               <div style={{ marginBottom: '16px' }}>
                 <div style={{ fontWeight: 600, marginBottom: '8px' }}>Delete this course</div>
                 <div style={{ fontSize: '14px', color: '#656d76', marginBottom: '16px' }}>
@@ -324,13 +326,7 @@ export default function ClozeCourseSettings({ course, sentences, onClose, onUpda
                 </div>
                 <button
                   className="btn btn-danger"
-                  onClick={() => {
-                    if (confirm('Are you absolutely sure? This will delete the course and all its sentences. This action cannot be undone.')) {
-                      storage.deleteClozeCourse(course.id);
-                      onUpdate();
-                      onClose();
-                    }
-                  }}
+                  onClick={() => setShowDeleteConfirm(true)}
                 >
                   Delete this course
                 </button>
@@ -339,6 +335,63 @@ export default function ClozeCourseSettings({ course, sentences, onClose, onUpda
           </div>
         </div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div className="modal" onClick={() => setShowDeleteConfirm(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '500px' }}>
+            <div className="modal-header">
+              <h2 className="modal-title" style={{ color: '#d1242f' }}>Delete Course</h2>
+              <button className="close-btn" onClick={() => setShowDeleteConfirm(false)}>×</button>
+            </div>
+            <div style={{ padding: '16px' }}>
+              <p style={{ marginBottom: '16px' }}>
+                Are you absolutely sure? This will permanently delete <strong>{course.name}</strong> and all its sentences. This action cannot be undone.
+              </p>
+              <p style={{ marginBottom: '16px', fontSize: '14px', color: '#656d76' }}>
+                Please type <strong>{course.name}</strong> to confirm:
+              </p>
+              <input
+                type="text"
+                className="input"
+                value={deleteConfirmText}
+                onChange={(e) => setDeleteConfirmText(e.target.value)}
+                placeholder={course.name}
+                style={{ marginBottom: '16px' }}
+                autoFocus
+              />
+              <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+                <button
+                  className="btn"
+                  onClick={() => {
+                    setShowDeleteConfirm(false);
+                    setDeleteConfirmText('');
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => {
+                    if (deleteConfirmText === course.name) {
+                      storage.deleteClozeCourse(course.id);
+                      onUpdate();
+                      onClose();
+                    }
+                  }}
+                  disabled={deleteConfirmText !== course.name}
+                  style={{
+                    opacity: deleteConfirmText === course.name ? 1 : 0.5,
+                    cursor: deleteConfirmText === course.name ? 'pointer' : 'not-allowed'
+                  }}
+                >
+                  I understand the consequences, delete this course
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

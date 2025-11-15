@@ -7,6 +7,8 @@ import Dashboard from './components/Dashboard';
 import CourseDetail from './components/CourseDetail';
 import CourseRepository from './components/CourseRepository';
 import ClozeCourseDetail from './components/ClozeCourseDetail';
+import CharacterCourseDetail from './components/CharacterCourseDetail';
+import CharacterCoursePractice from './components/CharacterCoursePractice';
 import Glyphy from './components/Glyphy';
 import GlyphyNew from './components/GlyphyNew';
 import Glossary from './components/Glossary';
@@ -105,8 +107,9 @@ function App() {
             <Route path="/course/:courseId" element={<CourseDetail appState={appState} updateState={updateState} />} />
             <Route path="/repository" element={<CourseRepository appState={appState} updateState={updateState} />} />
             <Route path="/cloze-course/:courseId" element={<ClozeCourseDetailWrapper appState={appState} updateState={updateState} />} />
+            <Route path="/character-course/:courseId" element={<CharacterCourseDetail appState={appState} updateState={updateState} />} />
+            <Route path="/character-course/:courseId/practice" element={<CharacterCoursePractice appState={appState} updateState={updateState} />} />
             <Route path="/glyphy" element={<Glyphy appState={appState} updateState={updateState} />} />
-            <Route path="/wanikani" element={<GlyphyNew appState={appState} updateState={updateState} />} />
             <Route path="/glossary" element={<Glossary appState={appState} updateState={updateState} />} />
             <Route path="/leaderboard" element={<Leaderboard appState={appState} />} />
             <Route path="/leaderboard/course/:courseId" element={<Leaderboard appState={appState} />} />

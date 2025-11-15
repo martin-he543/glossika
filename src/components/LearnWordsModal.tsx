@@ -3,6 +3,7 @@ import { Word } from '../types';
 import { storage } from '../storage';
 import { updateSRSLevel, getMasteryLevel, calculateNextReview, getWordsDueForReview } from '../utils/srs';
 import { leaderboard } from '../utils/leaderboard';
+import { speakText, stopSpeech } from '../utils/tts';
 import KeyboardShortcuts from './KeyboardShortcuts';
 import QuestionCountSelector from './QuestionCountSelector';
 import LessonSummary from './LessonSummary';
@@ -59,6 +60,31 @@ export default function LearnWordsModal({
   const [flashcardWords, setFlashcardWords] = useState<Word[]>([]);
   const [flashcardIndex, setFlashcardIndex] = useState(0);
   const [reviewMode, setReviewMode] = useState<'due' | 'all'>('due');
+  const [audioPlaying, setAudioPlaying] = useState(false);
+  
+  // Play audio for target language using improved TTS
+  const playAudio = useCallback((word?: Word) => {
+    const wordToPlay = word || currentWord;
+    if (!wordToPlay || audioPlaying) return;
+    
+    const targetText = wordToPlay.target;
+    const targetLang = course?.targetLanguage || 'english';
+    
+    setAudioPlaying(true);
+    speakText(
+      targetText,
+      targetLang,
+      () => setAudioPlaying(false),
+      () => setAudioPlaying(false)
+    );
+  }, [currentWord, course?.targetLanguage, audioPlaying]);
+
+  // Cleanup: stop speech when component unmounts or word changes
+  useEffect(() => {
+    return () => {
+      stopSpeech();
+    };
+  }, [currentWord]);
 
   // Get words based on mode
   const getWordsForMode = useCallback(() => {
@@ -121,35 +147,167 @@ export default function LearnWordsModal({
 
   const loadNextWord = () => {
     if (mode === 'learn') {
-      // For learn mode, prioritize words that haven't been fully learnt yet
-      const wordsInProgress = availableWords.filter(w => {
-        const progress = wordLearningProgress.get(w.id);
-        return !progress || progress.correct < REQUIRED_CORRECT_ANSWERS;
-      });
+      // Get words that have been introduced (in progress map)
+      const introducedWords = Array.from(wordLearningProgress.keys());
       
-      // If all words are fully learnt, check if we should end the session
-      if (wordsInProgress.length === 0 && availableWords.length > 0) {
-        // All words have been answered correctly enough times, mark them as learnt
-        const allLearnt = Array.from(wordLearningProgress.entries())
-          .filter(([_, progress]) => progress.correct >= REQUIRED_CORRECT_ANSWERS)
-          .map(([wordId]) => wordId);
-        
-        // Update words to srsLevel 1 (learnt)
-        allLearnt.forEach(wordId => {
-          const word = words.find(w => w.id === wordId);
-          if (word && word.srsLevel === 0) {
-            storage.updateWord(wordId, { srsLevel: 1 });
-          }
+      // Limit to questionCount unique words
+      if (introducedWords.length >= questionCount) {
+        // Only cycle through the introduced words that need more practice
+        const wordsInProgress = availableWords.filter(w => {
+          const progress = wordLearningProgress.get(w.id);
+          // Word is in progress if it has been introduced but hasn't reached the required correct answers
+          return progress && progress.correct < REQUIRED_CORRECT_ANSWERS;
         });
         
-        onUpdate();
-        setShowSummary(true);
-        return;
+        // If all introduced words are fully learnt, end the session
+        if (wordsInProgress.length === 0 && introducedWords.length > 0) {
+          // All words have been answered correctly enough times, mark them as learnt
+          const allLearnt = Array.from(wordLearningProgress.entries())
+            .filter(([_, progress]) => progress.correct >= REQUIRED_CORRECT_ANSWERS)
+            .map(([wordId]) => wordId);
+          
+          // Update words to srsLevel 1 (learnt)
+          allLearnt.forEach(wordId => {
+            const word = words.find(w => w.id === wordId);
+            if (word && word.srsLevel === 0) {
+              storage.updateWord(wordId, { srsLevel: 1 });
+            }
+          });
+          
+          onUpdate();
+          setShowSummary(true);
+          return;
+        }
+        
+        // If no words in progress but we have introduced words, check if they're all fully learnt
+        if (wordsInProgress.length === 0 && introducedWords.length > 0) {
+          // Check if all introduced words have reached the required correct answers
+          const allFullyLearnt = introducedWords.every(wordId => {
+            const progress = wordLearningProgress.get(wordId);
+            return progress && progress.correct >= REQUIRED_CORRECT_ANSWERS;
+          });
+          
+          if (allFullyLearnt) {
+            // All words have been answered correctly enough times, mark them as learnt
+            const allLearnt = introducedWords;
+            
+            // Update words to srsLevel 1 (learnt)
+            allLearnt.forEach(wordId => {
+              const word = words.find(w => w.id === wordId);
+              if (word && word.srsLevel === 0) {
+                storage.updateWord(wordId, { srsLevel: 1 });
+              }
+            });
+            
+            onUpdate();
+            setShowSummary(true);
+            return;
+          }
+          
+          // If not all fully learnt, there might be words that haven't been answered yet
+          // Find words that have been introduced but haven't been answered enough times
+          const wordsNeedingMoreAnswers = availableWords.filter(w => {
+            const progress = wordLearningProgress.get(w.id);
+            return progress && progress.correct < REQUIRED_CORRECT_ANSWERS;
+          });
+          
+          if (wordsNeedingMoreAnswers.length > 0) {
+            const word = wordsNeedingMoreAnswers[Math.floor(Math.random() * wordsNeedingMoreAnswers.length)];
+            setCurrentWord(word);
+            setSelectedAnswer('');
+            setUserInput('');
+            setFeedback(null);
+            
+            if (modeType === 'multiple') {
+              generateOptions(word);
+            }
+            
+            setShowIntroduction(false);
+            if (inputRef.current && modeType === 'type') {
+              setTimeout(() => inputRef.current?.focus(), 100);
+            }
+            return;
+          }
+        }
+        
+        // Select from words in progress
+        if (wordsInProgress.length > 0) {
+          const word = wordsInProgress[Math.floor(Math.random() * wordsInProgress.length)];
+          setCurrentWord(word);
+          setSelectedAnswer('');
+          setUserInput('');
+          setFeedback(null);
+
+          if (modeType === 'multiple') {
+            generateOptions(word);
+          }
+
+          setShowIntroduction(false);
+          if (inputRef.current && modeType === 'type') {
+            setTimeout(() => inputRef.current?.focus(), 100);
+          }
+          return;
+        }
       }
       
-      // Select from words in progress, or all available words if none in progress
-      const wordsToChooseFrom = wordsInProgress.length > 0 ? wordsInProgress : availableWords;
-      const word = wordsToChooseFrom[Math.floor(Math.random() * wordsToChooseFrom.length)];
+      // Still need to introduce more words (up to questionCount)
+      const wordsNotIntroduced = availableWords.filter(w => !wordLearningProgress.has(w.id));
+      
+      if (wordsNotIntroduced.length === 0) {
+        // No more new words to introduce, cycle through existing ones
+        const wordsInProgress = availableWords.filter(w => {
+          const progress = wordLearningProgress.get(w.id);
+          return progress && progress.correct < REQUIRED_CORRECT_ANSWERS;
+        });
+        
+        if (wordsInProgress.length === 0 && introducedWords.length > 0) {
+          // All words are fully learnt
+          const allLearnt = Array.from(wordLearningProgress.entries())
+            .filter(([_, progress]) => progress.correct >= REQUIRED_CORRECT_ANSWERS)
+            .map(([wordId]) => wordId);
+          
+          allLearnt.forEach(wordId => {
+            const word = words.find(w => w.id === wordId);
+            if (word && word.srsLevel === 0) {
+              storage.updateWord(wordId, { srsLevel: 1 });
+            }
+          });
+          
+          onUpdate();
+          setShowSummary(true);
+          return;
+        }
+        
+        if (wordsInProgress.length > 0) {
+          const word = wordsInProgress[Math.floor(Math.random() * wordsInProgress.length)];
+          setCurrentWord(word);
+          setSelectedAnswer('');
+          setUserInput('');
+          setFeedback(null);
+
+          if (modeType === 'multiple') {
+            generateOptions(word);
+          }
+
+          setShowIntroduction(false);
+          if (inputRef.current && modeType === 'type') {
+            setTimeout(() => inputRef.current?.focus(), 100);
+          }
+          return;
+        }
+      }
+      
+      // Introduce a new word
+      const word = wordsNotIntroduced[Math.floor(Math.random() * wordsNotIntroduced.length)];
+      
+      // Initialize word in progress map when introducing it
+      if (!wordLearningProgress.has(word.id)) {
+        setWordLearningProgress(prev => {
+          const updated = new Map(prev);
+          updated.set(word.id, { correct: 0, total: 0, lastSeen: Date.now() });
+          return updated;
+        });
+      }
       
       setCurrentWord(word);
       setSelectedAnswer('');
@@ -160,17 +318,9 @@ export default function LearnWordsModal({
         generateOptions(word);
       }
 
-      // Show introduction only for first-time words (not in progress map)
-      const progress = wordLearningProgress.get(word.id);
-      if (!progress) {
-        setIntroductionWord(word);
-        setShowIntroduction(true);
-      } else {
-        setShowIntroduction(false);
-        if (inputRef.current && modeType === 'type') {
-          setTimeout(() => inputRef.current?.focus(), 100);
-        }
-      }
+      // Show introduction for new words
+      setIntroductionWord(word);
+      setShowIntroduction(true);
       return;
     }
     
@@ -218,6 +368,14 @@ export default function LearnWordsModal({
       const correctAnswer = direction === 'native-to-target' ? currentWord!.target : currentWord!.native;
       const isCorrect = answer.toLowerCase().trim() === correctAnswer.toLowerCase().trim();
       setSelectedAnswer(answer);
+      
+      // Play audio only when correct answer and direction is native-to-target
+      if (isCorrect && direction === 'native-to-target') {
+        setTimeout(() => {
+          playAudio();
+        }, 100);
+      }
+      
       updateWordProgress(isCorrect);
       
       // Auto-advance in speed mode
@@ -238,6 +396,13 @@ export default function LearnWordsModal({
       message: isCorrect ? 'Correct!' : `Incorrect. The answer is "${correctAnswer}"`,
     });
 
+    // Play audio only when correct answer and direction is native-to-target
+    if (isCorrect && direction === 'native-to-target') {
+      setTimeout(() => {
+        playAudio();
+      }, 300);
+    }
+
     updateWordProgress(isCorrect);
   };
 
@@ -254,6 +419,13 @@ export default function LearnWordsModal({
       correct: isCorrect,
       message: isCorrect ? 'Correct!' : `Incorrect. The answer is "${correctAnswer}"`,
     });
+
+    // Play audio only when correct answer and direction is native-to-target
+    if (isCorrect && direction === 'native-to-target') {
+      setTimeout(() => {
+        playAudio();
+      }, 300);
+    }
 
     updateWordProgress(isCorrect);
   };
@@ -595,14 +767,16 @@ export default function LearnWordsModal({
   // Get mode-specific colors
   const getModeColors = () => {
     switch (mode) {
+      case 'learn':
+        return { primary: '#2da44e', background: '#dafbe1', border: '#2da44e' }; // Green
       case 'review':
-        return { primary: '#0969da', background: '#ddf4ff', border: '#54aeff' }; // Light Blue
+        return { primary: '#87ceeb', background: '#ddf4ff', border: '#54aeff' }; // Light Blue
       case 'speed':
-        return { primary: '#cf222e', background: '#ffebe9', border: '#ff8182' }; // Red
+        return { primary: '#ff4444', background: '#ffebe9', border: '#ff8182' }; // Red
       case 'flashcards':
-        return { primary: '#8250df', background: '#fbefff', border: '#bf87ff' }; // Purple
+        return { primary: '#9370db', background: '#fbefff', border: '#bf87ff' }; // Purple
       case 'difficult':
-        return { primary: '#9a6700', background: '#fff8c5', border: '#d4a72c' }; // Yellow
+        return { primary: '#ffd700', background: '#fff8c5', border: '#d4a72c' }; // Yellow
       default:
         return { primary: '#0969da', background: '#ffffff', border: '#d0d7de' }; // Default
     }
@@ -684,7 +858,7 @@ export default function LearnWordsModal({
         <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '500px', borderTop: `4px solid ${modeColors.primary}` }}>
           <div className="modal-header" style={{ backgroundColor: modeColors.background }}>
             <h2 className="modal-title" style={{ color: modeColors.primary }}>
-              {mode === 'learn' ? 'Learn New Words' : 
+              {mode === 'learn' ? 'Learn' : 
                mode === 'review' ? 'Review Words' :
                mode === 'difficult' ? 'Difficult Words' :
                mode === 'flashcards' ? 'Flashcards' : 'Speed Review'}
@@ -891,7 +1065,30 @@ export default function LearnWordsModal({
                 <div className="flashcard-content">{frontText}</div>
               </div>
               <div className="flashcard-back" style={{ borderColor: modeColors.border }}>
-                <div className="flashcard-content">{backText}</div>
+                <div className="flashcard-content">
+                  {backText}
+                  {direction === 'native-to-target' && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        playAudio(currentFlashcardWord);
+                      }}
+                      disabled={audioPlaying}
+                      style={{
+                        marginTop: '16px',
+                        padding: '8px 16px',
+                        backgroundColor: modeColors.primary,
+                        color: '#ffffff',
+                        border: 'none',
+                        borderRadius: '4px',
+                        cursor: audioPlaying ? 'not-allowed' : 'pointer',
+                        fontSize: '14px'
+                      }}
+                    >
+                      {audioPlaying ? '🔊 Playing...' : '🔊 Play Audio'}
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           </div>

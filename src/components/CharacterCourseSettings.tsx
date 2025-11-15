@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Course } from '../types';
+import { CharacterCourse } from '../types';
 import { storage } from '../storage';
 
-interface CourseSettingsProps {
-  course: Course;
+interface CharacterCourseSettingsProps {
+  course: CharacterCourse;
   onClose: () => void;
   onUpdate: () => void;
 }
 
-export default function CourseSettings({ course, onClose, onUpdate }: CourseSettingsProps) {
+export default function CharacterCourseSettings({ course, onClose, onUpdate }: CharacterCourseSettingsProps) {
   const navigate = useNavigate();
   const [name, setName] = useState(course.name);
   const [description, setDescription] = useState(course.description || '');
@@ -22,7 +22,7 @@ export default function CourseSettings({ course, onClose, onUpdate }: CourseSett
   const handleSave = () => {
     const tagArray = tags.split(',').map(t => t.trim()).filter(t => t.length > 0);
     
-    storage.updateCourse(course.id, {
+    storage.updateCharacterCourse(course.id, {
       name,
       description,
       isPublic,
@@ -38,7 +38,7 @@ export default function CourseSettings({ course, onClose, onUpdate }: CourseSett
     <div className="modal" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h2 className="modal-title">Course Settings</h2>
+          <h2 className="modal-title">Character Course Settings</h2>
           <button className="close-btn" onClick={onClose}>×</button>
         </div>
 
@@ -59,18 +59,6 @@ export default function CourseSettings({ course, onClose, onUpdate }: CourseSett
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={4}
-            style={{ resize: 'vertical' }}
-          />
-        </div>
-
-        <div className="form-group">
-          <label className="form-label">Author</label>
-          <input
-            type="text"
-            className="input"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-            placeholder="Your name"
           />
         </div>
 
@@ -81,7 +69,17 @@ export default function CourseSettings({ course, onClose, onUpdate }: CourseSett
             className="input"
             value={tags}
             onChange={(e) => setTags(e.target.value)}
-            placeholder="beginner, vocabulary, grammar"
+            placeholder="e.g., japanese, kanji, beginner"
+          />
+        </div>
+
+        <div className="form-group">
+          <label className="form-label">Author</label>
+          <input
+            type="text"
+            className="input"
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
           />
         </div>
 
@@ -92,14 +90,16 @@ export default function CourseSettings({ course, onClose, onUpdate }: CourseSett
               checked={isPublic}
               onChange={(e) => setIsPublic(e.target.checked)}
             />
-            Make this course public (visible in repository)
+            <span>Make this course public</span>
           </label>
         </div>
 
         <div className="form-actions">
-          <button type="button" className="btn" onClick={onClose}>Cancel</button>
-          <button type="button" className="btn btn-primary" onClick={handleSave}>
+          <button className="btn btn-primary" onClick={handleSave}>
             Save Changes
+          </button>
+          <button className="btn" onClick={onClose}>
+            Cancel
           </button>
         </div>
 
@@ -147,7 +147,7 @@ export default function CourseSettings({ course, onClose, onUpdate }: CourseSett
             </div>
             <div style={{ padding: '16px' }}>
               <p style={{ marginBottom: '16px' }}>
-                Are you absolutely sure? This will permanently delete <strong>{course.name}</strong> and all its words. This action cannot be undone.
+                Are you absolutely sure? This will permanently delete <strong>{course.name}</strong> and all its characters. This action cannot be undone.
               </p>
               <p style={{ marginBottom: '16px', fontSize: '14px', color: '#656d76' }}>
                 Please type <strong>{course.name}</strong> to confirm:
@@ -175,7 +175,7 @@ export default function CourseSettings({ course, onClose, onUpdate }: CourseSett
                   className="btn btn-danger"
                   onClick={() => {
                     if (deleteConfirmText === course.name) {
-                      storage.deleteCourse(course.id);
+                      storage.deleteCharacterCourse(course.id);
                       navigate('/');
                     }
                   }}

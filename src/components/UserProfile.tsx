@@ -48,6 +48,11 @@ export default function UserProfile({ appState }: UserProfileProps) {
   const handleFollow = () => {
     if (!currentUser || !viewingProfile) return;
 
+    // Can't follow private profiles
+    if (!viewingProfile.isPublic) {
+      return;
+    }
+
     const currentProfile = userProfile.getCurrentProfile();
     if (!currentProfile) return;
 
@@ -105,7 +110,7 @@ export default function UserProfile({ appState }: UserProfileProps) {
         <h1 className="card-title">
           {isOwnProfile ? 'Your Profile' : `${displayProfile.username}'s Profile`}
         </h1>
-        {!isOwnProfile && (
+        {!isOwnProfile && displayProfile.isPublic && (
           <button
             className={`btn ${isFollowing ? '' : 'btn-primary'}`}
             onClick={handleFollow}
@@ -141,9 +146,18 @@ export default function UserProfile({ appState }: UserProfileProps) {
                 <div style={{ fontSize: '20px', fontWeight: 600 }}>{displayProfile.following.length}</div>
               </div>
             </div>
+            {displayProfile.isPublic ? (
+              <div style={{ padding: '8px 12px', backgroundColor: '#dafbe1', borderRadius: '6px', color: '#1a7f37', fontSize: '14px', display: 'inline-block' }}>
+                ✓ Public Profile
+              </div>
+            ) : (
+              <div style={{ padding: '8px 12px', backgroundColor: '#fff3cd', borderRadius: '6px', color: '#856404', fontSize: '14px', display: 'inline-block' }}>
+                🔒 Private Profile
+              </div>
+            )}
             {!displayProfile.isPublic && !isOwnProfile && (
-              <div style={{ padding: '12px', backgroundColor: '#fff3cd', borderRadius: '6px', color: '#856404' }}>
-                This profile is private.
+              <div style={{ padding: '12px', backgroundColor: '#ffebe9', borderRadius: '6px', color: '#cf222e', marginTop: '12px', fontSize: '14px' }}>
+                This profile is private. Only the owner can view the full profile.
               </div>
             )}
           </div>
@@ -212,9 +226,9 @@ export default function UserProfile({ appState }: UserProfileProps) {
       )}
 
       {/* Followers */}
-      {followersProfiles.length > 0 && (
+      {(displayProfile.isPublic || isOwnProfile) && followersProfiles.length > 0 && (
         <div className="card" style={{ marginBottom: '24px' }}>
-          <h3 style={{ fontSize: '18px', marginBottom: '16px' }}>Followers</h3>
+          <h3 style={{ fontSize: '18px', marginBottom: '16px' }}>Followers ({followersProfiles.length})</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {followersProfiles.map((follower) => {
               const followerAvatarUrl = userProfile.getAvatarUrl(follower);
@@ -244,6 +258,49 @@ export default function UserProfile({ appState }: UserProfileProps) {
                   <div style={{ flex: 1 }}>
                     <div style={{ fontWeight: 600 }}>{follower.username}</div>
                     <div style={{ fontSize: '12px', color: '#656d76' }}>{follower.email}</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Following */}
+      {isOwnProfile && displayProfile.following.length > 0 && (
+        <div className="card" style={{ marginBottom: '24px' }}>
+          <h3 style={{ fontSize: '18px', marginBottom: '16px' }}>Following ({displayProfile.following.length})</h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {displayProfile.following.map((followingId) => {
+              const followingProfile = userProfile.getProfile(followingId);
+              if (!followingProfile) return null;
+              const followingAvatarUrl = userProfile.getAvatarUrl(followingProfile);
+              return (
+                <div
+                  key={followingProfile.userId}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    padding: '12px',
+                    border: '1px solid #d0d7de',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => handleViewUser(followingProfile.userId)}
+                >
+                  <img
+                    src={followingAvatarUrl}
+                    alt={followingProfile.username}
+                    style={{
+                      width: '40px',
+                      height: '40px',
+                      borderRadius: '50%',
+                    }}
+                  />
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: 600 }}>{followingProfile.username}</div>
+                    <div style={{ fontSize: '12px', color: '#656d76' }}>{followingProfile.email}</div>
                   </div>
                 </div>
               );

@@ -110,6 +110,17 @@ body {
   border-color: #2c974b;
 }
 
+.btn-learn {
+  background-color: #2da44e;
+  color: #ffffff;
+  border-color: #2da44e;
+}
+
+.btn-learn:hover {
+  background-color: #2c974b;
+  border-color: #2c974b;
+}
+
 .btn-review {
   background-color: #87ceeb;
   color: #ffffff;
