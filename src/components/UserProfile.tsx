@@ -23,6 +23,13 @@ export default function UserProfile({ appState }: UserProfileProps) {
     if (userId) {
       const profile = userProfile.getProfile(userId);
       if (profile) {
+        // Check if profile is public or if it's the current user's own profile
+        const isOwnProfile = currentUser && userId === currentUser.id;
+        if (!profile.isPublic && !isOwnProfile) {
+          // Private profile and not own profile - show error
+          setViewingProfile(null);
+          return;
+        }
         setViewingProfile(profile);
         if (currentUser) {
           const currentProfile = userProfile.getCurrentProfile();
@@ -84,6 +91,20 @@ export default function UserProfile({ appState }: UserProfileProps) {
   const displayProfile = viewingProfile || currentProfile;
 
   if (!displayProfile) {
+    if (userId && !isOwnProfile) {
+      return (
+        <div>
+          <div className="card-header">
+            <h1 className="card-title">Profile Not Available</h1>
+          </div>
+          <div className="card">
+            <div style={{ padding: '24px', textAlign: 'center', color: '#656d76' }}>
+              This profile is private and cannot be viewed.
+            </div>
+          </div>
+        </div>
+      );
+    }
     return <div className="loading">Loading profile...</div>;
   }
 

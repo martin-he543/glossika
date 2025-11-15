@@ -13,6 +13,8 @@ export interface Word {
   srsLevel: number; // 0 = new, higher = more mature
   masteryLevel: 'seed' | 'sprout' | 'seedling' | 'plant' | 'tree';
   level?: number; // Course level (like Memrise), defaults to 1 if not specified
+  partOfSpeech?: string; // e.g., "noun", "verb", "adjective"
+  pronunciation?: string; // Phonetic pronunciation guide
 }
 
 export interface Course {
@@ -72,13 +74,17 @@ export interface ClozeSentence {
   language: string;
   courseId: string;
   createdAt: number;
-  masteryLevel: number;
+  masteryLevel: 'seed' | 'sprout' | 'seedling' | 'plant' | 'tree';
+  srsLevel: number; // 0 = new, higher = more mature
   correctCount: number;
   wrongCount: number;
+  lastReviewed?: number;
+  nextReview?: number;
+  isDifficult?: boolean;
 }
 
-// Glyphy SRS stages
-export type GlyphySRSStage = 'apprentice' | 'guru' | 'master' | 'enlightened' | 'burned' | 'locked';
+// Glyphy SRS stages (plant-based)
+export type GlyphySRSStage = 'seed' | 'sprout' | 'seedling' | 'plant' | 'tree' | 'locked';
 
 // Radical (foundational component)
 export interface Radical {

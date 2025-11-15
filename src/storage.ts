@@ -1,4 +1,5 @@
 import { AppState, Course, Word, CourseProgress, ClozeSentence, ClozeCourse, CharacterCourse, Kanji, Radical, Vocabulary, StudyActivity, CourseStreak } from './types';
+import { migrateRadical, migrateKanji, migrateVocabulary, migrateSRSStage } from './utils/srsStageMigration';
 
 const STORAGE_KEY = 'glossika_app_state';
 
@@ -22,21 +23,61 @@ export const storage = {
       const data = localStorage.getItem(STORAGE_KEY);
       if (data) {
         const parsed = JSON.parse(data);
-        // Ensure all required arrays exist (for backward compatibility)
-        return {
+        
+        // Migrate old SRS stage names to new plant-based stages
+        const originalKanji = parsed.kanji || [];
+        const originalRadicals = parsed.radicals || [];
+        const originalVocabulary = parsed.vocabulary || [];
+        
+        const migratedKanji = originalKanji.map((k: any) => migrateKanji(k));
+        const migratedRadicals = originalRadicals.map((r: any) => migrateRadical(r));
+        const migratedVocabulary = originalVocabulary.map((v: any) => migrateVocabulary(v));
+        
+        // Check if any migrations occurred by comparing original vs migrated
+        let needsSave = false;
+        for (let i = 0; i < originalKanji.length; i++) {
+          if (originalKanji[i]?.srsStage !== migratedKanji[i]?.srsStage) {
+            needsSave = true;
+            break;
+          }
+        }
+        if (!needsSave) {
+          for (let i = 0; i < originalRadicals.length; i++) {
+            if (originalRadicals[i]?.srsStage !== migratedRadicals[i]?.srsStage) {
+              needsSave = true;
+              break;
+            }
+          }
+        }
+        if (!needsSave) {
+          for (let i = 0; i < originalVocabulary.length; i++) {
+            if (originalVocabulary[i]?.srsStage !== migratedVocabulary[i]?.srsStage) {
+              needsSave = true;
+              break;
+            }
+          }
+        }
+        
+        const state = {
           courses: parsed.courses || [],
           words: parsed.words || [],
           courseProgress: parsed.courseProgress || [],
           clozeSentences: parsed.clozeSentences || [],
           clozeCourses: parsed.clozeCourses || [],
           characterCourses: parsed.characterCourses || [],
-          kanji: parsed.kanji || [],
-          radicals: parsed.radicals || [],
-          vocabulary: parsed.vocabulary || [],
+          kanji: migratedKanji,
+          radicals: migratedRadicals,
+          vocabulary: migratedVocabulary,
           studyActivity: parsed.studyActivity || [],
           courseStreaks: parsed.courseStreaks || [],
           currentCourseId: parsed.currentCourseId,
         };
+        
+        if (needsSave) {
+          this.save(state);
+        }
+        
+        return state;
       }
     } catch (e) {
       console.error('Failed to load state:', e);
@@ -153,7 +194,22 @@ export const storage = {
     if (!state.clozeSentences) state.clozeSentences = [];
     const index = state.clozeSentences.findIndex(s => s.id === id);
     if (index !== -1) {
-      state.clozeSentences[index] = { ...state.clozeSentences[index], ...updates };
+      const sentence = state.clozeSentences[index];
+      // Backward compatibility: if masteryLevel is a number, convert to string
+      if (typeof sentence.masteryLevel === 'number') {
+        const numLevel = sentence.masteryLevel;
+        const masteryMap: Record<number, 'seed' | 'sprout' | 'seedling' | 'plant' | 'tree'> = {
+          0: 'seed',
+          1: 'sprout',
+          2: 'sprout',
+          3: 'seedling',
+          4: 'plant',
+          5: 'tree',
+        };
+        sentence.masteryLevel = masteryMap[Math.min(numLevel, 5)] || 'seed';
+        sentence.srsLevel = sentence.srsLevel || numLevel;
+      }
+      state.clozeSentences[index] = { ...sentence, ...updates };
       this.save(state);
     }
   },
@@ -185,7 +241,12 @@ export const storage = {
     if (!state.kanji) state.kanji = [];
     const index = state.kanji.findIndex(k => k.id === id);
     if (index !== -1) {
-      state.kanji[index] = { ...state.kanji[index], ...updates };
+      const kanji = state.kanji[index];
+      // Migrate old stage names if present
+      const migratedKanji = migrateKanji(kanji);
+      // Migrate updates if they contain old stage names
+      const migratedUpdates = updates.srsStage ? { ...updates, srsStage: migrateSRSStage(updates.srsStage as string) } : updates;
+      state.kanji[index] = { ...migratedKanji, ...migratedUpdates };
       this.save(state);
     }
   },
@@ -201,7 +262,9 @@ export const storage = {
   addRadical(radical: Radical): void {
     const state = this.load();
     if (!state.radicals) state.radicals = [];
-    state.radicals.push(radical);
+    // Migrate old stage names
+    const migratedRadical = migrateRadical(radical);
+    state.radicals.push(migratedRadical);
     this.save(state);
   },
 
@@ -210,7 +273,12 @@ export const storage = {
     if (!state.radicals) state.radicals = [];
     const index = state.radicals.findIndex(r => r.id === id);
     if (index !== -1) {
-      state.radicals[index] = { ...state.radicals[index], ...updates };
+      const radical = state.radicals[index];
+      // Migrate old stage names if present
+      const migratedRadical = migrateRadical(radical);
+      // Migrate updates if they contain old stage names
+      const migratedUpdates = updates.srsStage ? { ...updates, srsStage: migrateSRSStage(updates.srsStage as string) } : updates;
+      state.radicals[index] = { ...migratedRadical, ...migratedUpdates };
       this.save(state);
     }
   },
@@ -226,7 +294,9 @@ export const storage = {
   addVocabulary(vocab: Vocabulary): void {
     const state = this.load();
     if (!state.vocabulary) state.vocabulary = [];
-    state.vocabulary.push(vocab);
+    // Migrate old stage names
+    const migratedVocab = migrateVocabulary(vocab);
+    state.vocabulary.push(migratedVocab);
     this.save(state);
   },
 
@@ -235,7 +305,12 @@ export const storage = {
     if (!state.vocabulary) state.vocabulary = [];
     const index = state.vocabulary.findIndex(v => v.id === id);
     if (index !== -1) {
-      state.vocabulary[index] = { ...state.vocabulary[index], ...updates };
+      const vocab = state.vocabulary[index];
+      // Migrate old stage names if present
+      const migratedVocab = migrateVocabulary(vocab);
+      // Migrate updates if they contain old stage names
+      const migratedUpdates = updates.srsStage ? { ...updates, srsStage: migrateSRSStage(updates.srsStage as string) } : updates;
+      state.vocabulary[index] = { ...migratedVocab, ...migratedUpdates };
       this.save(state);
     }
   },

@@ -4,11 +4,10 @@ import { AppState, Course } from '../types';
 import { storage } from '../storage';
 import { LANGUAGES } from '../utils/languages';
 import { parseCSV, createWordsFromCSV } from '../utils/csv';
-import { getOverallStreak } from '../utils/activityTracking';
+import { getCourseStreak } from '../utils/activityTracking';
 import CreateCourseModal from './CreateCourseModal';
 import CreateClozeCourseModal from './CreateClozeCourseModal';
 import CreateCharacterCourseModal from './CreateCharacterCourseModal';
-import ActivityHeatmap from './ActivityHeatmap';
 
 interface DashboardProps {
   appState: AppState;
@@ -28,7 +27,7 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
     } else if (type === 'sentences') {
       navigate(`/cloze-course/${courseId}`);
     } else if (type === 'characters') {
-      navigate(`/character-course/${courseId}/practice`);
+      navigate(`/character-course/${courseId}`);
     }
   };
 
@@ -96,29 +95,7 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
           </p>
         </div>
       ) : (
-        <>
-          {/* Universal Streak and Heatmap */}
-          <div className="card" style={{ marginBottom: '24px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                {(() => {
-                  const overallStreak = getOverallStreak();
-                  return overallStreak ? (
-                    <div style={{ fontSize: '24px', fontWeight: 600 }}>
-                      🔥 {overallStreak.currentStreak} day streak
-                    </div>
-                  ) : (
-                    <div style={{ fontSize: '24px', fontWeight: 600, color: '#656d76' }}>
-                      🔥 Start your streak!
-                    </div>
-                  );
-                })()}
-              </div>
-            </div>
-            <ActivityHeatmap days={365} />
-          </div>
-
-          <div className="grid">
+        <div className="grid">
           {/* Word Courses */}
           {(courseTypeFilter === 'all' || courseTypeFilter === 'words') && wordCourses.map(course => {
             const progress = appState.courseProgress.find(p => p.courseId === course.id);
@@ -126,6 +103,21 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
             const learned = words.filter(w => w.srsLevel > 0).length;
             const total = words.length;
             const progressPercent = total > 0 ? (learned / total) * 100 : 0;
+            const streak = getCourseStreak(course.id);
+            
+            // Word counts by type
+            const wordsToLearn = words.filter(w => w.srsLevel === 0).length;
+            const wordsToReview = words.filter(w => w.srsLevel > 0).length;
+            const difficultWords = words.filter(w => w.isDifficult || w.wrongCount > w.correctCount).length;
+            
+            // SRS level counts
+            const srsCounts = {
+              seed: words.filter(w => w.srsLevel === 0).length,
+              sprout: words.filter(w => w.srsLevel >= 1 && w.srsLevel <= 2).length,
+              seedling: words.filter(w => w.srsLevel >= 3 && w.srsLevel <= 5).length,
+              plant: words.filter(w => w.srsLevel >= 6 && w.srsLevel <= 10).length,
+              tree: words.filter(w => w.srsLevel > 10).length,
+            };
 
             return (
               <div
@@ -191,8 +183,18 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
                 <div className="progress-bar" style={{ marginTop: '12px' }}>
                   <div className="progress-fill" style={{ width: `${progressPercent}%` }} />
                 </div>
-                <div className="course-card-meta">
-                  {learned} / {total} words learned
+                <div style={{ marginTop: '12px', display: 'flex', gap: '12px', flexWrap: 'wrap', fontSize: '14px' }}>
+                  <span style={{ color: '#656d76' }}>🌱 {wordsToLearn}</span>
+                  <span style={{ color: '#656d76' }}>💧 {wordsToReview}</span>
+                  <span style={{ color: '#656d76' }}>⚡ {difficultWords}</span>
+                </div>
+                <div style={{ marginTop: '8px', display: 'flex', gap: '8px', flexWrap: 'wrap', fontSize: '12px' }}>
+                  {srsCounts.seed > 0 && <span style={{ color: '#656d76' }}>🌱 {srsCounts.seed}</span>}
+                  {srsCounts.sprout > 0 && <span style={{ color: '#656d76' }}>🌿 {srsCounts.sprout}</span>}
+                  {srsCounts.seedling > 0 && <span style={{ color: '#656d76' }}>🌾 {srsCounts.seedling}</span>}
+                  {srsCounts.plant > 0 && <span style={{ color: '#656d76' }}>🌳 {srsCounts.plant}</span>}
+                  {srsCounts.tree > 0 && <span style={{ color: '#656d76' }}>🌲 {srsCounts.tree}</span>}
+                  <span style={{ color: '#656d76' }} title={`${streak?.currentStreak || 0} day streak`}>🔥 {streak?.currentStreak || 0}</span>
                 </div>
               </div>
             );
@@ -201,9 +203,24 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
           {/* Sentence Courses */}
           {(courseTypeFilter === 'all' || courseTypeFilter === 'sentences') && sentenceCourses.map(course => {
             const sentences = appState.clozeSentences.filter(s => s.courseId === course.id);
-            const learned = sentences.filter(s => s.masteryLevel > 0).length;
+            const learned = sentences.filter(s => s.masteryLevel !== 'seed' && s.masteryLevel !== 'tree').length;
             const total = sentences.length;
             const progressPercent = total > 0 ? (learned / total) * 100 : 0;
+            const streak = getCourseStreak(course.id);
+            
+            // Sentence counts by type
+            const sentencesToLearn = sentences.filter(s => s.srsLevel === 0).length;
+            const sentencesToReview = sentences.filter(s => s.srsLevel > 0).length;
+            const difficultSentences = sentences.filter(s => s.isDifficult || s.wrongCount > s.correctCount).length;
+            
+            // SRS level counts
+            const srsCounts = {
+              seed: sentences.filter(s => s.srsLevel === 0 || s.masteryLevel === 'seed').length,
+              sprout: sentences.filter(s => (s.srsLevel >= 1 && s.srsLevel <= 2) || s.masteryLevel === 'sprout').length,
+              seedling: sentences.filter(s => (s.srsLevel >= 3 && s.srsLevel <= 5) || s.masteryLevel === 'seedling').length,
+              plant: sentences.filter(s => (s.srsLevel >= 6 && s.srsLevel <= 10) || s.masteryLevel === 'plant').length,
+              tree: sentences.filter(s => s.srsLevel > 10 || s.masteryLevel === 'tree').length,
+            };
 
             return (
               <div
@@ -268,8 +285,18 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
                 <div className="progress-bar" style={{ marginTop: '12px' }}>
                   <div className="progress-fill" style={{ width: `${progressPercent}%` }} />
                 </div>
-                <div className="course-card-meta">
-                  {learned} / {total} sentences learned
+                <div style={{ marginTop: '12px', display: 'flex', gap: '12px', flexWrap: 'wrap', fontSize: '14px' }}>
+                  <span style={{ color: '#656d76' }}>🌱 {sentencesToLearn}</span>
+                  <span style={{ color: '#656d76' }}>💧 {sentencesToReview}</span>
+                  <span style={{ color: '#656d76' }}>⚡ {difficultSentences}</span>
+                </div>
+                <div style={{ marginTop: '8px', display: 'flex', gap: '8px', flexWrap: 'wrap', fontSize: '12px' }}>
+                  {srsCounts.seed > 0 && <span style={{ color: '#656d76' }}>🌱 {srsCounts.seed}</span>}
+                  {srsCounts.sprout > 0 && <span style={{ color: '#656d76' }}>🌿 {srsCounts.sprout}</span>}
+                  {srsCounts.seedling > 0 && <span style={{ color: '#656d76' }}>🌾 {srsCounts.seedling}</span>}
+                  {srsCounts.plant > 0 && <span style={{ color: '#656d76' }}>🌳 {srsCounts.plant}</span>}
+                  {srsCounts.tree > 0 && <span style={{ color: '#656d76' }}>🌲 {srsCounts.tree}</span>}
+                  <span style={{ color: '#656d76' }} title={`${streak?.currentStreak || 0} day streak`}>🔥 {streak?.currentStreak || 0}</span>
                 </div>
               </div>
             );
@@ -278,9 +305,25 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
           {/* Character Courses */}
           {(courseTypeFilter === 'all' || courseTypeFilter === 'characters') && characterCourses.map(course => {
             const kanji = appState.kanji.filter(k => k.language === course.language);
-            const learned = kanji.filter(k => k.srsStage !== 'locked' && k.srsStage !== 'burned').length;
+            const learned = kanji.filter(k => k.srsStage !== 'locked' && k.srsStage !== 'tree').length;
             const total = kanji.length;
             const progressPercent = total > 0 ? (learned / total) * 100 : 0;
+            const streak = getCourseStreak(course.id);
+            
+            // Character counts by type
+            const charactersToLearn = kanji.filter(k => k.srsStage === 'locked').length;
+            const charactersToReview = kanji.filter(k => k.srsStage !== 'locked' && k.srsStage !== 'tree').length;
+            const difficultCharacters = kanji.filter(k => k.wrongCount > k.correctCount).length;
+            
+            // SRS stage counts
+            const srsCounts = {
+              locked: kanji.filter(k => k.srsStage === 'locked').length,
+              seed: kanji.filter(k => k.srsStage === 'seed').length,
+              sprout: kanji.filter(k => k.srsStage === 'sprout').length,
+              seedling: kanji.filter(k => k.srsStage === 'seedling').length,
+              plant: kanji.filter(k => k.srsStage === 'plant').length,
+              tree: kanji.filter(k => k.srsStage === 'tree').length,
+            };
 
             return (
               <div
@@ -338,14 +381,24 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
                 <div className="progress-bar" style={{ marginTop: '12px' }}>
                   <div className="progress-fill" style={{ width: `${progressPercent}%` }} />
                 </div>
-                <div className="course-card-meta">
-                  {learned} / {total} characters learned
+                <div style={{ marginTop: '12px', display: 'flex', gap: '12px', flexWrap: 'wrap', fontSize: '14px' }}>
+                  <span style={{ color: '#656d76' }}>🌱 {charactersToLearn}</span>
+                  <span style={{ color: '#656d76' }}>💧 {charactersToReview}</span>
+                  <span style={{ color: '#656d76' }}>⚡ {difficultCharacters}</span>
+                </div>
+                <div style={{ marginTop: '8px', display: 'flex', gap: '8px', flexWrap: 'wrap', fontSize: '12px' }}>
+                  {srsCounts.locked > 0 && <span style={{ color: '#656d76' }}>🔒 {srsCounts.locked}</span>}
+                  {srsCounts.seed > 0 && <span style={{ color: '#656d76' }}>🌱 {srsCounts.seed}</span>}
+                  {srsCounts.sprout > 0 && <span style={{ color: '#656d76' }}>🌿 {srsCounts.sprout}</span>}
+                  {srsCounts.seedling > 0 && <span style={{ color: '#656d76' }}>🌾 {srsCounts.seedling}</span>}
+                  {srsCounts.plant > 0 && <span style={{ color: '#656d76' }}>🌳 {srsCounts.plant}</span>}
+                  {srsCounts.tree > 0 && <span style={{ color: '#656d76' }}>🌲 {srsCounts.tree}</span>}
+                  <span style={{ color: '#656d76' }} title={`${streak?.currentStreak || 0} day streak`}>🔥 {streak?.currentStreak || 0}</span>
                 </div>
               </div>
             );
           })}
-          </div>
-        </>
+        </div>
       )}
 
       {showCreateModal && (

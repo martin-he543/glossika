@@ -4,6 +4,7 @@ import { storage } from '../storage';
 import { updateSRSLevel, getMasteryLevel, calculateNextReview, getWordsDueForReview } from '../utils/srs';
 import { leaderboard } from '../utils/leaderboard';
 import { speakText, stopSpeech } from '../utils/tts';
+import { recordStudyActivity } from '../utils/activityTracking';
 import KeyboardShortcuts from './KeyboardShortcuts';
 import QuestionCountSelector from './QuestionCountSelector';
 import LessonSummary from './LessonSummary';
@@ -450,6 +451,7 @@ export default function LearnWordsModal({
       });
 
       leaderboard.awardSpeedReviewXP(courseId);
+      recordStudyActivity(courseId, 1);
       setTotal(prev => prev + 1);
       if (isCorrect) {
         setScore(prev => prev + 1);
@@ -499,6 +501,7 @@ export default function LearnWordsModal({
         leaderboard.awardWordXP(courseId, newSrsLevel);
       }
 
+      recordStudyActivity(courseId, 1);
       setCorrectCount(prev => prev + (isCorrect ? 1 : 0));
       setQuestionsAnswered(prev => prev + 1);
       onUpdate();
@@ -530,6 +533,7 @@ export default function LearnWordsModal({
       leaderboard.awardReviewXP(courseId, currentWord.srsLevel);
     }
 
+    recordStudyActivity(courseId, 1);
     setCorrectCount(prev => prev + (isCorrect ? 1 : 0));
     setQuestionsAnswered(prev => prev + 1);
 
@@ -933,15 +937,27 @@ export default function LearnWordsModal({
       <div className="modal" onClick={onClose}>
         <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '600px', borderTop: `4px solid ${modeColors.primary}` }}>
           <div style={{ textAlign: 'center', padding: '32px', backgroundColor: modeColors.background, borderRadius: '6px' }}>
-            <h2 style={{ fontSize: '32px', marginBottom: '24px', fontWeight: 600, color: modeColors.primary }}>
-              {introductionWord.native}
-            </h2>
-            <div style={{ fontSize: '24px', color: '#656d76', marginBottom: '32px' }}>
+            <h2 style={{ fontSize: '32px', marginBottom: '16px', fontWeight: 600, color: modeColors.primary }}>
               {introductionWord.target}
+            </h2>
+            {introductionWord.pronunciation && (
+              <div style={{ fontSize: '18px', color: '#656d76', marginBottom: '16px', fontStyle: 'italic' }}>
+                {introductionWord.pronunciation}
+              </div>
+            )}
+            <div style={{ fontSize: '24px', color: '#656d76', marginBottom: '16px' }}>
+              {introductionWord.native}
             </div>
-            {introductionWord.difficulty && (
-              <div style={{ marginBottom: '16px' }}>
-                <span className="tag">Difficulty: {introductionWord.difficulty}</span>
+            {(introductionWord.partOfSpeech || introductionWord.difficulty) && (
+              <div style={{ marginBottom: '24px', display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                {introductionWord.partOfSpeech && (
+                  <span className="tag" style={{ backgroundColor: '#e7f3ff', color: '#0969da', border: '1px solid #0969da' }}>
+                    {introductionWord.partOfSpeech}
+                  </span>
+                )}
+                {introductionWord.difficulty && (
+                  <span className="tag">Difficulty: {introductionWord.difficulty}</span>
+                )}
               </div>
             )}
             <button 

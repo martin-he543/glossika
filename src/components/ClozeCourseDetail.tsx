@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { AppState, ClozeCourse, ClozeSentence } from '../types';
 import { storage } from '../storage';
 import { leaderboard } from '../utils/leaderboard';
+import { updateClozeSRS } from '../utils/clozeSRS';
+import { recordStudyActivity } from '../utils/activityTracking';
 import KeyboardShortcuts from './KeyboardShortcuts';
 import QuestionCountSelector from './QuestionCountSelector';
 import LessonSummary from './LessonSummary';
@@ -16,7 +18,7 @@ interface ClozeCourseDetailProps {
 
 export default function ClozeCourseDetail({ course, appState, updateState, onBack }: ClozeCourseDetailProps) {
   const [activeTab, setActiveTab] = useState<'practice' | 'library' | 'statistics'>('practice');
-  const [activeMode, setActiveMode] = useState<'continue' | 'learn' | 'review' | 'speed' | null>(null);
+  const [activeMode, setActiveMode] = useState<'continue' | 'learn' | 'review' | 'speed' | 'flashcards' | 'difficult' | null>(null);
   const [currentSentence, setCurrentSentence] = useState<ClozeSentence | null>(null);
   const [userAnswer, setUserAnswer] = useState('');
   const [feedback, setFeedback] = useState<{ correct: boolean } | null>(null);
@@ -32,9 +34,9 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const sentences = appState.clozeSentences.filter(s => s.courseId === course.id);
-  const availableSentences = sentences.filter(s => s.masteryLevel < 5);
-  const newSentences = sentences.filter(s => s.masteryLevel === 0);
-  const reviewSentences = sentences.filter(s => s.masteryLevel > 0 && s.masteryLevel < 5);
+  const availableSentences = sentences.filter(s => s.masteryLevel !== 'tree');
+  const newSentences = sentences.filter(s => s.masteryLevel === 'seed' || s.srsLevel === 0);
+  const reviewSentences = sentences.filter(s => s.masteryLevel !== 'seed' && s.masteryLevel !== 'tree');
   
   // Determine what "Continue" should do
   const getContinueMode = (): 'learn' | 'review' => {
@@ -70,16 +72,16 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
     setCurrentIndex(0);
   };
 
-  const handleModeSelect = (mode: 'continue' | 'learn' | 'review' | 'speed') => {
+  const handleModeSelect = (mode: 'continue' | 'learn' | 'review' | 'speed' | 'flashcards' | 'difficult') => {
     if (mode === 'continue') {
       const continueMode = getContinueMode();
-      setActiveMode(continueMode as 'learn' | 'review' | 'speed' | null);
+      setActiveMode(continueMode as 'learn' | 'review' | 'speed' | 'flashcards' | 'difficult' | null);
       setShowQuestionSelector(true);
-    } else if (mode === 'speed') {
-      setActiveMode('speed' as 'continue' | 'learn' | 'review' | 'speed' | null);
-      // Speed review will be handled separately
+    } else if (mode === 'speed' || mode === 'flashcards' || mode === 'difficult') {
+      setActiveMode(mode as 'continue' | 'learn' | 'review' | 'speed' | 'flashcards' | 'difficult' | null);
+      // These modes will be handled separately
     } else {
-      setActiveMode(mode as 'continue' | 'learn' | 'review' | 'speed' | null);
+      setActiveMode(mode as 'continue' | 'learn' | 'review' | 'speed' | 'flashcards' | 'difficult' | null);
       setShowQuestionSelector(true);
     }
   };
@@ -100,13 +102,11 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
     const isCorrect = userAnswer.toLowerCase().trim() === currentSentence.answer.toLowerCase().trim();
     setFeedback({ correct: isCorrect });
 
-    const wasNew = currentSentence.masteryLevel === 0;
-    const newMasteryLevel = isCorrect
-      ? Math.min(currentSentence.masteryLevel + 1, 5)
-      : Math.max(currentSentence.masteryLevel - 1, 0);
-
+    const wasNew = currentSentence.masteryLevel === 'seed' || currentSentence.srsLevel === 0;
+    const updates = updateClozeSRS(currentSentence, isCorrect);
+    
     storage.updateClozeSentence(currentSentence.id, {
-      masteryLevel: newMasteryLevel,
+      ...updates,
       correctCount: currentSentence.correctCount + (isCorrect ? 1 : 0),
       wrongCount: currentSentence.wrongCount + (isCorrect ? 0 : 1),
     });
@@ -117,6 +117,7 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
       leaderboard.awardSentenceXP(course.id);
     }
 
+    recordStudyActivity(course.id, 1);
     setCorrectCount(prev => prev + (isCorrect ? 1 : 0));
     setQuestionsAnswered(prev => prev + 1);
 
@@ -203,9 +204,9 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
 
   const stats = {
     total: sentences.length,
-    mastered: sentences.filter(s => s.masteryLevel >= 5).length,
-    inProgress: sentences.filter(s => s.masteryLevel > 0 && s.masteryLevel < 5).length,
-    new: sentences.filter(s => s.masteryLevel === 0).length,
+    mastered: sentences.filter(s => s.masteryLevel === 'tree').length,
+    inProgress: sentences.filter(s => s.masteryLevel !== 'seed' && s.masteryLevel !== 'tree').length,
+    new: sentences.filter(s => s.masteryLevel === 'seed' || s.srsLevel === 0).length,
     totalCorrect: sentences.reduce((sum, s) => sum + s.correctCount, 0),
     totalWrong: sentences.reduce((sum, s) => sum + s.wrongCount, 0),
   };
@@ -256,7 +257,7 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
       <div className="tab-content">
         {activeTab === 'practice' && (
           <div>
-            {!showQuestionSelector && !showSummary && activeMode !== 'speed' && (
+            {!showQuestionSelector && !showSummary && activeMode !== 'speed' && activeMode !== 'flashcards' && activeMode !== 'difficult' && (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px', marginBottom: '24px' }}>
                 <button
                   className={`btn ${activeMode === null || activeMode === 'continue' ? 'btn-primary' : ''}`}
@@ -284,7 +285,35 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
                   onClick={() => handleModeSelect('speed')}
                   style={{ padding: '16px', fontSize: '16px', fontWeight: 600 }}
                 >
-                  Speed Review Sentences
+                  Speed Review
+                </button>
+                <button
+                  className={`btn ${(activeMode as string) === 'flashcards' ? 'btn-flashcards' : ''}`}
+                  onClick={() => handleModeSelect('flashcards')}
+                  style={{ 
+                    padding: '16px', 
+                    fontSize: '16px', 
+                    fontWeight: 600,
+                    backgroundColor: (activeMode as string) === 'flashcards' ? '#9370db' : undefined,
+                    color: (activeMode as string) === 'flashcards' ? '#ffffff' : undefined,
+                    borderColor: (activeMode as string) === 'flashcards' ? '#9370db' : undefined
+                  }}
+                >
+                  Flashcards
+                </button>
+                <button
+                  className={`btn ${(activeMode as string) === 'difficult' ? 'btn-difficult' : ''}`}
+                  onClick={() => handleModeSelect('difficult')}
+                  style={{ 
+                    padding: '16px', 
+                    fontSize: '16px', 
+                    fontWeight: 600,
+                    backgroundColor: (activeMode as string) === 'difficult' ? '#ffd700' : undefined,
+                    color: (activeMode as string) === 'difficult' ? '#24292f' : undefined,
+                    borderColor: (activeMode as string) === 'difficult' ? '#ffd700' : undefined
+                  }}
+                >
+                  Difficult Sentences
                 </button>
               </div>
             )}
@@ -424,7 +453,7 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
                         <div><strong>{sentence.native}</strong></div>
                         <div style={{ color: '#656d76', marginTop: '4px' }}>{sentence.target}</div>
                         <div style={{ fontSize: '12px', color: '#656d76', marginTop: '4px' }}>
-                          Mastery: {sentence.masteryLevel}/5 | Correct: {sentence.correctCount} | Wrong: {sentence.wrongCount}
+                          Mastery: {sentence.masteryLevel === 'seed' ? '🌱' : sentence.masteryLevel === 'sprout' ? '🌿' : sentence.masteryLevel === 'seedling' ? '🌱' : sentence.masteryLevel === 'plant' ? '🌳' : '🌲'} {sentence.masteryLevel} | Correct: {sentence.correctCount} | Wrong: {sentence.wrongCount}
                         </div>
                       </div>
                       <button
@@ -457,7 +486,7 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
               </div>
               <div className="stat-card">
                 <div className="stat-value">{stats.mastered}</div>
-                <div className="stat-label">Mastered</div>
+                <div className="stat-label">Mastered (🌲 Tree)</div>
               </div>
               <div className="stat-card">
                 <div className="stat-value">{stats.inProgress}</div>
@@ -465,7 +494,7 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
               </div>
               <div className="stat-card">
                 <div className="stat-value">{stats.new}</div>
-                <div className="stat-label">New</div>
+                <div className="stat-label">New (🌱 Seed)</div>
               </div>
               <div className="stat-card">
                 <div className="stat-value">{stats.totalCorrect}</div>
@@ -474,6 +503,32 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
               <div className="stat-card">
                 <div className="stat-value">{stats.totalWrong}</div>
                 <div className="stat-label">Total Wrong</div>
+              </div>
+            </div>
+            
+            <div className="card" style={{ marginTop: '24px' }}>
+              <h3 style={{ fontSize: '16px', marginBottom: '12px' }}>SRS Stages</h3>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '12px' }}>
+                <div style={{ padding: '12px', border: '1px solid #d0d7de', borderRadius: '4px' }}>
+                  <div style={{ fontSize: '12px', color: '#656d76', marginBottom: '4px' }}>🌱 Seed</div>
+                  <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{sentences.filter(s => s.masteryLevel === 'seed').length}</div>
+                </div>
+                <div style={{ padding: '12px', border: '1px solid #d0d7de', borderRadius: '4px' }}>
+                  <div style={{ fontSize: '12px', color: '#656d76', marginBottom: '4px' }}>🌿 Sprout</div>
+                  <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{sentences.filter(s => s.masteryLevel === 'sprout').length}</div>
+                </div>
+                <div style={{ padding: '12px', border: '1px solid #d0d7de', borderRadius: '4px' }}>
+                  <div style={{ fontSize: '12px', color: '#656d76', marginBottom: '4px' }}>🌱 Seedling</div>
+                  <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{sentences.filter(s => s.masteryLevel === 'seedling').length}</div>
+                </div>
+                <div style={{ padding: '12px', border: '1px solid #d0d7de', borderRadius: '4px' }}>
+                  <div style={{ fontSize: '12px', color: '#656d76', marginBottom: '4px' }}>🌳 Plant</div>
+                  <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{sentences.filter(s => s.masteryLevel === 'plant').length}</div>
+                </div>
+                <div style={{ padding: '12px', border: '1px solid #d0d7de', borderRadius: '4px' }}>
+                  <div style={{ fontSize: '12px', color: '#656d76', marginBottom: '4px' }}>🌲 Tree</div>
+                  <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{sentences.filter(s => s.masteryLevel === 'tree').length}</div>
+                </div>
               </div>
             </div>
           </div>

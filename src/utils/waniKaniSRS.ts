@@ -1,28 +1,28 @@
 import { GlyphySRSStage, Radical, Kanji, Vocabulary } from '../types';
 
-// WaniKani-style SRS thresholds
+// Plant-based SRS thresholds
 const SRS_THRESHOLDS = {
-  apprentice: { 
+  seed: { 
     meaningCorrect: 1, // Need 1 correct meaning review
     readingCorrect: 1, // Need 1 correct reading review
     interval: 4 * 60 * 60 * 1000 // 4 hours
   },
-  guru: { 
+  sprout: { 
     meaningCorrect: 2, // Need 2 correct meaning reviews
     readingCorrect: 2, // Need 2 correct reading reviews
     interval: 8 * 60 * 60 * 1000 // 8 hours
   },
-  master: { 
+  seedling: { 
     meaningCorrect: 3, // Need 3 correct meaning reviews
     readingCorrect: 3, // Need 3 correct reading reviews
     interval: 24 * 60 * 60 * 1000 // 1 day
   },
-  enlightened: { 
+  plant: { 
     meaningCorrect: 4, // Need 4 correct meaning reviews
     readingCorrect: 4, // Need 4 correct reading reviews
     interval: 7 * 24 * 60 * 60 * 1000 // 7 days
   },
-  burned: { 
+  tree: { 
     meaningCorrect: 5, // Need 5 correct meaning reviews
     readingCorrect: 5, // Need 5 correct reading reviews
     interval: Infinity // Never review again
@@ -30,16 +30,16 @@ const SRS_THRESHOLDS = {
 };
 
 // Stage order for progression
-const STAGE_ORDER: GlyphySRSStage[] = ['apprentice', 'guru', 'master', 'enlightened', 'burned'];
+const STAGE_ORDER: GlyphySRSStage[] = ['seed', 'sprout', 'seedling', 'plant', 'tree'];
 
 /**
  * Get the required correct answers for current stage
  */
 function getRequiredCorrect(stage: GlyphySRSStage, type: 'meaning' | 'reading'): number {
-  if (stage === 'locked' || stage === 'burned') {
+  if (stage === 'locked' || stage === 'tree') {
     return 0;
   }
-  const threshold = SRS_THRESHOLDS[stage];
+  const threshold = SRS_THRESHOLDS[stage as Exclude<GlyphySRSStage, 'locked' | 'tree'>];
   return type === 'meaning' ? threshold.meaningCorrect : threshold.readingCorrect;
 }
 
@@ -63,7 +63,7 @@ function getCurrentCorrect<T extends Radical | Kanji | Vocabulary>(
  * Both meaning AND reading must meet the threshold
  */
 export function canAdvanceStage<T extends Radical | Kanji | Vocabulary>(item: T): boolean {
-  if (item.srsStage === 'burned' || item.srsStage === 'locked') {
+  if (item.srsStage === 'tree' || item.srsStage === 'locked') {
     return false;
   }
 
@@ -84,7 +84,7 @@ export function updateSRSProgressForReview<T extends Radical | Kanji | Vocabular
   type: 'meaning' | 'reading',
   isCorrect: boolean
 ): Partial<T> {
-  if (item.srsStage === 'locked' || item.srsStage === 'burned') {
+  if (item.srsStage === 'locked' || item.srsStage === 'tree') {
     return {};
   }
 
@@ -108,8 +108,8 @@ export function updateSRSProgressForReview<T extends Radical | Kanji | Vocabular
       (updates as any).wrongCount = item.wrongCount + 1;
       // Reset meaning progress on incorrect
       (updates as any).meaningCorrect = 0;
-      // If incorrect, reset to apprentice
-      (updates as any).srsStage = 'apprentice';
+      // If incorrect, reset to seed
+      (updates as any).srsStage = 'seed';
       (updates as any).readingCorrect = 0; // Also reset reading progress
     }
   } else {
@@ -121,8 +121,8 @@ export function updateSRSProgressForReview<T extends Radical | Kanji | Vocabular
       (updates as any).wrongCount = item.wrongCount + 1;
       // Reset reading progress on incorrect
       (updates as any).readingCorrect = 0;
-      // If incorrect, reset to apprentice
-      (updates as any).srsStage = 'apprentice';
+      // If incorrect, reset to seed
+      (updates as any).srsStage = 'seed';
       (updates as any).meaningCorrect = 0; // Also reset meaning progress
     }
   }
@@ -144,8 +144,8 @@ export function updateSRSProgressForReview<T extends Radical | Kanji | Vocabular
       }
     } else {
       // Set next review time based on current stage
-      if (item.srsStage !== 'locked' && item.srsStage !== 'burned') {
-        const threshold = SRS_THRESHOLDS[item.srsStage];
+      if (item.srsStage !== 'locked' && item.srsStage !== 'tree') {
+        const threshold = SRS_THRESHOLDS[item.srsStage as Exclude<GlyphySRSStage, 'locked' | 'tree'>];
         (updates as any).nextReview = Date.now() + threshold.interval;
       }
     }
@@ -165,12 +165,12 @@ export function getItemsNeedingMeaningReview<T extends Radical | Kanji | Vocabul
 ): T[] {
   const now = Date.now();
   return items.filter(item => {
-    if (item.srsStage === 'locked' || item.srsStage === 'burned') {
+    if (item.srsStage === 'locked' || item.srsStage === 'tree') {
       return false;
     }
 
     // Check if meaning review is due
-    const meaningRequired = getRequiredCorrect(item.srsStage as Exclude<GlyphySRSStage, 'locked' | 'burned'>, 'meaning');
+    const meaningRequired = getRequiredCorrect(item.srsStage as Exclude<GlyphySRSStage, 'locked' | 'tree'>, 'meaning');
     const meaningCount = getCurrentCorrect(item, 'meaning');
     
     // Need more correct meaning reviews
@@ -196,12 +196,12 @@ export function getItemsNeedingReadingReview<T extends Radical | Kanji | Vocabul
 ): T[] {
   const now = Date.now();
   return items.filter(item => {
-    if (item.srsStage === 'locked' || item.srsStage === 'burned') {
+    if (item.srsStage === 'locked' || item.srsStage === 'tree') {
       return false;
     }
 
     // Check if reading review is due
-    const readingRequired = getRequiredCorrect(item.srsStage as Exclude<GlyphySRSStage, 'locked' | 'burned'>, 'reading');
+    const readingRequired = getRequiredCorrect(item.srsStage as Exclude<GlyphySRSStage, 'locked' | 'tree'>, 'reading');
     const readingCount = getCurrentCorrect(item, 'reading');
     
     // Need more correct reading reviews
@@ -244,11 +244,11 @@ export function createReviewQueue<T extends Radical | Kanji | Vocabulary>(
  * Calculate next review time based on stage
  */
 export function calculateNextReviewTime(stage: GlyphySRSStage): number | undefined {
-  if (stage === 'locked' || stage === 'burned') {
+  if (stage === 'locked' || stage === 'tree') {
     return undefined;
   }
 
-  const threshold = SRS_THRESHOLDS[stage];
+  const threshold = SRS_THRESHOLDS[stage as Exclude<GlyphySRSStage, 'locked' | 'tree'>];
   if (threshold.interval === Infinity) {
     return undefined;
   }

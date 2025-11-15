@@ -1,0 +1,5016 @@
+"Level","#","Label","Definition","Correct","Attempts","Score %","Part of Speech","Gender"
+1,1,"Le dialogue","The dialogue",,,,,
+1,2,"Observer","To observe, watch; to note, notice (O…)",,,,,
+1,3,"Le dessin","Drawing; design (pattern) (De…)",,,,,
+1,4,"Identifier","To identify; to log on (I…)",,,,,
+1,5,"Réécouter","To listen again (Ré…)",,,,,
+1,6,"Compléter","To complete (C…)",,,,,
+1,7,"Saluer","To greet; to wave to (as a greeting); (military, nautical) to salute",,,,,
+1,8,"Demain","Tomorrow (Adv)",,,,,
+1,9,"L'heure","Hour (Fem)",,,,,
+1,10,"Le monde","The world; people",,,,,
+1,11,"La salle","The hall; room (in a house) (S...)",,,,,
+1,12,"La chambre","The bedroom, any room (C...)",,,,,
+1,13,"La pièce","Room; piece; (money) coin (P...)",,,,,
+1,14,"La salle de classe","The classroom",,,,,
+1,15,"L'accueil","Reception, hospitality; acceptance; (computing) home page (of a website) (Ac…)",,,,,
+1,16,"L'escalier","The step, stair; staircase (Es...)",,,,,
+1,17,"L'université","The university (institution of higher education)",,,,,
+1,18,"Le couloir","Corridor; aisle (in an airliner) (Co…)",,,,,
+1,19,"Jeune","Young (Adj)",,,,,
+1,20,"La fille","Girl; daughter",,,,,
+1,21,"L'homme","Man",,,,,
+1,22,"Le matin","Morning",,,,,
+1,23,"Le soir","Evening",,,,,
+1,24,"L'après-midi","Afternoon (Both masculine and feminine)",,,,,
+1,25,"Écouter","(intransitive) to listen; (transitive) to listen to",,,,,
+1,26,"Associer","To associate",,,,,
+1,27,"La personne","Person; (with ne) no one, nobody",,,,,
+1,28,"Arriver","To arrive; to happen; to manage to",,,,,
+1,29,"Prendre","To take; to eat / drink (P…)",,,,,
+1,30,"Le jour de congé
+un jour de congé
+jour de congé","Day off",,,,"phrase","masc"
+1,31,"Relever","To raise (Rel...)
+raise",,,,"verb",
+1,32,"Indiquer","To indicate
+indicate",,,,"verb",
+1,33,"Combien de fois?","How many times?",,,,,
+1,34,"Nouveau
+nouvelle","New (Adj)",,,,"adjective",
+1,35,"Le mot
+mot
+un mot","Word",,,,"noun","masc"
+1,36,"Identique","Identical (Adj)",,,,"adjective",
+1,37,"Différencier","To differentiate
+differentiate",,,,"verb",
+1,38,"La différence
+une différence
+différence","Difference",,,,"noun","fem"
+1,39,"Différent
+différente","Different (Adj)",,,,"adjective",
+1,40,"La fois
+une fois
+fois","Time, instance, a repition",,,,"noun","fem"
+1,41,"Répondre","To answer
+answer
+to reply
+reply",,,,"verb",
+1,42,"Le son
+un son
+son","Sound",,,,"noun","masc"
+1,43,"Puis","And (Conjunction); Then (Adv) (P...)",,,,,
+1,44,"Lire","To read; (reflexive, se lire) to be read
+read",,,,"verb",
+1,45,"La voix
+une voix
+voix","Voice; (linguistics) grammatical voice",,,,"noun","fem"
+1,46,"La voix passive","The passive voice",,,,,
+1,47,"La voix active","The active voice",,,,,
+1,48,"Haut
+haute","High (Adj)",,,,"adjective",
+1,49,"Russe","Russian (Noun, Adj, and language)",,,,"adjective",
+1,50,"Étudier","To study
+study",,,,"verb",
+1,51,"L'étudiant
+un étudiant
+étudiant","Student",,,,"noun","masc"
+1,52,"L'étudiante
+un étudiant
+étudiant","Student (Feminine)",,,,"noun","fem"
+1,53,"La situation
+une situation
+situation","Situation",,,,"noun","fem"
+1,54,"Le congé
+un congé
+congé","Leave, holiday (time off, absence from work, etc.)
+vacacion",,,,"noun","masc"
+1,55,"Le signe
+un signe
+signe","Sign",,,,"noun","masc"
+1,56,"Le miroir
+un miroir
+miroir","Mirror",,,,"noun","masc"
+1,57,"Sembler","To seem, to appear to be
+seem
+appear to be
+to look
+look",,,,"verb",
+1,58,"La coccinelle","Ladybird (lady-bird), ladybeetle (lady beetle), ladybug (lady-bug) (C…)",,,,,
+1,59,"La solution
+une solution
+solution","Solution (to a problem)",,,,"adverb","fem"
+1,60,"L'embouteillage","Traffic jam",,,,"noun","masc"
+1,61,"La raison
+raison
+une raison","Reason",,,,"noun","fem"
+2,1,"Épeler","To spell (É…)",,,,,
+2,2,"Le prénom","First name, given name (Pr…)",,,,,
+2,3,"La carotte
+une carotte
+carotte","Carrot",,,,"noun","fem"
+2,4,"La faculté","Department (of a university); (by extension) a university (Fa…)",,,,,
+2,5,"La fac","(informal, France) university (like faks)",,,,,
+2,6,"Le cinéma
+un cinéma
+cinéma","Cinema (The art of making movies, the movie industry, or a movie theatre) (C...)",,,,"noun","masc"
+2,7,"Célèbre","Famous (Adj) (C…)",,,,,
+2,8,"La leçon
+une leçon
+leçon","Lesson",,,,"noun","fem"
+2,9,"Le garçon
+garçon
+un garçon","Boy; waiter
+boy",,,,"noun","masc"
+2,10,"Le chocolat
+un chocolat
+chocolat","Chocolate",,,,"noun","masc"
+2,11,"L'été
+un été
+été","Summer",,,,"noun","masc"
+2,12,"Le frère
+un frère
+frère","Brother",,,,"noun","masc"
+2,13,"La tête
+une tête
+tête","Head",,,,"noun","fem"
+2,14,"La fête
+une fête
+fête","Celebration, party; holiday
+party",,,,"noun","fem"
+2,15,"La fenêtre
+fenêtre
+une fenêtre","Window",,,,"noun","fem"
+2,16,"La gare
+une gare
+gare","Train station",,,,"noun","fem"
+2,17,"La gomme
+une gomme","Rubber, eraser",,,,"noun","fem"
+2,18,"La lagune","Lagoon, shallow body of coastal water (La…)",,,,,
+2,19,"Le légume
+un légume
+légume","Vegetable",,,,"noun","masc"
+2,20,"Le griot","Griot (African storyteller); (by extension, derogatory) Someone who tells stories to gullible people (Gr…)",,,,,
+2,21,"Le gilet
+un gilet
+gilet","Sweater, waistcoat, sleeveless jacket",,,,"noun","masc"
+2,22,"La génération
+une génération
+génération","Generation",,,,"noun","fem"
+2,23,"La gymnastique","(sports) gymnastics; (school) PE, physical education",,,,,
+2,24,"Le champagne
+un champagne
+champagne","Champagne",,,,"noun","masc"
+2,25,"L'hôpital
+un hôpital
+hôpital","Hospital",,,,"noun","masc"
+2,26,"La compréhension
+une compréhension
+compréhension","Comprehension, understanding (Co...)",,,,"noun","fem"
+2,27,"La question
+une question
+question","Question",,,,"noun","fem"
+2,28,"Le cube","Cube (all senses); third grader (Cu…)",,,,,
+2,29,"Le loup","Wolf; flaw (Lo…)",,,,,
+2,30,"L'aurore
+aurore","Dawn, daybreak",,,,"noun","fem"
+2,31,"Le lait
+un lait
+lait","Milk",,,,"noun","masc"
+2,32,"Le lait chocolaté
+chocolat au lait","Chocolate milk",,,,"noun","masc"
+2,33,"Le droit
+droit","Right; law (study of law)",,,,"noun","masc"
+2,34,"La loi
+une loi
+loi","Law (legal code)",,,,"noun","fem"
+2,35,"Le travail
+travail
+un travail","Work, job, task",,,,"noun","masc"
+2,36,"Travailler","To work
+work",,,,"verb",
+2,37,"Le détail
+un détail
+détail","Detail",,,,"noun","masc"
+2,38,"La tante
+une tante
+tante","Aunt",,,,"noun","fem"
+2,39,"La tente
+une tente
+tente","Tent",,,,"noun","fem"
+2,40,"L'oncle
+un oncle
+oncle","Uncle",,,,"noun","masc"
+2,41,"Le matin","Morning",,,,,
+2,42,"Le vin
+le vin
+un vin
+du vin","Wine",,,,"noun","masc"
+2,43,"Invariable","Invariable (Adj) (Inv…)",,,,,
+2,44,"Brun","Brown (Adj) (B…)",,,,,
+2,45,"La route
+route
+une route","Road",,,,"noun","fem"
+2,46,"L'autoroute
+une autoroute
+autoroute","Motorway, highway, freeway",,,,"noun","fem"
+2,47,"L'outil
+un outil
+outil","Tool",,,,"noun","masc"
+2,48,"La fourmi","Ant; pins and needles (that feeling of a leg falling asleep) (Fo…)",,,,,
+2,49,"La bataille
+une bataille
+bataille","Battle",,,,"noun","fem"
+2,50,"La liberté
+une liberté
+liberté","Liberty, freedom",,,,"noun","fem"
+2,51,"La Croatie","Croatia",,,,,
+2,52,"Croate","Croatian (Adj) (Cr…)",,,,,
+2,53,"La maison
+une maison
+maison","House",,,,"noun","fem"
+2,54,"La langue
+une langue
+langue","Tongue; language",,,,"noun","fem"
+2,55,"Le cahier
+un cahier
+cahier","Notebook (Ca...)
+copybook",,,,"noun","masc"
+2,56,"Long
+longue","Long (Adj) (L...)
+lengthy",,,,"adjective",
+2,57,"La linguistique","Linguistics (Li…)",,,,,
+2,58,"Hongrois","Hungarian (Adj) (Ho…)",,,,"adjective",
+2,59,"Turc","Turkish (Adj) (Tu…)",,,,,
+2,60,"Espérer","To hope (Es…)",,,,,
+2,61,"La langue maternelle","Maternal language (Lan…ma…)",,,,,
+2,62,"Les études hongroises","Hungarian studies (Hungarologija)",,,,,
+2,63,"Nouvel","(Form of nouveau used before a masculine noun that starts with a vowel sound)",,,,,
+2,64,"Nouveau
+nouvelle","New (Adj)",,,,"adjective",
+2,65,"Vieil","(form of vieux used before a masculine singular noun that starts with a vowel or mute h)",,,,,
+2,66,"Vieux","Old (Adj) (V…)",,,,,
+2,67,"Espagnol","The Spanish language; (Adj) Spanish",,,,,
+2,68,"Japonais","The Japanese language; (Adj) Japanese",,,,,
+2,69,"Afrique","Africa",,,,,
+2,70,"Le continent
+un continent
+continent","Continent",,,,"noun","masc"
+2,71,"La voiture
+une voiture
+voiture","Car",,,,"noun","fem"
+2,72,"Le chat
+un chat
+chat","Cat",,,,"noun","masc"
+2,73,"Le chien
+un chien
+chien","Dog",,,,"noun","masc"
+2,74,"Le cheval
+un cheval
+cheval","Horse",,,,"noun","masc"
+2,75,"Les cheveux
+cheveux
+des cheveux","Hair",,,,"noun plural","masc"
+2,76,"Le Lundi","On Mondays",,,,,
+2,77,"Libre","Free; available (Adj)",,,,,
+2,78,"Bruyant","Noisy (Adj)",,,,,
+2,79,"Le bureau
+un bureau
+bureau","Desk; office",,,,"noun","masc"
+2,80,"Les messieurs","(Plural of le monsieur)",,,,,
+2,81,"Fâché","Angry (Adj) (Fâ…)",,,,,
+2,82,"Être pressé","To be in a hurry (Êt…pr…)",,,,,
+2,83,"Lutetia","The Roman city of Lutetia, the predecessor of present-day Paris.",,,,,
+2,84,"Hôtel Lutetia","The Hôtel Lutetia",,,,,
+2,85,"Être de bonne humeur","To be in a good mood (Être de bonne…)",,,,,
+3,1,"Tu vas bien?","Are you well? (Informal) (T...v...b...)",,,,,
+3,2,"Ça va!","All right! (Ç...v...!)",,,,,
+3,3,"À demain!","See you tomorrow! (À...d...)",,,,,
+3,4,"Comment allez-vous?","How are you? (Formal)",,,,,
+3,5,"Bonne journée!","Have a good day! (Bo...jo...)",,,,,
+3,6,"Tchao!","Ciao!",,,,,
+4,1,"Le diacritique","Diacritic (Special mark)",,,,,
+4,2,"Le signe diacritique","Diacritical mark (another way of saying diacritic)",,,,,
+4,3,"L'accent aigu","Acute accent ( ´ )",,,,,
+4,4,"L'accent grave","Grave accent ( ` )",,,,,
+4,5,"L'accent circonflexe","Circumflex ( ˆ )",,,,,
+4,6,"Le tréma","Diaeresis ( ¨ )",,,,,
+4,7,"La cédille","Cedilla ( ¸ )",,,,,
+4,8,"Le tilde","Tilde ( ˜ )",,,,,
+5,1,"a","/a/",,,,,
+5,2,"oi","/wa/",,,,,
+5,3,"ai","/ɛ/",,,,,
+5,4,"au / eau","/o/",,,,,
+5,5,"ail / aille","/aj/",,,,,
+5,6,"u","/y/ (same as Hungarian ű)",,,,,
+5,7,"ou","/u/",,,,,
+5,8,"é","/e/",,,,,
+5,9,"è","/ɛ/",,,,,
+5,10,"e","/ə/",,,,,
+5,11,"œu","/œ/",,,,,
+5,12,"o","/ɔ/",,,,,
+5,13,"eu / eû","/ø/",,,,,
+5,14,"i","/i/",,,,,
+5,15,"an / en / am / em / ean","/ɑ̃/",,,,,
+5,16,"in / ain / aim / ein / eim / yn / ym","/ɛ̃/",,,,,
+5,17,"on / om","/ɔ̃/",,,,,
+5,18,"un / um","/œ̃/",,,,,
+6,1,"Le verbe","Verb",,,,,
+6,2,"Le nom","Noun; last name",,,,,
+6,3,"L'adjectif","Adjective",,,,,
+6,4,"La voix","(Grammar) Voice",,,,,
+6,5,"Le mode","(Grammar) Mood (La mode means fashion)",,,,,
+6,6,"La voix active","The active voice",,,,,
+6,7,"La voix passive","The passive voice",,,,,
+6,8,"L'aspect","(Grammar) Aspect",,,,,
+6,9,"Le temps","(Grammar) Tense",,,,,
+6,10,"Le mode indicatif","The indicative mood",,,,,
+6,11,"Le mode conditionnel","The conditional mood",,,,,
+6,12,"Le mode subjonctif","The subjunctive mood",,,,,
+6,13,"Le mode impératif","The imperative mood",,,,,
+6,14,"Le cas
+un cas
+cas","(Grammar) Case",,,,"noun","masc"
+6,15,"Le cas nominatif","Nominative",,,,,
+6,16,"Le cas oblique","Oblique",,,,,
+6,17,"La flexion","Inflection",,,,,
+6,18,"La conjugaison","Conjugation",,,,,
+6,19,"La personne","(Grammar) Person; (other contexts) person",,,,,
+6,20,"Le nombre","(Grammar) Number",,,,,
+6,21,"Le genre","(Grammar) Gender",,,,,
+6,22,"Le verbe auxiliaire","Auxiliary verb (or sometimes simply un auxiliaire)",,,,,
+6,23,"La phonologie","Phonology",,,,,
+6,24,"La phonétique","Phonetics",,,,,
+6,25,"La sémantique","Semantics",,,,,
+6,26,"La syntaxe","Syntax",,,,,
+6,27,"La morphologie","Morphology",,,,,
+6,28,"La lexicographie","Lexicography",,,,,
+6,29,"La famille de langues","Language family",,,,,
+6,30,"La diathèse","Diathesis (Another word for grammatical voice, active or passive)",,,,,
+6,31,"Le pronom","Pronoun",,,,,
+6,32,"Singulier","Singular (Adj)",,,,,
+6,33,"Pluriel","Plural (Adj)",,,,,
+6,34,"Le duel","Dual (Grammatical number)",,,,,
+6,35,"Les pronoms toniques","Tonic pronouns (emphatic pronouns)",,,,,
+6,36,"Le pronom relatif","Relative pronoun",,,,,
+7,1,"Le signifié","The signified",,,,,
+7,2,"Le signifiant","The signifier",,,,,
+7,3,"L'image acoustique","The sound image (acoustic image)",,,,,
+7,4,"Le concept","Concept",,,,,
+7,5,"L'Académie française","The Académie française",,,,,
+7,6,"La valeur","(Linguistic) value",,,,,
+8,1,"Lundi
+le lundi
+un lundi","Monday",,,,"noun","masc"
+8,2,"Mardi
+le mardi
+un mardi","Tuesday",,,,"noun","masc"
+8,3,"Mercredi
+le mercredi
+un mercredi","Wednesday",,,,"noun","masc"
+8,4,"Jeudi
+un jeudi
+le jeudi","Thursday",,,,"noun","masc"
+8,5,"Vendredi
+le vendredi
+un vendredi","Friday",,,,"noun","masc"
+8,6,"Samedi
+le samedi
+un samedi","Saturday",,,,"noun","masc"
+8,7,"Dimanche
+un dimanche
+le dimanche","Sunday",,,,"noun","masc"
+9,1,"Septembre
+un septembre","September",,,,"noun","masc"
+9,2,"Octobre
+un octobre","October",,,,"noun","masc"
+9,3,"Novembre
+un novembre","November",,,,"noun","masc"
+9,4,"Décembre
+un décembre","December",,,,"noun","masc"
+9,5,"Janvier
+un janvier","January",,,,"noun","masc"
+9,6,"Février
+un février","February",,,,"noun","masc"
+9,7,"Mars
+un mars","March",,,,"noun","masc"
+9,8,"Avril
+un avril","April",,,,"noun","masc"
+9,9,"Mai
+un mai","May",,,,"noun","masc"
+9,10,"Juin
+un juin","June",,,,"noun","masc"
+9,11,"Juillet
+un juillet","July",,,,"noun","masc"
+9,12,"Août
+un août","August",,,,"noun","masc"
+10,1,"Un
+une","A; one",,,,"article",
+10,2,"Deux","Two",,,,"quantifier",
+10,3,"Trois","Three",,,,"quantifier",
+10,4,"Quatre","Four",,,,"quantifier",
+10,5,"Cinq","Five",,,,"quantifier",
+10,6,"Six","Six",,,,"quantifier",
+10,7,"Sept","Seven",,,,"quantifier",
+10,8,"Huit","Eight",,,,"quantifier",
+10,9,"Neuf","Nine",,,,"quantifier",
+10,10,"Dix","Ten",,,,"quantifier",
+10,11,"Onze","Eleven",,,,"quantifier",
+10,12,"Douze","Twelve",,,,"quantifier",
+10,13,"Treize","Thirteen",,,,"quantifier",
+10,14,"Quatorze","Fourteen",,,,"quantifier",
+10,15,"Quinze","Fifteen",,,,"quantifier",
+10,16,"Seize","Sixteen",,,,"quantifier",
+10,17,"Dix-sept","Seventeen",,,,,
+10,18,"Dix-huit","Eighteen",,,,,
+10,19,"Dix-neuf","Nineteen",,,,,
+10,20,"Vingt","Twenty",,,,,
+10,21,"Vingt-et-un","Twenty-one",,,,,
+10,22,"Trente","Thirty",,,,"quantifier",
+10,23,"Quarante","Forty",,,,"quantifier",
+10,24,"Cinquante","Fifty",,,,"quantifier",
+10,25,"Soixante","Sixty",,,,"quantifier",
+10,26,"Soixante-dix","Seventy",,,,,
+10,27,"Quatre-vingt","Eighty",,,,,
+10,28,"Quatre-vingt-dix","Ninety",,,,,
+10,29,"Cent","Hundred",,,,"quantifier",
+10,30,"Mille","One thousand
+a thousand",,,,"quantifier",
+10,31,"Un million","One million",,,,,
+10,32,"Un milliard","One billion",,,,,
+10,33,"Un billion","One trillion",,,,,
+10,34,"Un billiard","One quadrillion",,,,,
+10,35,"Un trillion","One quintillion",,,,,
+11,1,"Vous êtes libres demain?","Are you free tomorrow?",,,,,
+11,2,"Comment dites-vous…?","How do you say…?",,,,,
+11,3,"Quelle heure est-il?","What time is it?",,,,,
+11,4,"Il est une heure","It is one o'clock.",,,,,
+11,5,"Il est deux heures","It is two o'clock.",,,,,
+11,6,"Il est deux heures et quart","It is 2:15",,,,,
+11,7,"ll est une heure et demie","It is 1:30",,,,,
+11,8,"Il est deux heures moins le quart","It is 1:45",,,,,
+11,9,"Il est six heures moins dix","It is 5:50 (10 to 6:00)",,,,,
+11,10,"Il est minuit","It is midnight",,,,,
+11,11,"Il est midi","It is midday",,,,,
+11,12,"À quelle heure commence…?","At what time does X start…?",,,,,
+11,13,"De quelle heure à quelle heure","From what time to what time?",,,,,
+11,14,"Il fait très chaud","(About the weather) It is very hot",,,,,
+11,15,"Il fait beau","(About the weather) It's nice out",,,,,
+11,16,"Quel temps fait-il?","How is the weather?",,,,,
+11,17,"Il fait du soleil","(About the weather) It is sunny",,,,,
+11,18,"Il fait frais","(About the weather) It is chilly out",,,,,
+11,19,"Il fait du vent","(About the weather) It's windy",,,,,
+11,20,"Il fait froid","(About the weather) It is cold",,,,,
+12,1,"Les nombres approximatifs","Approximate numbers",,,,,
+12,2,"La dizaine
+une dizaine
+dizaine","About ten",,,,"noun","fem"
+12,3,"La huitaine","About eight (usually means about a week)",,,,,
+12,4,"La douzaine","A group of twelve, dozen; about 12",,,,,
+12,5,"La quinzaine
+une quinzaine
+quinzaine","About fifteen (usually means about two weeks)
+around fifteen",,,,"noun","fem"
+12,6,"La vingtaine
+une vingtaine
+vingtaine","About twenty
+twenty something
+around twenty
+about twenty",,,,"noun","fem"
+12,7,"La trentaine
+une trentaine
+trentaine","About thirty
+thirty something
+around thirty",,,,"noun","fem"
+12,8,"La quarantaine
+une quarantaine
+quarantaine","About forty
+forty something
+around forty",,,,"noun","fem"
+12,9,"La cinquantaine
+une cinquantaine","About fifty
+fifty something
+around fifty",,,,"quantifier",
+12,10,"La soixantaine","About sixty",,,,,
+12,11,"La centaine
+une centaine
+centaine","About a hundred
+a hundred",,,,"noun","fem"
+12,12,"Le millier","A thousand, a number of about a thousand",,,,,
+12,13,"La soixante-dizaine","(Rare) About 70",,,,,
+12,14,"La quatre-vingtaine","(Rare) About 80",,,,,
+12,15,"La quatre-vingt-dizaine","(Rare) About 90",,,,,
+13,1,"Avoir faim","To be hungry",,,,,
+13,2,"La soif
+une soif
+soif","Thirst",,,,"noun","fem"
+13,3,"Boire","To drink
+drink",,,,"verb",
+13,4,"Les cheveux
+cheveux
+des cheveux","Hair",,,,"noun plural","masc"
+13,5,"Le cheveu","A headhair (still with definite article)",,,,,
+13,6,"Chevelu","Hairy, long-haired (Adj) (Ch…)",,,,,
+13,7,"Les yeux","Eyes (plural of œil)",,,,,
+13,8,"L'œil","Eye; eye (of a needle); glyph",,,,,
+13,9,"Les œils","(Plural of œil as the eye of a needle or as a glyph, 'les yeux' is for the anatomical eye)",,,,,
+13,10,"Seul
+seule","Alone, on one's own (Adj)",,,,"adjective",
+13,11,"Seulement","Only (Adv)",,,,"adverb",
+13,12,"Tout seul","All alone, alone, by oneself (Adj and adv) (T...s...)",,,,,
+13,13,"Enrhumé","Having a cold (Adj) (Enr…)",,,,,
+13,14,"Le sommeil
+un sommeil
+sommeil","Sleep",,,,"noun","masc"
+13,15,"Naître","To be born
+be born",,,,"verb",
+13,16,"Naïf","Naive (Adj)",,,,,
+13,17,"La semaine
+semaine
+une semaine","Week",,,,"noun","fem"
+13,18,"Le jour
+un jour
+jour","Day",,,,"noun","masc"
+13,19,"La journée
+une journée
+journée","Day, daytime",,,,"noun","fem"
+13,20,"Au jour le jour","From day to day, one day at a time, hand-to-mouth (Adv) (Au jo…le jo…)",,,,,
+13,21,"Jour pour jour","To the day (Adv) (It was a week ago to the day)",,,,,
+13,22,"Le jour du Seigneur","Sunday, Lord's Day (Jo…du Seig…)",,,,,
+13,23,"Le seigneur
+un seigneur
+seigneur","Lord, master",,,,"noun","masc"
+13,24,"Le Seigneur","God, the Lord (Seig…)",,,,,
+13,25,"Tous les jours","Every day (Tous les j...)",,,,,
+13,26,"Toute la journée","All day (Tou…la jou…)",,,,,
+13,27,"Les parties de la journée","The parts of the day, times of the day (morning, midday, afternoon)",,,,,
+13,28,"L'après-midi","Afternoon (Both masculine or feminine)",,,,,
+13,29,"Le soir","Evening",,,,,
+13,30,"Chercher","To look for (Ch...)
+look for
+to search for
+search for
+seek
+seek",,,,"verb",
+13,31,"Rechercher","To look for; to be searching for (Re...)
+search for
+to seek
+seek
+to hunt
+hunt",,,,"verb",
+13,32,"Le bénévole
+un bénévole
+bénévole","Volunteer",,,,"noun","masc"
+13,33,"Bénévole","Voluntary (Adj)",,,,,
+13,34,"L'hôtel
+un hôtel
+hôtel","Hotel",,,,"noun","masc"
+13,35,"Portugais
+portugaise","Portuguese (Adj)",,,,"adjective",
+13,36,"Le Portugal","Portugal",,,,,
+13,37,"La littérature française","French literature",,,,,
+13,38,"Le prénom","First name, given name (Pr…)",,,,,
+13,39,"Le nom","Noun; last name",,,,,
+13,40,"La nationalité","Nationality",,,,,
+13,41,"L'étude","Study",,,,,
+13,42,"La fiche
+une fiche
+fiche","Card (in a file) (Fic...)",,,,"noun","fem"
+13,43,"L'heure","Hour (Fem)",,,,,
+13,44,"À l'heure","On time (Adj and adv) (À l'h…)",,,,,
+14,1,"Voyager","To travel
+travel",,,,"verb",
+14,2,"Apprendre","To learn
+learn",,,,"verb",
+14,3,"Aimer","To like
+like
+love
+to love",,,,"verb",
+14,4,"Parler","To speak
+speak",,,,"verb",
+14,5,"Rester","To stay
+stay",,,,"verb",
+14,6,"Déjeuner","To have lunch
+lunch
+have lunch
+to lunch",,,,"verb",
+14,7,"Dîner","To dine
+dine",,,,"verb",
+14,8,"Marcher","To walk
+walk",,,,"verb",
+14,9,"Fonctionner","To function
+function",,,,"verb",
+14,10,"Commencer","To begin
+begin
+to start
+start",,,,"verb",
+14,11,"Terminer","To finish (T...)
+finish
+to terminate
+terminate",,,,"verb",
+14,12,"Coûter","To cost
+cost",,,,"verb",
+14,13,"Habiter","To live in
+live in",,,,"verb",
+14,14,"La pièce","Room; piece; (money) coin (P...)",,,,,
+14,15,"Gratuit
+gratuite","Free (Of price) (Adj)",,,,"adjective",
+14,16,"Marcher","To walk
+walk",,,,"verb",
+14,17,"Tôt","Early (Adv) (T…)",,,,,
+14,18,"Tard","Late (Adv) (Ta…)",,,,,
+14,19,"Londres","London",,,,,
+14,20,"Belgrade","Belgrade",,,,,
+14,21,"Le passeport
+un passeport
+passeport","Passport",,,,"noun","masc"
+14,22,"Chanter","To sing
+sing",,,,"verb",
+14,23,"Le document
+un document
+document","Document; (computing) file)",,,,"noun","masc"
+14,24,"Le livre
+un livre
+livre","Book",,,,"noun","masc"
+14,25,"La livre
+une livre
+livre","Pound",,,,"noun","fem"
+14,26,"La librairie
+une librairie
+librairie","Bookstore",,,,"noun","fem"
+14,27,"La bibliothèque
+une bibliothèque
+bibliothèque","Library",,,,"noun","fem"
+14,28,"Le bibliothécaire
+La bibliothécaire","Librarian (can be male or female)",,,,,
+14,29,"Manger","To eat
+eat",,,,"verb",
+14,30,"Désirer","To desire
+desire",,,,"verb",
+14,31,"La tour","Tower",,,,,
+14,32,"Le tour
+un tour
+tour","Turn, tour (like le tour de France)",,,,"noun","masc"
+14,33,"Le journalisme","Journalism",,,,,
+14,34,"La Tour Eiffel","The Eiffel Tower",,,,,
+14,35,"Le Tour de France","The Tour de France",,,,,
+14,36,"La peinture
+une peinture
+peinture","Painting (not tableau)",,,,"noun","fem"
+14,37,"La sœur","Sister",,,,,
+14,38,"La carte d'identité","Identity document",,,,,
+14,39,"Loin","Far (Adv)",,,,,
+14,40,"Loin d'ici","Far from here (Loin d…)",,,,,
+14,41,"Près","Near (Adv) (P…)",,,,,
+14,42,"Près d'ici","Near to here (Près d...)",,,,,
+14,43,"Rêver","To dream
+dream",,,,"verb",
+14,44,"Le rêve
+un rêve
+rêve","Dream",,,,"noun","masc"
+14,45,"L'hiver
+hiver
+un hiver","Winter",,,,"noun","masc"
+14,46,"L'anniversaire
+un anniversaire
+anniversaire","Birthday, anniversary",,,,"noun","masc"
+14,47,"Le printemps
+un printemps
+printemps","Spring (the season)",,,,"noun","masc"
+14,48,"L'été
+un été
+été","Summer",,,,"noun","masc"
+14,49,"L'automne
+un automne
+automne","Autumn, fall",,,,"noun","masc"
+14,50,"La neige
+une neige
+neige","Snow",,,,"noun","fem"
+14,51,"La pluie
+pluie","Rain",,,,"noun","fem"
+14,52,"Le Sénégal","Senegal",,,,,
+14,53,"Le pays
+un pays
+pays","Country",,,,"noun","masc"
+14,54,"Le Brésil","Brazil",,,,,
+14,55,"Les Pays-Bas","The Netherlands",,,,,
+14,56,"La mosquée","Mosque",,,,,
+14,57,"Le Maroc","Morocco",,,,,
+14,58,"Marocain
+marocaine","Moroccan (Adj); A Moroccan (Noun)",,,,"adjective",
+14,59,"Suisse","Swiss (Adj); a Swiss person (Noun)",,,,,
+14,60,"La Suisse","Switzerland",,,,,
+14,61,"La ville
+une ville
+ville","City",,,,"noun","fem"
+14,62,"Léman","Lake Geneva",,,,,
+14,63,"Genève","Geneva (city)",,,,,
+14,64,"Les mois de l'année","The months of the year",,,,,
+14,65,"L'année","Year",,,,,
+14,66,"Le mois
+un mois
+mois","Month",,,,"noun","masc"
+14,67,"Venir","To come
+come",,,,"verb",
+14,68,"La température
+une température
+température","Temperature",,,,"noun","fem"
+14,69,"Le cours
+un cours
+cours","Course",,,,"noun","masc"
+14,70,"La patience
+une patience
+patience","Patience",,,,"noun","fem"
+14,71,"La faim
+une faim
+faim","Hunger",,,,"noun","fem"
+14,72,"Le feu
+un feu
+feu","Fire",,,,"noun","masc"
+14,73,"Les feux d'artifice","Fireworks",,,,,
+14,74,"Le permis de conduire","Driving license",,,,,
+14,75,"Budapest","Budapest",,,,,
+14,76,"Le Caire","Cairo",,,,,
+14,77,"Istanbul","Istanbul",,,,,
+14,78,"La Turquie","Turkey (T…)",,,,,
+14,79,"Serbo-croate","Serbo-Croatian (Adj)",,,,,
+14,80,"Serbe","Serbian (Adj)",,,,,
+14,81,"Hongrois","Hungarian (Adj) (Ho…)",,,,"adjective",
+14,82,"Arabe","Arabic (Adj)",,,,"adjective",
+14,83,"La Yougoslavie","Yugoslavia",,,,,
+14,84,"Yougoslave","Yugoslavian (Adj)",,,,"adjective",
+14,85,"Croate","Croatian (Adj) (Cr…)",,,,,
+14,86,"La Slovénie","Slovenia",,,,,
+14,87,"Bosniaque","Bosniak (Adj)",,,,"adjective",
+14,88,"Slovène","Slovenian (Adj)",,,,"adjective",
+14,89,"Monténégrin","Montenegrin (Adj)",,,,"adjective",
+15,1,"Poser","To put, place; to pose (a question)",,,,,
+15,2,"Le quartier
+un quartier
+quartier","Quarter, district, neighborhood (Q...)
+quarter",,,,"noun","masc"
+15,3,"L'endroit
+un endroit
+endroit","Place, spot (E...)",,,,"noun","masc"
+15,4,"Le père
+un père
+père","Father, dad",,,,"noun","masc"
+15,5,"Le grand-père","Grandfather",,,,,
+15,6,"Le beau-père","Father-in-law; stepfather",,,,,
+15,7,"Le café
+un café
+café","Coffee; café",,,,"noun","masc"
+15,8,"Tranquille","Quiet, tranquil (Adj)",,,,"adjective",
+15,9,"Derrière","Behind (Adv and preposition)",,,,"preposition",
+15,10,"Le derrière","Bottom, bum, backside (Der…)",,,,,
+15,11,"En face de","Across from, opposite (Preposition) (En fa…)",,,,,
+15,12,"L'homme","Man",,,,,
+15,13,"En homme","(chiefly of a trans, non-binary or cross-dressing person) Dressed in masculine clothing (Adv) (En h…)",,,,,
+15,14,"En femme","(chiefly of a trans, non-binary or cross-dressing person) Dressed in feminine clothing (Adv) (En f…)",,,,,
+15,15,"La madame","Mrs, Madam
+Mrs.",,,,"noun","fem"
+15,16,"La mademoiselle
+une mademoiselle
+la mademoiselle","Miss, young lady
+young woman",,,,"noun","fem"
+15,17,"La place","Place, square, plaza, piazza; place, space, room",,,,,
+15,18,"Le centre-ville","City center",,,,,
+15,19,"Le journaliste
+un journaliste
+journaliste","Journalist, reporter (can be masc or fem)",,,,"noun","masc"
+15,20,"L'église
+une église
+église","Church",,,,"noun","fem"
+15,21,"La synagogue","Synagogue",,,,,
+15,22,"Le temple
+un temple
+temple","Temple",,,,"noun","masc"
+15,23,"Le templier","Templar",,,,,
+15,24,"Trouver","To find
+find
+to find out
+find out",,,,"verb",
+15,25,"Joli
+jolie","Pretty (Adj)",,,,"adjective",
+15,26,"Mignon","Cute (of a baby, an animal, etc.); cute (sexually attractive) (Adj)",,,,,
+15,27,"Le théâtre
+un théâtre
+théâtre","Theatre (venue for performing plays and drama)
+theater",,,,"noun","masc"
+15,28,"Le restaurant
+un restaurant
+restaurant","Restaurant",,,,"noun","masc"
+15,29,"La restauration
+restauration
+une restauration","Restoration",,,,"noun","fem"
+15,30,"Restaurer","To restore; (reflexive) to dine, to eat
+restore",,,,"verb",
+15,31,"La banque
+une banque
+banque","Bank",,,,"noun","fem"
+15,32,"Le resto","(colloquial) resto, restaurant",,,,,
+15,33,"Le bistro","Bistro",,,,,
+15,34,"Le marché
+un marché
+marché","Market",,,,"noun","masc"
+15,35,"L'hypermarché","Hypermarket",,,,,
+15,36,"Le supermarché
+un supermarché
+supermarché","Supermarket",,,,"noun","masc"
+15,37,"Bon marché","Cheap, inexpensive (Adj) (Bon ma…)",,,,,
+15,38,"À côté de","Next to (preposition)",,,,,
+15,39,"Simplement","Simply, just (Adv)",,,,"adverb",
+15,40,"L'école
+une école
+école","School",,,,"noun","fem"
+15,41,"L'écolier","Schoolboy; (historical) (university) student (especially in the Middle Ages) (Éc…)",,,,,
+15,42,"Le trottoir
+un trottoir
+trottoir","Sidewalk, pavement",,,,"noun","masc"
+15,43,"Faire le trottoir","(figuratively) to act as a prostitute (Fai…le trot…)",,,,,
+15,44,"Le lieu
+un lieu
+lieu","Place (Li...)",,,,"noun","masc"
+15,45,"Le cinéma
+un cinéma
+cinéma","Cinema (The art of making movies, the movie industry, or a movie theatre) (C...)",,,,"noun","masc"
+15,46,"La halle","Hall; covered market or similar building (H…)",,,,,
+15,47,"Les Halles","Les Halles, Paris's former central fresh food market. It was demolished in 1971 and replaced by the Forum des Halles, a modern shopping mall built largely underground",,,,,
+15,48,"La page
+une page
+page","Page",,,,"noun","fem"
+15,49,"Retrouver","(transitive) To go back to, to return to (Retrou...)",,,,,
+15,50,"La réponse
+une réponse
+réponse","Answer
+response",,,,"noun","fem"
+15,51,"Donner","To give
+give",,,,"verb",
+15,52,"Le square","Small public garden in the middle of a square (Sq…)",,,,,
+15,53,"Localiser","To locate (L…)",,,,,
+15,54,"L'aide-mémoire","Memory aid",,,,,
+15,55,"Tout simplement","Quite simply (Tout sim…)",,,,,
+15,56,"Madagascar","Madagascar (DOESN'T GO WITH DEFINITE ARTICLE)",,,,,
+15,57,"En général","Generally, in general (Adv) (En gé…)",,,,,
+15,58,"La campagne
+une campagne
+campagne","Countryside (C...)",,,,"noun","fem"
+15,59,"La banlieue
+une banlieue
+banlieue","Suburbs, inner city
+projects
+council estate",,,,"noun","fem"
+15,60,"Normalement","Normally (Adv)",,,,"adverb",
+15,61,"Normal
+normale","Normal (Adj)",,,,"adjective",
+15,62,"Pendant","During (Preposition) (P...)",,,,"preposition",
+15,63,"Le centre
+un centre
+centre","Center
+center
+middle",,,,"noun","masc"
+15,64,"D'habitude","Usually (Adv) (D'h…)",,,,,
+15,65,"Habituellement","Usually (Adv) (Hab...)",,,,"adverb",
+15,66,"L'habitude","Habit",,,,,
+15,67,"Légèrement","Lightly, gently, softly (Adv) (Lég...)",,,,"adverb",
+15,68,"Léger
+légère","Light (Adj) (Lég...)",,,,"adjective",
+15,69,"Rentrer","To go back to, to return (Ren...)
+go back to
+return",,,,"verb",
+15,70,"Le monde arabe","The Arab World (Le m…)",,,,,
+16,1,"Lis","(First person singular present indicative form of lire)",,,,,
+16,2,"Réaliser","To perform (activities, task); to realize (make real); to realize (become aware of) (Réa…)",,,,,
+16,3,"L'émission
+une émission
+émission","Programme, show; emission",,,,"noun","fem"
+16,4,"Le sionisme","Zionism",,,,,
+16,5,"Offrir","To offer
+offer",,,,"verb",
+16,6,"Participer","To participate (in = à) (Par…)",,,,,
+16,7,"Envoyer","To send
+send",,,,"verb",
+16,8,"Le concours
+un concours
+concours","Competition; (competitive) exam
+competitive exam",,,,"noun","masc"
+16,9,"Concourir","To compete (Conc…)",,,,,
+16,10,"Le bulletin
+bulletin
+un bulletin","Bulletin; report",,,,"noun","masc"
+16,11,"Tirer","To pull
+pull",,,,"verb",
+16,12,"Le tirage
+un tirage
+tirage","Draw, drawing (drawing lots)",,,,"noun","masc"
+16,13,"Gagner","To win
+win",,,,"verb",
+16,14,"Adresser","To address
+address",,,,"verb",
+16,15,"L'adresse
+une adresse
+adresse","Address (the description of a location); dexterity, skill",,,,"noun","fem"
+16,16,"E-mail-adresse","E-mail address (E-mail…)",,,,,
+16,17,"L'invitation
+une invitation
+invitation","Invitation",,,,"noun","fem"
+16,18,"Inviter","To invite
+invite",,,,"verb",
+16,19,"Le nombre","Number (The word nombre refers to a quantity or a mathematical concept, e.g. a number of items in a set, real numbers, complex numbers, etc.)",,,,,
+16,20,"Le numéro","Number (refers to a label made of digits, e.g. a rank, a jersey number, a phone number or a winning lottery number.)",,,,,
+16,21,"Le numéro de téléphone","Telephone number",,,,,
+16,22,"L'âge
+un âge
+âge","Age",,,,"noun","masc"
+16,23,"Âgé
+âgée","Old, elderly (Adj) (Â...)",,,,"adjective",
+16,24,"Le jeu
+un jeu
+jeu","Game; play (at a theatre)",,,,"noun","masc"
+16,25,"Jouer","To play
+play",,,,"verb",
+16,26,"Les mesdames","(Plural of madame)",,,,,
+16,27,"Les mesdemoiselles","(Plural of mademoiselle)",,,,,
+16,28,"Bientôt","Soon (Adv)",,,,"adverb",
+16,29,"Effectuer","To carry out (Ef...) (Think about to effect change)
+carry out
+to conduct
+conduct",,,,"verb",
+16,30,"Effectif","Real, actual (Adj) (Eff…)",,,,,
+16,31,"Effectivement","Indeed (Adv) (Eff…)",,,,,
+16,32,"En effet","Indeed (THIS DOES NOT TRANSLATE TO IN EFFECT) (ADV) (En eff…)",,,,,
+16,33,"Le finaliste","Finalist (Can be masculine or feminine)",,,,,
+16,34,"Le demi-finaliste","Semi-finalist (can be masculine or feminine)",,,,,
+16,35,"La Gambie","Gambia",,,,,
+16,36,"L'architecture","Architecture",,,,,
+16,37,"Adorer","To love, to adore; (religion) to worship",,,,,
+16,38,"La musique
+une musique
+musique","Music",,,,"noun","fem"
+16,39,"La musique classique
+une musique classique
+musique classique","Classical music",,,,"noun","fem"
+16,40,"Musiquer","To make music (Mu…)",,,,,
+16,41,"Le rap","Rap (Music)",,,,,
+16,42,"Le professeur
+un professeur
+professeur","Teacher; professor",,,,"noun","masc"
+16,43,"Fêter","To celebrate (F...)
+celebrate",,,,"verb",
+16,44,"La fête
+une fête
+fête","Celebration, party; holiday
+party",,,,"noun","fem"
+16,45,"Le mari
+un mari
+mari","Husband",,,,"noun","masc"
+16,46,"La femme
+femme
+une femme","Woman; wife",,,,"noun","fem"
+16,47,"Marié","Married (Adj) (Ma…)",,,,,
+16,48,"L'argent
+argent","Money; silver",,,,"noun","masc"
+16,49,"La passion
+une passion
+passion","Passion",,,,"noun","fem"
+16,50,"Le cyclisme
+un cyclisme
+cyclisme","Cycling",,,,"noun","masc"
+16,51,"Le vélo
+un vélo
+vélo","(usually informal) Bike, bicycle, cycle",,,,"noun","masc"
+16,52,"La bicyclette","Bicycle",,,,,
+16,53,"Assister","To assist; (intransitive, followed by à) to attend, to be present
+assist",,,,"verb",
+16,54,"Tunisien","Tunisian (Adj and noun)",,,,,
+16,55,"La retraite
+retraite
+une retraite","Retirement",,,,"noun","fem"
+16,56,"L'annonce
+une annonce
+annonce","Announcement",,,,"noun","fem"
+16,57,"Annoncer","To announce
+announce",,,,"verb",
+16,58,"En direct","Directly; (idiomatic) live (in real time) (Adv) (En di…)",,,,,
+16,59,"Associer","To associate",,,,,
+16,60,"Environ","Approximately (Adv)
+about
+around",,,,"adverb",
+16,61,"Le groupe
+un groupe
+groupe","Group",,,,"noun","masc"
+16,62,"Le groupe de rock","Rock band",,,,,
+16,63,"La photo
+une photo
+photo","Photo",,,,"noun","fem"
+16,64,"La photographie
+une photographie
+photographie","Photography",,,,"noun","fem"
+16,65,"Chaque","Each, every",,,,"adjective",
+16,66,"Le candidat
+un candidat
+candidat","Candidate
+applicant",,,,"noun","masc"
+16,67,"L'étranger
+un étranger
+étranger","Foreigner",,,,"noun","masc"
+16,68,"Étranger
+étrangére","Foreign (Adj)",,,,"adjective",
+16,69,"Le Louvre","The Louvre",,,,,
+16,70,"La préposition","(Grammar) Preposition",,,,,
+16,71,"Les noms de pays","The names of countries",,,,,
+16,72,"Les États-Unis d'Amérique","The United States of America",,,,,
+16,73,"La voyelle","Vowel",,,,,
+16,74,"La consonne","Consonant",,,,,
+16,75,"La semi-voyelle","Semivowel",,,,,
+16,76,"Choisir","To choose
+choose",,,,"verb",
+16,77,"Le monument
+un monument
+monument","Monument",,,,"noun","masc"
+16,78,"Deviner","To guess; to work out, figure out; to sense, perceive (Dev…)",,,,,
+16,79,"Devoir","To have to (D...)
+have to",,,,"verb",
+16,80,"Les devoirs
+devoirs
+des devoirs","Homework
+schoolwork",,,,"noun plural","masc"
+16,81,"Lire","To read; (reflexive, se lire) to be read
+read",,,,"verb",
+16,82,"Écrire","To write
+write
+to write down
+write down",,,,"verb",
+16,83,"Suivant","Next, following (Adj) (Sui...)",,,,,
+16,84,"Prochain
+prochaine","Next, following (Adj) (Pr...)",,,,"adjective",
+16,85,"Suivre","To follow (S...)
+follow",,,,"verb",
+16,86,"La culture
+une culture
+culture","Culture",,,,"noun","fem"
+16,87,"Culturel
+culturelle","Cultural (Adj)",,,,"adjective",
+16,88,"Polonais
+polonaise","Polish (Noun and adj)",,,,"adjective",
+16,89,"La cafétéria","Cafeteria",,,,,
+16,90,"Content
+contente","Glad, happy (Adj)",,,,"adjective",
+16,91,"Mécontent
+mécontente","Discontented (Adj)",,,,"adjective",
+16,92,"Le bébé
+un bébé
+bébé","Baby",,,,"noun","masc"
+16,93,"Personnellement","Personally (Adv)",,,,"adverb",
+17,1,"La baguette","Stick, rod, any long thin object; (food) baguette, French stick; chopstick; (music) drumstick; wand (magic wand); (Louisiana) barrel of a gun",,,,,
+17,2,"Quelque","Some (Pronoun)",,,,,
+17,3,"La carte
+une carte
+carte","Map; card",,,,"noun","fem"
+17,4,"Dire","To say
+say",,,,"verb",
+17,5,"Le trèfle","Clover",,,,,
+17,6,"L'Irlande","Ireland",,,,,
+17,7,"L'île
+une île
+île","Island, isle",,,,"noun","fem"
+17,8,"Le voisinage
+un voisinage
+voisinage","Neighbourhood
+neighborhood
+neighbours
+neighbors",,,,"noun","masc"
+17,9,"Le voisin
+un voisin
+voisin","Neighbor (male)
+neighbor",,,,"noun","masc"
+17,10,"Le flamenco","Flamenco",,,,,
+17,11,"L'Espagne","Spain",,,,,
+17,12,"Le parfum
+un parfum
+parfum","Perfume",,,,"noun","masc"
+17,13,"Le Royaume-Uni","The United Kingdom",,,,,
+17,14,"Les spaghettis","Spaghetti",,,,,
+17,15,"L'acropole d'Athènes","The Acropolis of Athens",,,,,
+17,16,"Athènes","Athens (I think this doesn't go with a definite article)",,,,,
+17,17,"Le kilomètre
+un kilomètre
+kilomètre","Kilometer",,,,"noun","masc"
+17,18,"Le mètre
+un mètre
+mètre","Meter",,,,"noun","masc"
+17,19,"La distance
+une distance
+distance","Distance",,,,"noun","fem"
+17,20,"Le chiffre
+un chiffre
+chiffre","Number, numeral, character, figure (Ch...)",,,,"noun","masc"
+17,21,"Entre","Between; among (Preposition)",,,,"preposition",
+17,22,"Varsovie","Warsaw",,,,,
+17,23,"L'habitant
+un habitant
+habitant","Inhabitant",,,,"noun","masc"
+17,24,"La région
+région
+une région","Region",,,,"noun","fem"
+17,25,"Superficiel
+superficielle","Superficial (Adj)",,,,"adjective",
+17,26,"La superficie","Area (amount of 2-dimensional space); surface",,,,,
+17,27,"Le symbole
+un symbole
+symbole","Symbol",,,,"noun","masc"
+17,28,"Symbolique","Symbolic (Adj)",,,,"adjective",
+17,29,"Le salaire minimum","Minimum wage",,,,,
+17,30,"Le texte
+un texte
+texte","Text",,,,"noun","masc"
+17,31,"L'an","Year (short version)",,,,,
+17,32,"L'expérience
+une expérience
+expérience","Experience; experiment, trial, test",,,,"noun","fem"
+17,33,"Même","Same (Adj)",,,,"adj, adverb",
+17,34,"Car","As, since, because, for (Conjunction) (Ca…)",,,,,
+17,35,"Le frère
+un frère
+frère","Brother",,,,"noun","masc"
+17,36,"L'enfant
+un enfant
+enfant","Child",,,,"noun","masc"
+17,37,"Le perroquet
+un perroquet
+perroquet","Parrot",,,,"noun","masc"
+17,38,"Le singe
+un singe
+singe","Monkey",,,,"noun","masc"
+17,39,"Le chanteur
+un chanteur
+chanteur","Singer",,,,"noun","masc"
+17,40,"Le caractère
+un caractère
+caractère","Nature, character",,,,"noun","masc"
+17,41,"Les animaux","(masculine plural of animal)",,,,,
+17,42,"L'animal
+un animal
+animal","Animal",,,,"noun","masc"
+17,43,"Domestique","Domestic (Adj)",,,,"adjective",
+17,44,"Les animaux domestiques","Domestique animals",,,,,
+17,45,"La baby-sitter","Babysitter",,,,,
+17,46,"Mauvais
+mauvaise","Bad (Adj)",,,,"adjective",
+17,47,"Le rendez-vous","Date; rendezvous; appointment (R…)",,,,,
+17,48,"En retard","Late (Adj) (En r...)",,,,"adverb",
+17,49,"À l'avance","Early (Adj) (À l'a…)",,,,,
+17,50,"La bonne excuse","Good excuse",,,,,
+17,51,"L'excuse","Excuse",,,,,
+17,52,"Excuser","To excuse
+excuse",,,,"verb",
+17,53,"Selon","According to (Preposition)",,,,"preposition",
+17,54,"La viande
+une viande
+viande","Meat",,,,"noun","fem"
+17,55,"En été","In the summer",,,,,
+17,56,"Épargner","To save (money, time) (Ép...)
+save money
+to save up
+save up",,,,"verb",
+17,57,"Économiser","To save (Money) (Éc...)
+save
+to save up
+save up",,,,"verb",
+17,58,"L'économie
+une économie
+économie","Economics; economy",,,,"noun","fem"
+17,59,"Accumuler","To accumulate
+accumulate
+to add up
+add up",,,,"verb",
+17,60,"Voyager en bus","To travel by bus (V…en b…)",,,,,
+17,61,"Le train
+un train
+train","Train",,,,"noun","masc"
+17,62,"Voyager en train","To travel by train",,,,,
+17,63,"Voyager en voiture","To travel by car",,,,,
+17,64,"Voyager à pied","To travel by foot",,,,,
+17,65,"Voyager en avion","To travel by plane",,,,,
+17,66,"Le permis de conduire","Driving license",,,,,
+17,67,"Le conducteur
+un conducteur
+conducteur","Driver (C...)",,,,"noun","masc"
+17,68,"Conduire","To drive (a vehicle) (Con…)",,,,,
+17,69,"Le pèlerinage","Pilgrimage",,,,,
+17,70,"Héberger","To house, accommodate (Héb…)",,,,,
+17,71,"L'auberge","Hostel; (slang) prison (Aub…)",,,,,
+17,72,"L'auberge de jeunesse","Youth hostel",,,,,
+17,73,"La carte postale","Postcard",,,,,
+17,74,"La carte de vœux","Greeting card",,,,,
+17,75,"Le degré
+un degré
+degré","Degree",,,,"noun","masc"
+17,76,"Hier","Yesterday (Adv)",,,,"adverb",
+17,77,"Avant-hier","The day before yesterday (Adv)",,,,,
+17,78,"Après-demain","The day after tomorrow (Adv)",,,,,
+17,79,"Le retour
+un retour
+retour","Return",,,,"noun","masc"
+17,80,"Retourner","To return, go back
+return
+go back",,,,"verb",
+17,81,"Embrasser","To kiss; (dated) to hug, embrace (affectionately wrap one's arms around another) (Emb...)
+kiss",,,,"verb",
+17,82,"L'ambassade
+une ambassade
+ambassade","Embassy",,,,"noun","fem"
+17,83,"Le bisou
+un bisou
+bisou","Kiss (friendly kiss)",,,,"noun","masc"
+17,84,"Magnifique","Magnificent (Adj)",,,,"adjective",
+17,85,"Le collègue
+un collègue
+collègue","Colleague (can be male or female)",,,,"noun","masc"
+17,86,"Confortable","Comfortable (Adj)
+comfy",,,,"adjective",
+17,87,"Imaginer","To imagine
+imagine",,,,"verb",
+17,88,"Se promener","To take a walk (Se prom…)",,,,,
+17,89,"Faire une promenade","To take a walk (Faire une pr...)",,,,,
+17,90,"Visiter","To visit
+visit",,,,"verb",
+17,91,"Les adjectifs démonstratifs","Demonstrative pronouns",,,,,
+17,92,"La plage
+une plage
+plage","Beach",,,,"noun","fem"
+17,93,"Le paysage
+un paysage
+paysage","Countryside; landscape (P...)",,,,"noun","masc"
+17,94,"Le paysan
+un paysan
+paysan","Farmer, countryman; peasant",,,,"noun","masc"
+17,95,"La lumière
+une lumière
+lumière","Light",,,,"noun","fem"
+17,96,"Le ciel
+un ciel
+ciel","Sky",,,,"noun","masc"
+18,1,"Le soleil
+un soleil
+soleil","Sun",,,,"noun","masc"
+18,2,"Célèbre","Famous (Adj) (C…)",,,,,
+18,3,"Le siècle
+un siècle
+siècle","Century",,,,"noun","masc"
+18,4,"La fleur
+une fleur
+fleur","Flower",,,,"noun","fem"
+18,5,"La fenêtre
+fenêtre
+une fenêtre","Window",,,,"noun","fem"
+18,6,"Riche","Rich (Adj)",,,,"adjective",
+18,7,"La cantine","Canteen (small cafeteria or snack bar)",,,,,
+18,8,"L'Écosse","Scotland",,,,,
+19,1,"Rose","Pink (Adj)",,,,"adjective",
+19,2,"Orange","Orange (Adj)",,,,,
+19,3,"Rouge","Red (Adj)",,,,"adjective",
+19,4,"Blanc
+blanche","White (Adj)",,,,"adjective",
+19,5,"Gris
+grise","Grey (Adj)",,,,"adjective",
+19,6,"Noir
+noire","Black (Adj)",,,,"adjective",
+19,7,"Brun","Brown (Adj) (B…)",,,,,
+19,8,"Cramoisi","Crimson (Adj)",,,,,
+19,9,"Jaune","Yellow (Adj)",,,,"adjective",
+19,10,"Vert
+verte","Green (Adj)",,,,"adjective",
+19,11,"Cyan","Cyan (Adj)",,,,,
+19,12,"Azur","Azure (blue) (Adj)",,,,,
+19,13,"Bleu
+bleue","Blue (Adj)",,,,"adjective",
+19,14,"Violet","Violet (Adj)",,,,,
+19,15,"Magenta","Magenta (Adj)",,,,,
+19,16,"Pourpre","Burgundy (purple color) (Adj) (Pou…)",,,,,
+19,17,"Doré","Golden (Adj)",,,,,
+20,1,"Fais","(First-person singular present indicative of faire)",,,,,
+20,2,"Fais","(Second-person singular present indicative of faire)",,,,,
+20,3,"Fait","(Third-person singular present indicative of faire)",,,,,
+20,4,"Faisons","(First-person plural present indicative of faire)",,,,,
+20,5,"Faites","(Second-person plural present indicative of faire)",,,,,
+20,6,"Font","(Third-person plural present indicative of faire)",,,,,
+21,1,"En Tchéquie","Tchéquie",,,,,
+21,2,"Aux Pays-Bas","Les Pays-Bas",,,,,
+21,3,"En Albanie","Albanie",,,,,
+21,4,"À Chypre","Chypre",,,,,
+21,5,"En Autriche","Autriche",,,,,
+21,6,"En France","France",,,,,
+21,7,"En Allemagne","Allemagne",,,,,
+21,8,"En Croatie","Croatie",,,,,
+21,9,"Au Danemark","Danemark",,,,,
+21,10,"En Belgique","Belgique",,,,,
+21,11,"En Finlande","Finlande",,,,,
+21,12,"En Grèce","Grèce",,,,,
+21,13,"À Monaco","Monaco",,,,,
+21,14,"En Hongrie","Hongrie",,,,,
+21,15,"En Islande","Islande",,,,,
+21,16,"En Irlande","Irlande",,,,,
+21,17,"Au Portugal","Portugal",,,,,
+21,18,"En Russie","Russie",,,,,
+21,19,"En Italie","Italie",,,,,
+21,20,"En Serbie","Serbie",,,,,
+21,21,"En Espagne","Espagne",,,,,
+21,22,"En Suède","Suède",,,,,
+21,23,"En Suisse","Suisse",,,,,
+21,24,"Au Royaume-Uni","Royaume-Uni",,,,,
+22,1,"Gros","Fat (Adj)",,,,,
+22,2,"Bas","Low (Adj)",,,,,
+22,3,"Long
+longue","Long (Adj) (L...)
+lengthy",,,,"adjective",
+22,4,"Intéressant","Interesting (Adj)",,,,,
+22,5,"Chaud","Hot (Adj) (Ch…)",,,,,
+22,6,"Simple","Simple (Adj)",,,,,
+22,7,"Stupide","Stupid (Adj)",,,,,
+22,8,"Gentil","Helpful, kind (Adj) (G…)",,,,,
+22,9,"Fou","Mad, crazy (Adj) (F…)",,,,,
+22,10,"Élancé","Slender (Adj) (É…)",,,,,
+22,11,"Le fils","Son (F…)",,,,,
+22,12,"Rond","Round (Adj)",,,,,
+22,13,"Égal","Equal (Adj)",,,,,
+22,14,"Agréable","Pleasurable, nice, pleasant, agreeable (Adj)",,,,,
+22,15,"Mignon","Cute (of a baby, an animal, etc.); cute (sexually attractive) (Adj)",,,,,
+22,16,"Végétarien","Vegetarian (Adj)",,,,,
+22,17,"Nigérien","Nigerien (from or pertaining to Niger) (Adj)",,,,,
+22,18,"Généreux","Generous (Adj)",,,,,
+22,19,"Indécis","Undecided (Adj)",,,,,
+22,20,"Précis","Precise, exact (Adj)",,,,,
+22,21,"Normal
+normale","Normal (Adj)",,,,"adjective",
+22,22,"Bruyant","Noisy (Adj)",,,,,
+22,23,"Sage","Wise (Adj)",,,,,
+22,24,"Frais","Fresh; cool (Adj)",,,,,
+22,25,"Sportif","Athletic (Adj) (S...)",,,,,
+22,26,"Doux","Sweet (Adj)",,,,,
+22,27,"Créatif","Creative (Adj)",,,,,
+22,28,"Réel","Real (Adj)",,,,,
+22,29,"Joyeux","Joyful, happy (Adj)",,,,,
+22,30,"Athlétique","Athletic (Adj) (A…)",,,,,
+22,31,"Mince","Thin, skinny (Adj) (M…)",,,,,
+22,32,"Petit","Small (Adj)",,,,,
+22,33,"Dynamique","Dynamique (Adj)",,,,,
+22,34,"Timide","Timid, shy (Adj) (T…)",,,,,
+22,35,"Cultivé","(usually of a person) cultured; cultivated (C…)",,,,,
+22,36,"Aventurier","Adventurous (Adj)",,,,,
+22,37,"Autoritaire","Authoritative, bossy (Adj)",,,,,
+22,38,"Calme","Calm (Adj) (C…)",,,,,
+22,39,"Élégant","Elegant (Adj)",,,,,
+22,40,"Romantique","Romantic (Adj) (R…)",,,,,
+22,41,"Optimiste","Optimistic (Adj)",,,,,
+22,42,"Sympathique","Nice, kind, friendly, likeable (Adj) (Sy…)",,,,,
+22,43,"Intelligent","Intelligent (Adj)",,,,,
+22,44,"Sérieux","Serious (Adj)",,,,,
+22,45,"Sincère","Sincere (Adj)",,,,,
+22,46,"Sortir","To exit, go out (S…)",,,,,
+23,1,"Grosse","Gros",,,,,
+23,2,"Basse","Bas",,,,,
+23,3,"Longue","Long",,,,,
+23,4,"Intéressante","Intéressant",,,,,
+23,5,"Chaude","Chaud",,,,,
+23,6,"Simple","Simple",,,,,
+23,7,"Stupide","Stupide",,,,,
+23,8,"Gentille","Gentil",,,,,
+23,9,"Folle","Fou",,,,,
+23,10,"Élancée","Élancé",,,,,
+23,11,"Ronde","Rond",,,,,
+23,12,"Égale","Égal",,,,,
+23,13,"Agréable","Agréable",,,,,
+23,14,"Mignonne","Mignon",,,,,
+23,15,"Végétarienne","Végétarien",,,,,
+23,16,"Nigérienne","Nigérien",,,,,
+23,17,"Généreuse","Généreux",,,,,
+23,18,"Indécise","Indécis",,,,,
+23,19,"Précise","Précis",,,,,
+23,20,"Normale","Normal",,,,,
+23,21,"Bruyante","Bruyant",,,,,
+23,22,"Sage","Sage",,,,,
+23,23,"Fraîche","Frais (The circumflex is not 100% necessary)",,,,,
+23,24,"Sportive","Sportif",,,,,
+23,25,"Douce","Doux",,,,,
+23,26,"Créative","Créatif",,,,,
+23,27,"Réelle","Réel",,,,,
+23,28,"Joyeuse","Joyeux",,,,,
+23,29,"Athlétique","Athlétique",,,,,
+23,30,"Mince","Mince",,,,,
+23,31,"Petite","Petit",,,,,
+23,32,"Dynamique","Dynamique",,,,,
+23,33,"Timide","Timide",,,,,
+23,34,"Cultivée","Cultivé",,,,,
+23,35,"Aventurière","Aventurier",,,,,
+23,36,"Autoritaire","Autoritaire",,,,,
+23,37,"Calme","Calme",,,,,
+23,38,"Élégante","Élégant",,,,,
+23,39,"Romantique","Romantique",,,,,
+23,40,"Optimiste","Optimiste",,,,,
+23,41,"Sympathique","Sympathique",,,,,
+23,42,"Intelligente","Intelligent",,,,,
+23,43,"Sincère","Sincère",,,,,
+23,44,"Sérieuse","Sérieux",,,,,
+23,45,"Grecque","Grec",,,,,
+23,46,"Turque","Turc",,,,,
+24,1,"C'est un bon début.","It's a good start.",,,,,
+24,2,"Je m'interesse à…","I am interested in…",,,,,
+24,3,"Être bien dans son corps et dans sa tête.","To feel good physically and mentally.",,,,,
+24,4,"J'ai horreur de la routine.","I detest routine.",,,,,
+24,5,"J'ai horreur de…","I detest…",,,,,
+24,6,"Je suis à la recherche de…","I am looking for…",,,,,
+25,1,"Rondes","Ronde",,,,,
+25,2,"Ronds","Rond",,,,,
+25,3,"Précis","Précis",,,,,
+25,4,"Précises","Précise",,,,,
+25,5,"Généreux","Généreux",,,,,
+25,6,"Généreuses","Généreuse",,,,,
+25,7,"Égaux","Égal",,,,,
+25,8,"Normaux","Normal",,,,,
+26,1,"Boulangère","Boulanger",,,,,
+26,2,"Journaliste","Journaliste",,,,,
+26,3,"Serveuse","Serveur",,,,,
+26,4,"Rêveuse","Rêveur",,,,,
+26,5,"Calculatrice","Calculateur",,,,,
+26,6,"Actrice","Acteur",,,,,
+26,7,"Opticienne","Opticien",,,,,
+27,1,"Y avoir","(Infinitive of il y a)",,,,,
+27,2,"Accueillir","To welcome, to accommodate",,,,,
+27,3,"Animer","To animate (A…)",,,,,
+27,4,"Conduire","To drive (a vehicle) (Con…)",,,,,
+27,5,"Moi-même","(emphatic) myself (Pronoun) (Moi-m…)",,,,,
+27,6,"Achever","To finish, to complete; To finish off (someone who is already incapacitated); (reflexive, s'achever) to finish (Ach…)",,,,,
+27,7,"Séjourner","(intransitive) to stay, to sojourn (Sé…)",,,,,
+27,8,"Sortir","To exit, go out (S…)",,,,,
+27,9,"Juger","To judge (J…)",,,,,
+27,10,"Le sculpteur","(art) sculptor (Sc…)",,,,,
+27,11,"L'élève","Schoolboy, schoolgirl, schoolchild",,,,,
+27,12,"La lutte
+une lutte
+lutte","Fight, struggle",,,,"noun","fem"
+27,13,"L'asile","Retirement home, old people's home; asylum",,,,,
+27,14,"Mourir","To die",,,,,
+27,15,"Tragique","Tragic (Adj) (Tr...)",,,,,
+27,16,"Cependant","Meanwhile (Adv); however, nevertheless, yet, notwithstanding (Conjunction) (Cep...)",,,,,
+28,1,"Appris","Apprendre",,,,,
+28,2,"Né","Naître",,,,,
+28,3,"Offert","Offrir",,,,,
+28,4,"Assis","Asseoir",,,,,
+28,5,"Eu","Avoir",,,,,
+28,6,"Ouvert","Ouvrir",,,,,
+28,7,"Voulu","Vouloir",,,,,
+28,8,"Vu","Voir",,,,,
+28,9,"Mort","Mourir",,,,,
+28,10,"Mis","Mettre",,,,,
+28,11,"Bu","Boire",,,,,
+28,12,"Paru","Paraître",,,,,
+28,13,"Couru","Courir",,,,,
+28,14,"Pris","Prendre",,,,,
+28,15,"Pu","Pouvoir",,,,,
+28,16,"Compris","Comprendre",,,,,
+28,17,"Conduit","Conduire",,,,,
+28,18,"Connu","Connaître",,,,,
+28,19,"Permis","Permettre",,,,,
+28,20,"Vécu","Vivre",,,,,
+28,21,"Venu","Venir",,,,,
+28,22,"Plu","Plaire",,,,,
+28,23,"Plu","Pleuvoir",,,,,
+28,24,"Construit","Construire",,,,,
+28,25,"Lu","Lire",,,,,
+28,26,"Fallu","Falloir",,,,,
+28,27,"Fait","Faire",,,,,
+28,28,"Été","Être",,,,,
+28,29,"Valu","Valoir",,,,,
+28,30,"Tenu","Tenir",,,,,
+28,31,"Promis","Promettre",,,,,
+28,32,"Reçu","Recevoir",,,,,
+28,33,"Écrit","Écrire",,,,,
+28,34,"Dit","Dire",,,,,
+28,35,"Dû","Devoir",,,,,
+28,36,"Revenu","Revenir",,,,,
+28,37,"Ri","Rire",,,,,
+28,38,"Couvert","Couvrir",,,,,
+28,39,"Devenu","Devenir",,,,,
+28,40,"Convenu","Convenir",,,,,
+28,41,"Su","Savoir",,,,,
+28,42,"Suivi","Suivre",,,,,
+28,43,"Cru","Croire",,,,,
+28,44,"Craint","Craindre",,,,,
+28,45,"Tu","Taire",,,,,
+28,46,"Acquis","Acquérir",,,,,
+28,47,"Déçu","Décevoir",,,,,
+28,48,"Découvert","Découvrir",,,,,
+28,49,"Instruit","Instruire",,,,,
+28,50,"Joint","Joindre",,,,,
+28,51,"Peint","Peindre",,,,,
+28,52,"Produit","Produire",,,,,
+28,53,"Souffert","Souffrir",,,,,
+28,54,"Abstenu","Abstenir",,,,,
+28,55,"Réduit","Réduire",,,,,
+28,56,"Atteint","Atteindre",,,,,
+28,57,"Obtenu","Obtenir",,,,,
+29,1,"L'apostrophe","Apostrophe",,,,,
+29,2,"L'astérisque","Asterisk",,,,,
+29,3,"L'égal","Equals sign",,,,,
+29,4,"Le pourcent","Percent sign",,,,,
+29,5,"L'arobase","The @ symbol",,,,,
+29,6,"Le point","Period",,,,,
+29,7,"Le guillemet","Quotation mark",,,,,
+29,8,"La barre oblique","Forward slash",,,,,
+29,9,"Le point d'interrogation","Question mark (Le p... d'i...)",,,,,
+29,10,"Le plus","Plus symbol",,,,,
+29,11,"Le moins","Minus sign",,,,,
+29,12,"Le deux points","Colon",,,,,
+29,13,"Le point virgule","Semi-colon",,,,,
+29,14,"Les parenthèses","Parentheses",,,,,
+29,15,"Le point d'exclamation","Exclamation point",,,,,
+29,16,"Le soulignement","Underlining",,,,,
+29,17,"La virgule","Comma",,,,,
+30,1,"S'il vous plaît","Please (formal)",,,,,
+30,2,"S'il te plaît","Please (informal)",,,,,
+30,3,"Le monsieur
+le monsieur
+un monsieur","Sir, mister, Mr",,,,"noun","masc"
+30,4,"Les messieurs","(Plural of le monsieur)",,,,,
+30,5,"La madame","Mrs, Madam
+Mrs.",,,,"noun","fem"
+30,6,"Les mesdames","(Plural of madame)",,,,,
+30,7,"La mademoiselle
+une mademoiselle
+la mademoiselle","Miss, young lady
+young woman",,,,"noun","fem"
+30,8,"Les mesdemoiselles","(Plural of mademoiselle)",,,,,
+30,9,"Lundi
+le lundi
+un lundi","Monday",,,,"noun","masc"
+30,10,"Le Lundi","On Mondays",,,,,
+30,11,"Mardi
+le mardi
+un mardi","Tuesday",,,,"noun","masc"
+30,12,"Mercredi
+le mercredi
+un mercredi","Wednesday",,,,"noun","masc"
+30,13,"Jeudi
+un jeudi
+le jeudi","Thursday",,,,"noun","masc"
+30,14,"Vendredi
+le vendredi
+un vendredi","Friday",,,,"noun","masc"
+30,15,"Samedi
+le samedi
+un samedi","Saturday",,,,"noun","masc"
+30,16,"Dimanche
+un dimanche
+le dimanche","Sunday",,,,"noun","masc"
+30,17,"Ce soir","Tonight (Ce s…)",,,,,
+30,18,"Aujourd'hui","Today",,,,"adverb",
+30,19,"Demain","Tomorrow (Adv)",,,,,
+30,20,"Après-demain","The day after tomorrow (Adv)",,,,,
+30,21,"Hier","Yesterday (Adv)",,,,"adverb",
+30,22,"Avant-hier","The day before yesterday (Adv)",,,,,
+30,23,"Décembre
+un décembre","December",,,,"noun","masc"
+30,24,"Août
+un août","August",,,,"noun","masc"
+30,25,"Juillet
+un juillet","July",,,,"noun","masc"
+30,26,"Juin
+un juin","June",,,,"noun","masc"
+30,27,"Mai
+un mai","May",,,,"noun","masc"
+30,28,"Avril
+un avril","April",,,,"noun","masc"
+30,29,"Mars
+un mars","March",,,,"noun","masc"
+30,30,"Février
+un février","February",,,,"noun","masc"
+30,31,"Janvier
+un janvier","January",,,,"noun","masc"
+30,32,"Septembre
+un septembre","September",,,,"noun","masc"
+30,33,"Octobre
+un octobre","October",,,,"noun","masc"
+30,34,"Novembre
+un novembre","November",,,,"noun","masc"
+30,35,"La saison
+une saison
+saison","Season",,,,"noun","fem"
+30,36,"Le printemps
+un printemps
+printemps","Spring (the season)",,,,"noun","masc"
+30,37,"L'été
+un été
+été","Summer",,,,"noun","masc"
+30,38,"L'automne
+un automne
+automne","Autumn, fall",,,,"noun","masc"
+30,39,"L'hiver
+hiver
+un hiver","Winter",,,,"noun","masc"
+31,1,"Le midi
+midi","Midday, noon
+lunch time",,,,"noun","masc"
+31,2,"Le minuit","Midnight",,,,,
+31,3,"Le soleil
+un soleil
+soleil","Sun",,,,"noun","masc"
+31,4,"Le lever du soleil","Sunrise",,,,,
+31,5,"Le coucher du soleil","Sunset",,,,,
+31,6,"La lune
+une lune
+lune","Moon",,,,"noun","fem"
+31,7,"Le cheval
+un cheval
+cheval","Horse",,,,"noun","masc"
+31,8,"Le chien
+un chien
+chien","Dog",,,,"noun","masc"
+31,9,"Le livre
+un livre
+livre","Book",,,,"noun","masc"
+31,10,"Le bruit
+un bruit
+bruit","Noise",,,,"noun","masc"
+31,11,"La colombe","Dove",,,,,
+31,12,"La chemise
+une chemise
+chemise","Shirt",,,,"noun","fem"
+31,13,"La maison
+une maison
+maison","House",,,,"noun","fem"
+31,14,"La liberté
+une liberté
+liberté","Liberty, freedom",,,,"noun","fem"
+31,15,"La fille","Girl; daughter",,,,,
+31,16,"Le fils","Son (F…)",,,,,
+31,17,"L'enfant
+un enfant
+enfant","Child",,,,"noun","masc"
+31,18,"Les filles","Daughters (plural of la fille)",,,,,
+31,19,"Les fils","Sons (plural of le fils)",,,,,
+31,20,"Le cours
+un cours
+cours","Course",,,,"noun","masc"
+31,21,"Les cours","(Plural of le cours)",,,,,
+31,22,"L'élève","Schoolchild, pupil, student (É...) (Masc or fem)",,,,,
+31,23,"L'heure","Hour (Fem)",,,,,
+31,24,"Le héros
+un héros
+héros","Hero (example of aspirated h)",,,,"noun","masc"
+31,25,"La personne","(Grammar) Person; (other contexts) person",,,,,
+31,26,"L'homme","Man",,,,,
+31,27,"La femme
+femme
+une femme","Woman; wife",,,,"noun","fem"
+31,28,"Le garçon
+garçon
+un garçon","Boy; waiter
+boy",,,,"noun","masc"
+31,29,"La fillette
+une fillette
+fillette","Little girl",,,,"noun","fem"
+31,30,"Le copain
+un copain
+copain","Buddy, pal
+mate
+chum",,,,"noun","masc"
+31,31,"La copine","Female friend (Cop…)",,,,,
+31,32,"La pomme
+une pomme
+pomme","Apple",,,,"noun","fem"
+31,33,"La poire
+une poire
+poire","Pear",,,,"noun","fem"
+31,34,"Le chaton","Kitten, kitty (baby cat) (Ch...)",,,,,
+31,35,"Le minou","(colloquial, infantile) kitty; (slang) pussy (Min…)",,,,,
+31,36,"Voici","Here is, this is, here come (Adv)",,,,"adverb",
+31,37,"Voilà","There is, there's (Adv)",,,,"adverb",
+31,38,"L'Australie
+Australie","Australia",,,,"noun","fem"
+31,39,"Australien","Australian (Adj) (Masc)",,,,"adjective",
+31,40,"Australienne","Australian (Adj) (Fem)",,,,,
+31,41,"Intéressant","Interesting (Adj)",,,,,
+31,42,"Lent
+lente","Slow (Adj)",,,,"adjective",
+31,43,"Lentement","Slowly (Adv)",,,,"adverb",
+31,44,"Rapide","Fast (Adj)
+rapid",,,,"adjective",
+31,45,"Rapidement","Quickly, rapidly, fast (Adv)",,,,"adverb",
+31,46,"Amusant","Amusing, funny; fun (Adj)",,,,,
+31,47,"Le camion
+un camion
+camion","Truck
+lorry",,,,"noun","masc"
+31,48,"La voiture
+une voiture
+voiture","Car",,,,"noun","fem"
+31,49,"Moyen
+moyenne","Average (Adj)",,,,"adjective",
+31,50,"Gros","Fat (Adj)",,,,,
+31,51,"Grand
+grande","Tall, high, big (Adj)",,,,"adjective",
+31,52,"Haut
+haute","High (Adj)",,,,"adjective",
+31,53,"Blond
+blonde","Blond (Adj)",,,,"adjective",
+32,1,"Sympa","Nice (slang) (Adj)",,,,"adjective",
+32,2,"Sympathique","Nice, kind, friendly, likeable (Adj) (Sy…)",,,,,
+32,3,"Amusant","Amusing, funny; fun (Adj)",,,,,
+32,4,"Intelligent","Intelligent (Adj)",,,,,
+32,5,"Intéressant","Interesting (Adj)",,,,,
+32,6,"Patient","Patient (Adj)",,,,,
+32,7,"Sociable","Sociable (Adj)",,,,,
+32,8,"Timide","Timid, shy (Adj) (T…)",,,,,
+32,9,"Dynamique","Dynamique (Adj)",,,,,
+32,10,"Gentil","Helpful, kind (Adj) (G…)",,,,,
+32,11,"Strict
+stricte","Strict (Adj)",,,,"adjective",
+32,12,"Fort
+forte","Strong (Adj)",,,,"adjective",
+32,13,"Faible","Weak, frail (Adj)
+feeble",,,,"adjective",
+32,14,"Facile","Easy (Adj)",,,,"adjective",
+32,15,"Difficile","Difficult (Adj)",,,,"adjective",
+32,16,"Similaire","Similar (Adj) (Si...)",,,,"adjective",
+32,17,"Différent
+différente","Different (Adj)",,,,"adjective",
+32,18,"Divers
+diverses","Diverse (Adj)",,,,"adjective",
+32,19,"Sonore","Resounding, loud (Adj)
+ringing
+sonorous",,,,"adjective",
+32,20,"Tranquille","Quiet, tranquil (Adj)",,,,"adjective",
+32,21,"Impoli
+impolie","Rude (Adj) (Im...)",,,,"adjective",
+32,22,"Malpoli
+malpolie","Rude, impolite (Adj) (Malp...)",,,,"adjective",
+32,23,"Poli","Polite (Adj)",,,,,
+32,24,"Stupide","Stupid (Adj)",,,,,
+32,25,"Diligent","Diligent (Adj) (D…)",,,,,
+32,26,"Dur
+dure","Hard (Adj)",,,,"adjective",
+32,27,"Doux","Sweet (Adj)",,,,,
+32,28,"Léger
+légère","Light (Adj)",,,,"adjective",
+32,29,"Lourd
+lourde","Heavy (Adj)",,,,"adjective",
+32,30,"Chiant
+chiants
+chiantes
+chiante","Annoying (slang) (Ch...)",,,,"adjective",
+32,31,"Ennuyeux
+ennuyeuse","Boring, dull (Adj)",,,,"adjective",
+32,32,"Heureux
+heureuse","Happy (Adj)",,,,"adjective",
+32,33,"Content
+contente","Glad, happy (Adj)",,,,"adjective",
+32,34,"Triste","Sad",,,,"adjective",
+32,35,"Fâché","Angry (Adj) (Fâ…)",,,,,
+32,36,"Ravi","Thrilled, overjoyed, delighted, ravished, chuffed (Adj)",,,,,
+32,37,"Drôle","Funny (Adj)",,,,"adjective",
+32,38,"Étrange","Strange (Adj)",,,,"adjective",
+32,39,"Anormal
+anormale","Abnormal (Adj)",,,,"adjective",
+32,40,"Curieux
+curieuse","Curious (Adj)",,,,"adjective",
+32,41,"Fermé","Shut, closed (Adj)",,,,,
+32,42,"Pauvre","Poor (Adj)",,,,"adjective",
+32,43,"Riche","Rich (Adj)",,,,"adjective",
+32,44,"Sec
+sèche","Dry (Adj)",,,,"adjective",
+32,45,"Vide","Empty (Adj)",,,,,
+32,46,"Bon marché","Cheap, inexpensive (Adj) (Bon ma…)",,,,,
+32,47,"Lourd","Heavy (Adj)",,,,,
+32,48,"Mou","Soft, pliable (Adj)",,,,,
+32,49,"Foncé","(of a colour) dark (having a dark shade) (Adj)",,,,,
+32,50,"Léger
+légère","Light (Adj) (Lég...)",,,,"adjective",
+32,51,"Mouillé
+mouillée","Wet (Adj)",,,,"adjective",
+32,52,"Ouvert","Open (Adj)",,,,,
+32,53,"Fou","Mad, crazy (Adj) (F…)",,,,,
+33,1,"La famille
+une famille
+famille","Family",,,,"noun","fem"
+33,2,"La famille de langues","Language family",,,,,
+33,3,"La mère
+une mère
+mère","Mother",,,,"noun","fem"
+33,4,"Le père
+un père
+père","Father, dad",,,,"noun","masc"
+33,5,"La femme
+femme
+une femme","Woman; wife",,,,"noun","fem"
+33,6,"Le mari
+un mari
+mari","Husband",,,,"noun","masc"
+33,7,"La sœur
+une soeur
+soeur","Sister",,,,"noun","fem"
+33,8,"Le frère
+un frère
+frère","Brother",,,,"noun","masc"
+33,9,"L'enfant
+un enfant
+enfant","Child",,,,"noun","masc"
+33,10,"La fille","Girl; daughter",,,,,
+33,11,"Le fils","Son (F…)",,,,,
+33,12,"Les fils","Sons (plural of le fils)",,,,,
+33,13,"La famille éloignée","Extended family",,,,,
+33,14,"Les grand-parents","Grandparents",,,,,
+33,15,"Le grand-père","Grandfather",,,,,
+33,16,"La grand-mère","Grandmother",,,,,
+33,17,"Les petits-enfants","Grandchildren",,,,,
+33,18,"La petite-fille","Granddaughter",,,,,
+33,19,"Le petit-fils","Grandson",,,,,
+33,20,"La petite amie","Girlfriend",,,,,
+33,21,"Le petit ami
+un petit ami
+petit ami","Boyfriend",,,,"phrase","masc"
+33,22,"L'oncle
+un oncle
+oncle","Uncle",,,,"noun","masc"
+33,23,"La tante
+une tante
+tante","Aunt",,,,"noun","fem"
+33,24,"Le tonton","(Childish) Uncle",,,,,
+33,25,"La tati","(Childish) Aunt",,,,,
+33,26,"Le neveu
+un neveu
+neveu","Nephew",,,,"noun","masc"
+33,27,"La nièce
+une nièce
+nièce","Niece",,,,"noun","fem"
+33,28,"Le cousin","Cousin (male)",,,,,
+33,29,"La cousine","Cousin (female)",,,,,
+33,30,"La belle-mère","Stepmother",,,,,
+33,31,"Le beau-père","Stepfather",,,,,
+33,32,"La demi-sœur","Half-sister",,,,,
+33,33,"Le demi-frère","Half-brother",,,,,
+34,1,"Écouter","(intransitive) to listen; (transitive) to listen to",,,,,
+34,2,"Habiter","To live in
+live in",,,,"verb",
+34,3,"S'amuser","To enjoy oneself
+enjoy oneself
+to have fun
+have fun",,,,"verb",
+34,4,"Travailler","To work
+work",,,,"verb",
+34,5,"Jouer","To play
+play",,,,"verb",
+34,6,"Finir","To finish (F...)
+finish",,,,"verb",
+34,7,"Attendre","To expect (Att...)
+expect
+to wait
+wait",,,,"verb",
+34,8,"Assister","To assist; (intransitive, followed by à) to attend, to be present
+assist",,,,"verb",
+34,9,"Détester","To hate
+hate
+to detest
+detest",,,,"verb",
+34,10,"Rentrer","To go back to, to return (Ren...)
+go back to
+return",,,,"verb",
+34,11,"Retourner","To return, go back
+return
+go back",,,,"verb",
+34,12,"Tourner","To turn, to go around
+turn
+go around",,,,"verb",
+34,13,"Aimer","To like
+like
+love
+to love",,,,"verb",
+34,14,"Courir","To run
+run",,,,"verb",
+34,15,"Couvrir","To cover
+cover",,,,"verb",
+34,16,"Fermer","To close
+close",,,,"verb",
+34,17,"Ouvrir","To open
+open",,,,"verb",
+34,18,"Lire","To read
+read",,,,"verb",
+34,19,"Dire","To say
+say",,,,"verb",
+34,20,"Deviner","To guess; to work out, figure out; to sense, perceive (Dev…)",,,,,
+34,21,"Devoir","To have to (D...)
+have to",,,,"verb",
+34,22,"Devenir","To become
+become",,,,"verb",
+34,23,"Manger","To eat
+eat",,,,"verb",
+34,24,"Boire","To drink
+drink",,,,"verb",
+34,25,"Conduire","To drive (a vehicle) (Con…)",,,,,
+34,26,"Remplacer","To replace
+replace",,,,"verb",
+34,27,"Accueillir","To welcome, to accommodate",,,,,
+34,28,"Accomplir","To fulfill, to accomplish
+accomplish
+fulfill
+to fulfil
+fulfil",,,,"verb",
+34,29,"Accompagner","To accompany
+accompany",,,,"verb",
+34,30,"Prendre","To take; to eat / drink (P…)",,,,,
+34,31,"Le bibliothécaire
+La bibliothécaire","Librarian (can be male or female)",,,,,
+34,32,"La bibliothèque
+une bibliothèque
+bibliothèque","Library",,,,"noun","fem"
+34,33,"Le parc
+un parc
+parc","Park",,,,"noun","masc"
+34,34,"La piscine","Pool",,,,,
+34,35,"La plage
+une plage
+plage","Beach",,,,"noun","fem"
+34,36,"Le restaurant
+un restaurant
+restaurant","Restaurant",,,,"noun","masc"
+34,37,"La salle","The hall; room (in a house) (S...)",,,,,
+34,38,"La salle de classe","The classroom",,,,,
+34,39,"La salle de séjour
+une salle de séjour
+salle de séjour","Living room, family room",,,,"noun","fem"
+34,40,"La salle de bain
+une salle de bain
+salle de bain","Bathroom",,,,"noun","fem"
+34,41,"La salle de concert","Concert hall",,,,,
+34,42,"Le stade
+un stade
+stade","Stadium",,,,"noun","masc"
+34,43,"Le théâtre
+un théâtre
+théâtre","Theatre (venue for performing plays and drama)
+theater",,,,"noun","masc"
+34,44,"La librairie
+une librairie
+librairie","Bookstore",,,,"noun","fem"
+35,1,"Jouer au baseball","To play baseball",,,,,
+35,2,"Jouer au basket","To play basketball",,,,,
+35,3,"Jouer au football","To play soccer",,,,,
+35,4,"Jouer au football américain","To play American football",,,,,
+35,5,"Jouer au golf","To play golf",,,,,
+35,6,"Jouer au tennis","To play tennis",,,,,
+35,7,"Jouer au volley","To play volleyball",,,,,
+35,8,"Jouer aux cartes","To play cards",,,,,
+35,9,"Jouer aux dames","To play checkers",,,,,
+35,10,"Jouer aux échecs","To play chess",,,,,
+35,11,"Jouer du piano","To play piano",,,,,
+35,12,"Jouer de la guitare","To play guitar",,,,,
+35,13,"Jouer du violon","To play violin",,,,,
+35,14,"Jouer de la batterie","To play drums",,,,,
+35,15,"Jouer de l'harmonica","To play the harmonica",,,,,
+35,16,"Jouer de la trompette","To play the trumpet",,,,,
+35,17,"Jouer du violoncelle","To play the cello",,,,,
+35,18,"Jouer au poker","To play poker",,,,,
+35,19,"Jouer à la canasta","To play canasta",,,,,
+36,1,"La maison
+une maison
+maison","House",,,,"noun","fem"
+36,2,"La maisonnette","Small house (Mai…)",,,,,
+36,3,"Le pavillon","Detached house, individual house",,,,,
+36,4,"L'immeuble
+un immeuble
+immeuble","Building, block of flats, apartment building
+apartment block",,,,"noun","masc"
+36,5,"L'appartement
+un appartement
+appartement","Flat, apartment",,,,"noun","masc"
+36,6,"Le studio
+un studio
+studio","Studio (apartment)",,,,"noun","masc"
+36,7,"H.L.M.","Low income housing (Habitations à Loyer Modéré)",,,,,
+36,8,"Le quartier
+un quartier
+quartier","Quarter, district, neighborhood (Q...)
+quarter",,,,"noun","masc"
+36,9,"La banlieue
+une banlieue
+banlieue","Suburbs, inner city
+projects
+council estate",,,,"noun","fem"
+36,10,"La pièce","Room; piece; (money) coin (P...)",,,,,
+36,11,"La chambre","The bedroom, any room (C...)",,,,,
+36,12,"La cave
+une cave
+cave","Cellar, basement",,,,"noun","fem"
+36,13,"Le grenier","Attic",,,,,
+36,14,"La cuisine","Kitchen; cuisine",,,,,
+36,15,"La salle à manger","Dining room",,,,,
+36,16,"La salle de séjour
+une salle de séjour
+salle de séjour","Living room, family room",,,,"noun","fem"
+36,17,"La chambre à coucher","Bedroom (specifically) (Cha…à cou…)",,,,,
+36,18,"Le garage
+un garage
+garage","Garage",,,,"noun","masc"
+36,19,"Les toilettes
+toilettes
+des toilettes","Restroom, WC (no singular)
+water closet
+washroom
+loo
+toilet
+water-closet
+toilet room",,,,"noun plural","fem"
+36,20,"Le bureau
+un bureau
+bureau","Desk; office",,,,"noun","masc"
+36,21,"La rue
+une rue
+rue","Street",,,,"noun","fem"
+36,22,"La vue
+une vue
+vue","View",,,,"noun","fem"
+36,23,"La belle vue
+Belle vue","Good view (Bel…vu…)",,,,,
+36,24,"L'étage
+un étage
+étage","Floor, level, story",,,,"noun","masc"
+36,25,"Le rez-de-chaussée","Lobby, ground floor",,,,,
+36,26,"Le premier étage","The second floor (in American lingo)",,,,,
+36,27,"Le deuxième étage","The third floor (in American lingo)",,,,,
+36,28,"Le troisième étage","The fourth floor (in American lingo)",,,,,
+36,29,"Le centre-ville","City center",,,,,
+36,30,"La ville
+une ville
+ville","City",,,,"noun","fem"
+36,31,"Le village
+un village
+village","Village (Vi...)",,,,"noun","masc"
+36,32,"La bourgade","Village (Bour…)",,,,,
+36,33,"Le plafond
+un plafon
+plafond","Ceiling",,,,"noun","masc"
+36,34,"Le sol
+un sol
+sol","Floor, ground",,,,"noun","masc"
+36,35,"La fenêtre
+fenêtre
+une fenêtre","Window",,,,"noun","fem"
+36,36,"Le mur
+mur
+un mur","Wall",,,,"noun","masc"
+36,37,"Le toit
+un toit
+toit","Roof (T...)",,,,"noun","masc"
+36,38,"Les escaliers","The stairs (Es…)",,,,,
+36,39,"L'escalier","Step; staircase (Es…)",,,,,
+36,40,"L'ascenseur","Elevator, lift (A…)",,,,,
+36,41,"Prendre l'ascenseur","To take the elevator",,,,,
+36,42,"Monter à pied","To go up by foot (take the stairs)",,,,,
+36,43,"Monter en ascenseur","To go up by elevator",,,,,
+36,44,"La porte
+une porte
+porte","Door",,,,"noun","fem"
+36,45,"L'entrée","Entryway",,,,,
+36,46,"La terrasse","Patio",,,,,
+36,47,"Le balcon","Balcony (B...)",,,,,
+36,48,"Le jardin
+un jardin
+jardin","Garden",,,,"noun","masc"
+36,49,"La fleur
+une fleur
+fleur","Flower",,,,"noun","fem"
+36,50,"L'arbre","Tree",,,,"noun","masc"
+36,51,"La cour","Courtyard",,,,,
+36,52,"Le voisin
+un voisin
+voisin","Neighbor (male)
+neighbor",,,,"noun","masc"
+36,53,"La voisine","Neighbor (female)",,,,,
+36,54,"Le rideau
+un rideau
+rideau","Curtain",,,,"noun","masc"
+36,55,"La chaise
+une chaise
+chaise","Chair",,,,"noun","fem"
+36,56,"La table
+une table
+table","Table",,,,"noun","fem"
+36,57,"L'armoire","Cupboard",,,,,
+36,58,"Le lit
+un lit
+lit","Bed",,,,"noun","masc"
+36,59,"Le tapis
+un tapis
+tapis","Carpet, rug",,,,"noun","masc"
+36,60,"Le fauteuil
+un fauteuil
+fauteuil","Armchair",,,,"noun","masc"
+36,61,"Arriver à la maison","To arrive home",,,,,
+36,62,"Rentrer à la maison","To return home (Ren...)",,,,,
+36,63,"Quitter la maison","To leave home",,,,,
+36,64,"Habiter en ville","To live in the city",,,,,
+36,65,"Habiter en banlieue","To live in a suburb",,,,,
+37,1,"Défaire","To undo; demolish
+undo",,,,"verb",
+37,2,"Malfaire","(archaic) do wrong (Malf…)",,,,,
+37,3,"Refaire","To redo, remake (Ref…)",,,,,
+37,4,"Détruire","To destroy
+destroy",,,,"verb",
+37,5,"Détruit","Destroyed (Adj)",,,,,
+37,6,"Dangereux
+dangereuse","Dangerous",,,,"adjective",
+37,7,"Sauf","Safe (from harm) (Adj)",,,,,
+37,8,"Sûr
+sûre","Sure (Adj)",,,,"adjective",
+37,9,"La destruction
+une destruction
+destruction","Destruction",,,,"noun","fem"
+37,10,"La guerre civile","Civil War",,,,,
+37,11,"La guerre
+guerre
+une guerre","War",,,,"noun","fem"
+37,12,"Le musulman
+musulmane","Muslim",,,,"adjective",
+37,13,"Le chrétien
+chrétienne","Christian",,,,"adjective",
+37,14,"Croire","To believe
+believe",,,,"verb",
+37,15,"Le croyant
+un croyant
+croyant","Believer",,,,"noun","masc"
+37,16,"Faire attention","To pay attention",,,,,
+37,17,"Faire une promenade","To take a walk (Faire une pr...)",,,,,
+37,18,"Faire confiance","To trust
+trust",,,,"verb",
+37,19,"Faire la queue","To wait in line",,,,,
+37,20,"Faire connaissance","To get acquainted",,,,,
+37,21,"S'en faire","To worry",,,,,
+37,22,"Faire la morale","To scold",,,,,
+37,23,"Faire la cuisine","To do the cooking (like a chore)",,,,,
+37,24,"Faire le lit","To make the bed (like a chore)",,,,,
+37,25,"Faire le ménage","To do the housework",,,,,
+37,26,"Faire les courses","To do the shopping, errands",,,,,
+37,27,"Faire le repassage","To do the ironing",,,,,
+37,28,"L'ordinateur
+un ordinateur
+ordinateur","Computer",,,,"noun","masc"
+37,29,"Téléphonique","Telephone, phone (of or pertaining to) (Adj)",,,,"adjective",
+37,30,"L'avocat
+un avocat
+avocat","Lawyer
+sollicitor
+barrister
+attorney",,,,"noun","masc"
+37,31,"Le médecin
+un médecin
+médecin","Doctor, GP
+general practitioner
+family doctor",,,,"noun","masc"
+37,32,"Le soldat
+un soldat
+soldat","Soldier",,,,"noun","masc"
+37,33,"La légion
+une légion
+légion","Legion",,,,"noun","fem"
+37,34,"Les devoirs
+devoirs
+des devoirs","Homework
+schoolwork",,,,"noun plural","masc"
+37,35,"Devoir","To have to (D...)
+have to",,,,"verb",
+37,36,"Vendre","To sell
+sell",,,,"verb",
+37,37,"Acheter","To buy
+buy
+to purchase
+purchase",,,,"verb",
+37,38,"Racheter","To buy out, buy off; (reflexive) to make amends
+buy back",,,,"verb",
+37,39,"Appeler","To call
+call",,,,"verb",
+37,40,"Préférer","To prefer
+prefer",,,,"verb",
+37,41,"La préférence
+une préférence
+préférence","Preference",,,,"noun","fem"
+37,42,"Préférable","Preferable",,,,"adjective",
+37,43,"Lever","To raise (L...)
+raise",,,,"verb",
+37,44,"Mener","To drive, to take (M...)
+drive
+take",,,,"verb",
+37,45,"Changer","To change
+change",,,,"verb",
+37,46,"Échanger","To exchange
+exchange",,,,"verb",
+37,47,"Belge","Belgian (Adj)",,,,"adjective",
+37,48,"Suivre","To follow (S...)
+follow",,,,"verb",
+37,49,"Le livre
+un livre
+livre","Book",,,,"noun","masc"
+38,1,"Le soleil
+un soleil
+soleil","Sun",,,,"noun","masc"
+38,2,"Le ciel
+un ciel
+ciel","Sky",,,,"noun","masc"
+38,3,"Dégagé","Clear (of the sky, weather) (Adj)",,,,,
+38,4,"Chaud","Hot (Adj) (Ch…)",,,,,
+38,5,"Froid
+froide","Cold",,,,"adjective",
+38,6,"Briller","To shine (of the sun)
+shine",,,,"verb",
+38,7,"Le brouillard
+un brouillard
+brouillard","Fog",,,,"noun","masc"
+38,8,"La bruine","Drizzle (Br…)",,,,,
+38,9,"La pluie
+pluie","Rain",,,,"noun","fem"
+38,10,"La goutte","Droplet, drop",,,,,
+38,11,"La goutte de pluie","Raindrop",,,,,
+38,12,"Le nuage
+un nuage
+nuage","Cloud",,,,"noun","masc"
+38,13,"Nuageux","Cloudy (Adj)",,,,,
+38,14,"Couvert","Covered; (of weather) overcast (Adj)",,,,,
+38,15,"Le vent
+vent
+un vent","Wind",,,,"noun","masc"
+38,16,"Souffler","To blow (of wind)",,,,,
+38,17,"La neige
+une neige
+neige","Snow",,,,"noun","fem"
+38,18,"Neiger","(impersonal) To snow",,,,,
+38,19,"La grêle","Hail",,,,,
+38,20,"Pleuvoir","To rain
+rain",,,,"verb",
+38,21,"Pluvieux","Rainy (Adj)",,,,,
+38,22,"Le temps","Time; weather",,,,,
+38,23,"Le tonnerre","Thunder",,,,,
+38,24,"Agité","Stormy (Adj) (A...)",,,,,
+38,25,"La tempête
+une tempête
+tempête","Storm, tempest (T...)
+tempest",,,,"noun","fem"
+38,26,"L'éclair","Flash (of lightning)",,,,,
+38,27,"La foudre
+une foudre
+foudre","Lightning",,,,"noun","fem"
+38,28,"L'orage
+un orage
+orage","Storm, thunderstorm",,,,"noun","masc"
+38,29,"Orageux","Stormy (Adj) (O...)",,,,,
+39,1,"L'école
+une école
+école","School",,,,"noun","fem"
+39,2,"Leur","Their (possessive pronoun)",,,,,
+39,3,"L'aéroport
+un aéroport
+aéroport","Airport",,,,"noun","masc"
+39,4,"Le billet
+un billet
+billet","Ticket (for train, plane)",,,,"noun","masc"
+39,5,"Le ticket","Ticket (for bus, metro)",,,,,
+39,6,"La poste
+poste
+une poste","Post office
+post-office",,,,"noun","fem"
+39,7,"La station
+une station
+station","Station",,,,"noun","fem"
+39,8,"La gare
+une gare
+gare","Train station",,,,"noun","fem"
+39,9,"La station de bus","Bus station",,,,,
+39,10,"Le métro
+métro
+un métro","Tube, underground
+subway",,,,"noun","masc"
+39,11,"Les bagages","Baggage",,,,,
+39,12,"La valise","Suitcase",,,,,
+39,13,"L'auto
+une auto
+auto","Car (feminine) (Au...)",,,,"noun","fem"
+39,14,"L'avion
+un avion
+avion","Plane, aircraft (masc)",,,,"noun","masc"
+39,15,"L'autobus
+un autobus
+autobus","Bus",,,,"noun","masc"
+39,16,"Le bateau
+un bateau
+bateau","Boat",,,,"noun","masc"
+39,17,"Le train
+un train
+train","Train",,,,"noun","masc"
+39,18,"Le taxi
+un taxi
+taxi","Taxi",,,,"noun","masc"
+39,19,"La voiture
+une voiture
+voiture","Car",,,,"noun","fem"
+39,20,"La chambre","The bedroom, any room (C...)",,,,,
+39,21,"La chambre de libre","A free (available) room (at a hotel)",,,,,
+39,22,"Mettre","To put (M...)
+put",,,,"verb",
+39,23,"Connaître","To know (used for people and places and represents a personal acquaintance or familiarity)
+know",,,,"verb",
+39,24,"Savoir","To know (used for facts, things known by heart, or abilities)
+to know",,,,"verb",
+39,25,"Écouter de la musique","To listen to music",,,,,
+39,26,"Les paroles","Lyrics (of a song)",,,,,
+39,27,"Le musicien
+un musicien
+musicien","Musician",,,,"noun","masc"
+39,28,"Le compositeur","Composer",,,,,
+39,29,"L'instrument
+un instrument
+instrument","Instrument",,,,"noun","masc"
+39,30,"La harpe
+une harpe
+harpe","Harp (instrument)",,,,"noun","fem"
+39,31,"Le piano
+un piano
+piano","Piano",,,,"noun","masc"
+39,32,"La flûte
+une flûte
+flûte","Flute (instrument)",,,,"noun","fem"
+39,33,"La guitare
+une guitare
+guitare","Guitar",,,,"noun","fem"
+39,34,"Le musée du Louvre","Musée du Louvre",,,,,
+39,35,"Beau
+belle","Good looking (Adj)
+beautiful
+handsome",,,,"adjective",
+39,36,"Bel","(Masculine single of beau before vowel)",,,,,
+39,37,"Belle","(Feminine form of beau)",,,,,
+39,38,"Vieux","Old (Adj) (V…)",,,,,
+39,39,"Vieil","(form of vieux used before a masculine singular noun that starts with a vowel or mute h)",,,,,
+39,40,"Vieille","(Feminine singular form of vieux)",,,,,
+39,41,"Vieilles","(Feminine plural form of vieux)",,,,,
+39,42,"Nouveau
+nouvelle","New (Adj)",,,,"adjective",
+39,43,"Nouvel","(Form of nouveau used before a masculine noun that starts with a vowel sound)",,,,,
+39,44,"Nouvelles","(Feminine plural form of nouveau)",,,,,
+39,45,"L'idée
+une idée
+idée","Idea",,,,"noun","fem"
+39,46,"L'individu
+un individu
+individu","Individual (Noun)",,,,"noun","masc"
+39,47,"Individuel
+individuelle","Individual (Adj)",,,,"adjective",
+39,48,"L'ordre
+un ordre
+ordre","Order",,,,"noun","masc"
+39,49,"Joli
+jolie","Pretty (Adj)",,,,"adjective",
+39,50,"Jolie","(Feminine form of joli)",,,,,
+39,51,"Le théâtre
+un théâtre
+théâtre","Theatre
+theater",,,,"noun","masc"
+39,52,"La pièce","Piece (theatrical, literary)",,,,,
+39,53,"L'acte
+un acte
+acte","Act",,,,"noun","masc"
+39,54,"L'acteur
+un acteur
+acteur","Actor",,,,"noun","masc"
+39,55,"L'actrice
+une actrice
+actrice","Actress",,,,"noun","fem"
+39,56,"La scène
+une scène
+scène","Stage",,,,"noun","fem"
+39,57,"L'entracte","Intermission",,,,,
+39,58,"Chanter","To sing
+sing",,,,"verb",
+39,59,"Danser","To dance
+dance",,,,"verb",
+39,60,"Le chanteur
+un chanteur
+chanteur","Singer",,,,"noun","masc"
+39,61,"Le danseur
+un danseur
+danseur","Dancer",,,,"noun","masc"
+39,62,"Le ballet","Ballet",,,,,
+39,63,"La comédie
+une comédie
+comédie","Comedy",,,,"noun","fem"
+39,64,"Le comédien
+un comédien
+comédien","Comedian",,,,"noun","masc"
+39,65,"La comédienne","(Feminine version of comédien)",,,,,
+39,66,"Le drame
+un drame
+drame","Drama, tragedy, tragic event",,,,"noun","masc"
+39,67,"La tragédie
+une tragédie
+tragédie","Tragedy, disaster",,,,"noun","fem"
+39,68,"Apprendre","To learn
+learn",,,,"verb",
+39,69,"Comprendre","To understand
+understand
+to comprehend
+comprehend",,,,"verb",
+39,70,"Se méprendre","To be mistaken",,,,,
+39,71,"Surprendre","To surprise
+surprise",,,,"verb",
+40,1,"Prendre conscience (de)
+Prendre conscience de
+Prendre conscience...
+Prendre conscience de...
+Prendre conscience","To become aware (of)",,,,,
+40,2,"Prendre la correspondance","To change trains",,,,,
+40,3,"Prendre une décision","To make a decision",,,,,
+40,4,"Prendre l'ascenseur","To take the elevator",,,,,
+40,5,"Prendre des kilos","To gain weight",,,,,
+40,6,"Prendre part (à)
+Prendre part à
+Prendre part à...
+Prendre part...","To take part (in)",,,,,
+40,7,"Prendre la parole","To start talking",,,,,
+40,8,"Prendre le pas sur","To surpass (Pren...)",,,,,
+40,9,"Prendre le petit déjeuner","To eat breakfast",,,,,
+40,10,"Prendre rendez-vous","To make an appointment",,,,,
+40,11,"Prendre le métro","To take the subway",,,,,
+40,12,"Prendre un café","To have a coffee",,,,,
+41,1,"Le savant
+un savant
+savant","Scholar (Sa...)",,,,"noun","masc"
+41,2,"En général","Generally (En g...)",,,,"adverb",
+41,3,"Généraliser","To generalise
+generalise
+to generalize
+generalize",,,,"verb",
+41,4,"Généralement","Generally (Gén...)",,,,"adverb",
+41,5,"Le scientifique
+La scientifique","Scientist (Scienti...) (Can be masc or fem)",,,,,
+41,6,"Observer","To observe, watch; to note, notice (O…)",,,,,
+41,7,"Analyser
+étudier","To analyse
+analyse
+study
+to study
+analyze
+to analyze",,,,"verb",
+41,8,"La physique
+physique","Physics",,,,"noun","fem"
+41,9,"Le physicien","Physicist",,,,,
+41,10,"La chimie
+une chimie
+chimie","Chemistry",,,,"noun","fem"
+41,11,"Le chimiste","Chemist",,,,,
+41,12,"La biologie","Biology",,,,,
+41,13,"La botanique","Botany",,,,,
+41,14,"L'anatomie","Anatomy",,,,,
+41,15,"La zoologie","Zoology",,,,,
+41,16,"Le biologiste","Biologist",,,,,
+41,17,"La cellule
+une cellule
+cellule","Cell",,,,"noun","fem"
+41,18,"L'argent
+argent","Money; silver",,,,"noun","masc"
+41,19,"L'or
+or","Gold",,,,"noun","masc"
+41,20,"Doré","Golden (Adj)",,,,,
+41,21,"Le poisson rouge
+un poisson rouge
+poisson rouge","Goldfish",,,,"phrase","masc"
+41,22,"Le cuivre","Copper",,,,,
+41,23,"Le fer
+un fer
+fer","Iron",,,,"noun","masc"
+41,24,"Le soufre","Sulphur",,,,,
+41,25,"Mercure","Mercury",,,,,
+41,26,"Vénus","Venus",,,,,
+41,27,"Terre
+une terre
+terre","Earth",,,,"noun","fem"
+41,28,"Mars","Mars",,,,,
+41,29,"Jupiter","Jupiter",,,,,
+41,30,"Saturne","Saturn",,,,,
+41,31,"Uranus","Uranus",,,,,
+41,32,"Neptune","Neptune",,,,,
+41,33,"Pluton","Pluto",,,,,
+41,34,"L'étoile","Star",,,,,
+41,35,"Le soleil
+un soleil
+soleil","Sun",,,,"noun","masc"
+41,36,"La lune
+une lune
+lune","Moon",,,,"noun","fem"
+42,1,"Le professeur
+un professeur
+professeur","Teacher; professor",,,,"noun","masc"
+42,2,"La bourse
+bourse
+une bourse","Scholarship",,,,"noun","fem"
+42,3,"Le diplôme
+un diplôme
+diplôme","Diploma",,,,"noun","masc"
+42,4,"Le bac","(informal) high school exit exam in France; A level",,,,,
+42,5,"Le baccalauréat","Baccalaureat (≈ A-level, high school diploma) (bac is short for this)",,,,,
+42,6,"La bibliothèque
+une bibliothèque
+bibliothèque","Library",,,,"noun","fem"
+42,7,"Les notes","Grades (on a test)",,,,,
+42,8,"Le cours","Class, course (Cou…)",,,,,
+42,9,"La classe","Grade (I.e. 6th grade); class, type, group; class (in school)",,,,,
+42,10,"Le tableau
+un tableau
+tableau","Chalkboard, board",,,,"noun","masc"
+42,11,"La craie","Chalk",,,,,
+42,12,"Le pupitre","Desk",,,,,
+42,13,"La cantine","Cafeteria (Can...)",,,,,
+42,14,"Déjeuner","To have lunch
+lunch
+have lunch
+to lunch",,,,"verb",
+42,15,"La deuxième classe","10th grade",,,,,
+42,16,"La première classe","11th grade",,,,,
+42,17,"La classe terminale","12th grade",,,,,
+42,18,"Passer un examen","To take an exam",,,,,
+42,19,"Réussir un examen","To pass an exam",,,,,
+42,20,"Rater un examen","To fail an exam",,,,,
+42,21,"Poser une question","To ask a question (P...une q...)",,,,,
+42,22,"Lever la main","To raise (one's hand)",,,,,
+42,23,"Entendre","To hear
+hear",,,,"verb",
+42,24,"Regarder","To look, to watch
+look
+watch",,,,"verb",
+42,25,"L'étudiant","Student (Male)",,,,,
+42,26,"L'étudiante","Student (Female)",,,,,
+42,27,"Le collège","Jr. high school (grades 6-9)",,,,,
+42,28,"Le lycée","High school (grades 10-12)",,,,,
+42,29,"Le collégien","Jr. high school student",,,,,
+42,30,"Le lycéen","High school student",,,,,
+42,31,"L'université","The university (institution of higher education)",,,,,
+42,32,"La fac","(informal, France) university (like faks)",,,,,
+42,33,"La faculté","Department (of a university); (by extension) a university (Fa…)",,,,,
+42,34,"L'enseignement supérieur","Higher education",,,,,
+42,35,"Le stylo
+un stylo
+stylo","Pen",,,,"noun","masc"
+42,36,"Le crayon
+un crayon
+crayon","Pencil",,,,"noun","masc"
+42,37,"La calculatrice","Calculator",,,,,
+42,38,"Le bouquin","(Colloquial) Book",,,,,
+42,39,"Le cahier
+un cahier
+cahier","Notebook (Ca...)
+copybook",,,,"noun","masc"
+42,40,"Nul","Of poor quality, lousy, rubbish (Adj) (N…)",,,,,
+42,41,"Intelligent","Intelligent (Adj)",,,,,
+42,42,"Le papier
+un papier
+papier","Paper",,,,"noun","masc"
+42,43,"La feuille de papier","Sheet of paper",,,,,
+42,44,"La feuille
+une feuille
+feuille","Leaf",,,,"noun","fem"
+42,45,"Le bloc-notes","Notebook (book) (Bloc-n…)",,,,,
+42,46,"Le classeur","Three-ring binder",,,,,
+42,47,"Le sac à dos
+un sac à dos
+sac à dos","Rucksack, backpack",,,,"noun","masc"
+42,48,"La gomme
+une gomme","Rubber, eraser",,,,"noun","fem"
+42,49,"La règle","Rule (regulation); ruler (measuring tool) (Rè…)",,,,,
+42,50,"Le feutre","Marker (Feu…)",,,,,
+43,1,"Pour être honnête…
+Pour être honnête","To be honest…",,,,,
+43,2,"Le bras
+un bras
+bras","Arm",,,,"noun","masc"
+43,3,"La jambe
+une jambe
+jambe","Leg",,,,"noun","fem"
+43,4,"La main
+main
+une main","Hand",,,,"noun","fem"
+43,5,"La tête
+une tête
+tête","Head",,,,"noun","fem"
+43,6,"Casser","To break
+break",,,,"verb",
+43,7,"Anglais
+anglaise","English (Adj)",,,,"adjective",
+43,8,"Espagnol","The Spanish language; (Adj) Spanish",,,,,
+43,9,"Russe","Russian (Noun, Adj, and language)",,,,"adjective",
+43,10,"Allemand
+allemande","German (Adj)",,,,"adjective",
+43,11,"Néerlandais
+néerlandaise","Dutch (Adj) (Né...)",,,,"adjective",
+43,12,"Hollandais
+hollandaise","Dutch (Adj) (H...)",,,,"adjective",
+43,13,"Italien
+italienne","Italian",,,,"adjective",
+43,14,"L'économie
+une économie
+économie","Economics; economy",,,,"noun","fem"
+43,15,"La géographie
+une géographie
+géographie","Geography",,,,"noun","fem"
+43,16,"L'histoire
+une histoire
+histoire","Story, tale; history",,,,"noun","fem"
+43,17,"L'ingénierie","Engineering",,,,,
+43,18,"L'ingénieur
+un ingénieur
+ingénieur","Engineer",,,,"noun","masc"
+43,19,"La musique
+une musique
+musique","Music",,,,"noun","fem"
+43,20,"La littérature","Literature",,,,"noun","fem"
+43,21,"Le dessin","Drawing; design (pattern) (De…)",,,,,
+43,22,"Répondre","To answer
+answer
+to reply
+reply",,,,"verb",
+43,23,"Acquérir","To acquire
+acquire",,,,"verb",
+43,24,"S'asseoir","(reflexive) To sit down; to sit up; to take a seat",,,,,
+43,25,"Devoir","To have to (D...)
+have to",,,,"verb",
+43,26,"Dormir","To sleep
+sleep",,,,"verb",
+43,27,"Falloir","To have to (F...)
+have to",,,,"verb",
+43,28,"Partir","To leave (P...)
+leave",,,,"verb",
+43,29,"Recevoir","To receive
+receive",,,,"verb",
+43,30,"Savoir","To know (used for facts, things known by heart, or abilities)
+to know",,,,"verb",
+43,31,"Servir","To serve
+serve",,,,"verb",
+43,32,"Voir","To see
+see",,,,"verb",
+43,33,"Boire","To drink
+drink",,,,"verb",
+43,34,"Conduire","To drive (a vehicle) (Con…)",,,,,
+43,35,"Croire","To believe
+believe",,,,"verb",
+43,36,"Dire","To say
+say",,,,"verb",
+43,37,"Rire","To laugh
+laugh",,,,"verb",
+43,38,"Le rire
+un rire
+rire","Laugh",,,,"noun","masc"
+43,39,"Adorer","To adore
+adore",,,,"verb",
+43,40,"La religion
+religion
+une religion","Religion",,,,"noun","fem"
+43,41,"Le Christianisme","Christianity",,,,,
+43,42,"L'Islam","Islam",,,,,
+43,43,"Le Judaïsme","Judaism",,,,,
+43,44,"Le Juif","Jew (Male)",,,,,
+43,45,"La Juive","Jew (Female)",,,,,
+43,46,"L'athée","Atheist",,,,,
+43,47,"Le Père noël","Santa Clause",,,,,
+43,48,"Le 14 juillet","Bastille Day",,,,,
+43,49,"L'anniversaire","Birthday",,,,,
+43,50,"Le gâteau
+un gâteau
+gâteau","Cake, biscuit",,,,"noun","masc"
+43,51,"Le cadeau
+un cadeau
+cadeau","Present, gift",,,,"noun","masc"
+43,52,"La bougie","Candle",,,,,
+43,53,"La fête
+une fête
+fête","Celebration, party; holiday
+party",,,,"noun","fem"
+43,54,"Inviter","To invite
+invite",,,,"verb",
+43,55,"Donner une fête","To throw a party",,,,,
+43,56,"Le Nouvel An","New Year's Day",,,,,
+43,57,"Le Noël","Christmas",,,,,
+43,58,"Le Réveillon","Christmas Eve",,,,,
+44,1,"Porter","To carry
+carry",,,,"verb",
+44,2,"Demander","To ask for, to request
+ask for
+request",,,,"verb",
+44,3,"Payer","To pay
+pay",,,,"verb",
+44,4,"Payer à la caisse","To pay at the counter",,,,,
+44,5,"Faire du shopping","To go shopping",,,,,
+44,6,"Vendre","To sell
+sell",,,,"verb",
+44,7,"Acheter","To buy
+buy
+to purchase
+purchase",,,,"verb",
+44,8,"Le magasin
+un magasin
+magasin","Shop, store (M...)",,,,"noun","masc"
+44,9,"Le centre commercial","Shopping mall",,,,,
+44,10,"Le grand magasin","Department store",,,,,
+44,11,"Le rayon","Department (of department store), section (of shop)",,,,,
+44,12,"La boutique
+une boutique
+boutique","Shop, store (B...)
+boutique",,,,"noun","fem"
+44,13,"La pharmacie","Pharmacy",,,,,
+44,14,"Le marché
+un marché
+marché","Market",,,,"noun","masc"
+44,15,"Le vendeur
+un vendeur
+vendeur","Salesman",,,,"noun","masc"
+44,16,"La vendeuse","Saleswoman",,,,,
+44,17,"Le cassier","Cashier (Cas...) (Male)",,,,,
+44,18,"La cassière","Cashier (Cas…) (Feminine)",,,,,
+44,19,"Cher
+chère","Expensive
+dear",,,,"adjective",
+44,20,"Chère","(Feminine form of cher)",,,,,
+44,21,"En solde","On sale (En s…)",,,,,
+44,22,"Le prix
+un prix
+prix","Price",,,,"noun","masc"
+44,23,"Coûter","To cost
+cost",,,,"verb",
+44,24,"Le supermarché
+un supermarché
+supermarché","Supermarket",,,,"noun","masc"
+44,25,"L'hypermarché","Hypermarket",,,,,
+44,26,"La boucherie
+une boucherie
+boucherie","Butcher's shop
+butcher's",,,,"noun","fem"
+44,27,"La boulangerie
+une boulangerie
+boulangerie","Bakery
+baker's
+baker's shop",,,,"noun","fem"
+44,28,"La pâtisserie
+une pâtisserie
+pâtisserie","Pastry shop
+cake shop
+patisserie",,,,"noun","fem"
+44,29,"Le dépôt de pain","A place that sells bread",,,,,
+44,30,"La charcuterie","Delicatessen",,,,,
+44,31,"La crèmerie","Dairy store",,,,,
+44,32,"La poissonnerie","Seafood store; fishmonger (La poi…)",,,,,
+44,33,"L'épicerie","Grocery store (É…)",,,,,
+44,34,"Le cambrioleur","Burglar",,,,,
+44,35,"Peser","To weigh
+to weigh",,,,"verb",
+44,36,"Mener","To drive, to take (M...)
+drive
+take",,,,"verb",
+45,1,"Le plat régional","Local dish",,,,,
+45,2,"Le vin de palme","Palm wine",,,,,
+45,3,"La bière de gingembre","Ginger beer",,,,,
+45,4,"La bière ougandaise","Ugandan beer",,,,,
+45,5,"La bière de banane","Banana beer / banana wine",,,,,
+45,6,"La viande de brousse","Bushmeat",,,,,
+45,7,"Le maboké","A dish in Centrafrican cuisine of Central African Republic. It is a fish dish, with ingredients wrapped in a type of leaf.",,,,,
+45,8,"Le beurre de cacahuètes","Peanutbutter",,,,,
+45,9,"La banane plantain","Plantain",,,,,
+45,10,"La banane
+une banane
+banane","Banana",,,,"noun","fem"
+45,11,"Le millet","Millet",,,,,
+45,12,"Le riz
+rice","Rice",,,,"noun","masc"
+45,13,"Le sésame","Sesame",,,,,
+45,14,"La sauce","Sauce",,,,,
+45,15,"Le champignon","Mushroom",,,,,
+45,16,"Le foufou","Fufu",,,,,
+45,17,"La soupe d'egusi","Egusi soup",,,,,
+45,18,"La graine","Seed",,,,,
+45,19,"L'igname","Yam (feminine)",,,,,
+45,20,"Le gombo","Okra",,,,,
+45,21,"La patate douce","Sweet potato",,,,,
+45,22,"L’arachide","Peanut (Ar…)",,,,,
+45,23,"La cacahuète","Peanut (Ca…)",,,,,
+45,24,"La mangue
+une mangue
+mangue","Mango",,,,"noun","fem"
+46,1,"Le sous-continent","Subcontinent",,,,,
+46,2,"L'Afrique subsaharienne","Subsaharan Africa",,,,,
+46,3,"Le Sahara","Sahara",,,,,
+46,4,"Exactement","Exactly (Adv)",,,,"adverb",
+46,5,"L'Oubangui","Ubangi river",,,,,
+46,6,"La République centrafricaine","Central African Republic",,,,,
+46,7,"Le lac Victoria","Lake Victoria",,,,,
+46,8,"Le haoussa","Hausa language",,,,,
+46,9,"Le malgache","Malagasy language",,,,,
+46,10,"L'entreprise
+une entreprise
+entreprise","Enterprise, company",,,,"noun","fem"
+46,11,"La compagnie
+une compagnie
+compagnie","Company (C...)",,,,"noun","fem"
+46,12,"L'œuvre","Work, book, piece",,,,,
+46,13,"La chemise
+une chemise
+chemise","Shirt",,,,"noun","fem"
+46,14,"La cravate
+une cravate
+cravate","Necktie, tie",,,,"noun","masc"
+46,15,"Le pantalon","Trousers",,,,"noun","masc"
+46,16,"Le complet","Suit (Com…)",,,,,
+46,17,"Le costume","Suit (Cos…)",,,,,
+46,18,"Le manteau
+un manteau
+manteau","Coat",,,,"noun","masc"
+46,19,"La robe
+une robe
+robe","Dress",,,,"noun","fem"
+46,20,"La casquette
+une casquette
+casquette","Cap",,,,"noun","fem"
+46,21,"Le casque
+un casque
+casque","Headphones",,,,"noun","masc"
+46,22,"Le polo","Polo shirt",,,,,
+46,23,"Le pull
+un pull
+pull","Jumper, sweater
+pullover",,,,"noun","masc"
+46,24,"La veste
+une veste
+veste","Jacket",,,,"noun","fem"
+46,25,"Le jean
+un jean
+jean","Jeans",,,,"noun","masc"
+46,26,"Les chaussures","Shoes",,,,,
+46,27,"La paire de chaussures","Pair of shoes",,,,,
+46,28,"Les sandales","Sandals",,,,,
+46,29,"Les tennis","Tennis shoes",,,,,
+46,30,"Appuyer","To press; to support (App...)
+press
+to press down
+press down",,,,"verb",
+46,31,"Employer","To employ
+employ",,,,"verb",
+46,32,"Essayer","To try
+try",,,,"verb",
+46,33,"Essuyer","To wipe
+wipe",,,,"verb",
+46,34,"Nettoyer","To clean (housework)
+clean",,,,"verb",
+46,35,"Tutoyer","(transitive) to thou (to address (someone) using the informal second-person pronoun tu rather than the formal vous)",,,,,
+46,36,"Le cinéma
+un cinéma
+cinéma","Cinema (The art of making movies, the movie industry, or a movie theatre) (C...)",,,,"noun","masc"
+46,37,"La télévision
+une télévision
+télévision","Television
+TV
+TV set",,,,"noun","fem"
+46,38,"Le sport
+un sport
+sport","Sport",,,,"noun","masc"
+46,39,"Sportif","Athletic (Adj) (S...)",,,,,
+47,1,"Louer","To rent
+rent",,,,"verb",
+47,2,"Le film
+un film
+film","Film",,,,"noun","masc"
+47,3,"Filmer","To film
+film",,,,"verb",
+47,4,"Le film d'horreur
+un film d'horreur
+film d'horreur","Horror movie
+horror movie",,,,"phrase","masc"
+47,5,"Le réalisateur
+un réalisateur
+réalisateur","Director, film maker",,,,"noun","masc"
+47,6,"La salle du cinéma","Theater showing room",,,,,
+47,7,"Le guichet","Ticket office, box office",,,,,
+47,8,"Le dessin animé","Cartoon",,,,,
+47,9,"Le documentaire
+un documentaire
+documentaire","Documentary",,,,"noun","masc"
+47,10,"Le film d'amour","Love story film",,,,,
+47,11,"Le film d'aventures","Adventure movie",,,,,
+47,12,"Le film de science-fiction","Science fiction movie",,,,,
+47,13,"Appartenir","To belong
+belong",,,,"verb",
+47,14,"Contenir","To contain
+contain",,,,"verb",
+47,15,"Détenir","To hold, to detain
+hold
+detain",,,,"verb",
+47,16,"Retenir","To retain
+retain",,,,"verb",
+47,17,"Se souvenir","To remember, to recall
+remember
+recall
+to recollect
+recollect",,,,"verb",
+47,18,"Soutenir","To support (Sou…)",,,,,
+47,19,"Tenir","To hold
+hold",,,,"verb",
+47,20,"Suggérer","To suggest
+suggest",,,,"verb",
+47,21,"Proposer","To propose, to suggest
+propose
+suggest",,,,"verb",
+47,22,"Accélérer","To speed up, to accelerate
+speed up
+accelerate",,,,"verb",
+47,23,"Célébrer","To celebrate (C...)
+celebrate",,,,"verb",
+47,24,"Espérer","To hope (Es…)",,,,,
+47,25,"Oblitérer","To obliterate",,,,,
+47,26,"Préférer","To prefer
+prefer",,,,"verb",
+47,27,"Sec
+sèche","Dry (Adj)",,,,"adjective",
+47,28,"Mouillé
+mouillée","Wet (Adj)",,,,"adjective",
+47,29,"Sécher","To dry",,,,,
+47,30,"Produire","To produce
+produce",,,,"verb",
+47,31,"Réduire","To reduce",,,,,
+47,32,"Traduire","To translate
+translate",,,,"verb",
+47,33,"La traduction
+une traduction
+traduction","Translation",,,,"noun","fem"
+47,34,"Le traducteur","Translator",,,,,
+47,35,"Découvrir","To discover
+discover",,,,"verb",
+47,36,"Tomber","To fall",,,,,
+47,37,"Descendre","To go down
+go down",,,,"verb",
+47,38,"Entrer","To enter",,,,,
+47,39,"Revenir","To come back
+come back
+to return
+return",,,,"verb",
+48,1,"Se lever","To get up",,,,,
+48,2,"Se laver","To wash (oneself)",,,,,
+48,3,"Se raser","To shave",,,,,
+48,4,"Se doucher","To shower",,,,,
+48,5,"La douche
+une douche
+douche","Shower",,,,"noun","fem"
+48,6,"Se baigner","To bathe (oneself)",,,,,
+48,7,"Se brosser les dents","To brush one's teeth",,,,,
+48,8,"S'habiller","To dress (oneself)",,,,,
+48,9,"Falloir","To have to (F...)
+have to",,,,"verb",
+48,10,"La faute
+une faute
+faute","Fault",,,,"noun","fem"
+48,11,"Nager","To swim
+swim",,,,"verb",
+48,12,"Exiger","To require (Ex...)
+require",,,,"verb",
+48,13,"Permettre","To allow, to permit
+allow
+permit",,,,"verb",
+48,14,"Remettre","To put back
+put back",,,,"verb",
+48,15,"Soumettre","To submit
+submit",,,,"verb",
+48,16,"Mettre au jour","To bring to light",,,,,
+48,17,"Mettre de l'argent de côté","To put money aside",,,,,
+49,1,"La banane
+une banane
+banane","Banana",,,,"noun","fem"
+49,2,"La cerise
+une cerise
+cerise","Cherry",,,,"noun","fem"
+49,3,"Le citron
+citron
+un citron","Lemon",,,,"noun","masc"
+49,4,"La fraise","Strawberry",,,,,
+49,5,"L'orange
+une orange
+orange","Orange (feminine)",,,,"noun","fem"
+49,6,"La pomme
+une pomme
+pomme","Apple",,,,"noun","fem"
+49,7,"Le raisin
+un raisin
+raisin","Grape",,,,"noun","masc"
+49,8,"Le pamplemousse","Grapefruit",,,,,
+49,9,"La carotte
+une carotte
+carotte","Carrot",,,,"noun","fem"
+49,10,"Les épinards
+épinards
+des épinards","Spinach",,,,"noun plural","masc"
+49,11,"L'oignon
+un oignon
+oignon","Onion",,,,"noun","masc"
+49,12,"Les petits pois","Peas",,,,,
+49,13,"La pomme de terre
+une pomme de terre
+pomme de terre","Potato",,,,"noun","fem"
+49,14,"La tomate
+une tomate
+tomate","Tomato",,,,"noun","fem"
+49,15,"Les asperges","Asparagus",,,,,
+49,16,"Les haricots","Beans",,,,,
+49,17,"Les fruits de mer","Seafood",,,,,
+49,18,"L'agneau
+un agneau
+agneau","Lamb",,,,"noun","masc"
+49,19,"La dinde","Turkey",,,,,
+49,20,"Le jambon
+un jambon
+jambon","Ham",,,,"noun","masc"
+49,21,"Le porc
+porc","Pork",,,,"noun","masc"
+49,22,"Le poulet
+un poulet
+poulet","Chicken",,,,"noun","masc"
+49,23,"Le bœuf
+un boeuf
+boeuf","Beef",,,,"noun","masc"
+49,24,"La saucisse
+une saucisse
+saucisse","Sausage",,,,"noun","fem"
+49,25,"Le crabe","Crab",,,,,
+49,26,"Le saumon","Salmon",,,,,
+49,27,"Le beurre
+un beurre
+beurre","Butter",,,,"noun","masc"
+49,28,"Le fromage
+un fromage
+fromage","Cheese",,,,"noun","masc"
+49,29,"Le fromage blanc
+un fromage blanc
+fromage blanc","Cottage cheese
+fromage blanc",,,,"noun","masc"
+49,30,"Le lait
+un lait
+lait","Milk",,,,"noun","masc"
+49,31,"Le yaourt
+yaourt
+un yaourt","Yogurt",,,,"noun","masc"
+49,32,"Le bonbon
+un bonbon
+bonbon","Sweet, candy",,,,"noun","masc"
+49,33,"Le chocolat
+un chocolat
+chocolat","Chocolate",,,,"noun","masc"
+49,34,"Le gâteau
+un gâteau
+gâteau","Cake, biscuit",,,,"noun","masc"
+49,35,"La glace
+glace
+de la glace","Ice, ice cream",,,,"noun","fem"
+49,36,"La mousse","Mousse",,,,,
+49,37,"La tarte
+une tarte
+tarte","Pie, tart",,,,"noun","fem"
+49,38,"La glace au chocolat","Chocolate ice cream",,,,,
+49,39,"La glace à la vanille","Vanilla ice cream",,,,,
+49,40,"La crêpe","Pancake",,,,,
+49,41,"La moutarde","Mustard",,,,,
+49,42,"Le pain
+un pain
+pain","Bread",,,,"noun","masc"
+49,43,"Le poivre
+poivre
+un poivre","Pepper (black)",,,,"noun","masc"
+49,44,"Le sel
+un sel
+sel","Salt",,,,"noun","masc"
+49,45,"Le sucre
+sucre
+un sucre","Sugar",,,,"noun","masc"
+49,46,"La confiture","Jam",,,,,
+49,47,"La bière
+une bière
+bière","Beer, ale, lager",,,,"noun","fem"
+49,48,"Le café
+un café
+café","Coffee",,,,"noun","masc"
+49,49,"Le lait chocolaté
+chocolat au lait","Chocolate milk",,,,"noun","masc"
+49,50,"Le chocolat chaud
+un chocolat chaud
+chocolat chaud","Hot chocolate
+hot cocoa",,,,"noun","masc"
+49,51,"Le coca","Coke",,,,,
+49,52,"La limonade
+une limonade
+limonade","Lemonade",,,,"noun","fem"
+49,53,"Le jus
+un jus
+jus","Juice",,,,"noun","masc"
+49,54,"Le jus d'orange","Orange juice",,,,,
+49,55,"Le jus de pomme","Apple juice",,,,,
+49,56,"Le jus de tomate","Tomato juice",,,,,
+49,57,"Le thé","Tea",,,,,
+49,58,"Le vin
+le vin
+un vin
+du vin","Wine",,,,"noun","masc"
+49,59,"Commander
+ordonner","To order (At a restaurant)
+order",,,,"verb",
+49,60,"Le poisson
+un poisson
+poisson","Fish",,,,"noun","masc"
+50,1,"La cuisine","Kitchen; cuisine",,,,,
+50,2,"La salle à manger","Dining room",,,,,
+50,3,"Le restaurant
+un restaurant
+restaurant","Restaurant",,,,"noun","masc"
+50,4,"Le repas
+un repas
+repas","Meal",,,,"noun","masc"
+50,5,"Le petit déjeuner","Breakfast",,,,,
+50,6,"Le déjeuner","Lunch",,,,,
+50,7,"Dîner","To dine
+dine",,,,"verb",
+50,8,"Le dîner","Dinner",,,,,
+50,9,"Le goûter
+un goûter
+goûter","Snack
+afternoon tea",,,,"noun","masc"
+50,10,"Goûter","To taste
+taste",,,,"verb",
+50,11,"Avoir faim","To be hungry",,,,,
+50,12,"Avoir soif","To be thirsty",,,,,
+50,13,"Mettre le couvert","To set the table",,,,,
+50,14,"Préparer un repas","To prepare a meal",,,,,
+50,15,"Le gramme","Gram",,,,,
+50,16,"Le kilo","Kilogram",,,,,
+50,17,"La bouteille
+une bouteille
+bouteille","Bottle",,,,"noun","fem"
+50,18,"La boîte","Box, container; tin, can; club (like a nightclub)",,,,,
+50,19,"Le pot
+un pot
+pot","Jar, pot, tub",,,,"noun","masc"
+50,20,"Arriver","To arrive; to happen; to manage to",,,,,
+50,21,"Trouver","To find
+find
+to find out
+find out",,,,"verb",
+50,22,"La table occupée","Occupied table",,,,,
+50,23,"La table libre","Free table",,,,,
+50,24,"Désirer","To desire
+desire",,,,"verb",
+50,25,"Le serveur
+serveur
+un serveur","Waiter",,,,"noun","masc"
+50,26,"La serveuse","Waitresse",,,,,
+50,27,"La carte","Menu",,,,,
+50,28,"L'addition","Check (at the end of a meal)",,,,,
+50,29,"Le pourboire
+un pourboire
+pourboire","Tip, gratuity",,,,"noun","masc"
+50,30,"Laisser","To leave (Lai...)
+leave",,,,"verb",
+50,31,"Commencer","To begin
+begin
+to start
+start",,,,"verb",
+50,32,"Effacer","To erase
+erase",,,,"verb",
+50,33,"L'assiette
+une assiette
+assiette","Plate",,,,"noun","fem"
+50,34,"L'assiette de crudités
+une assiette de crudités
+assiette de crudités","Plate of raw vegetables",,,,"phrase","fem"
+50,35,"Le bol
+un bol
+bol","Bowl",,,,"noun","masc"
+50,36,"La soucoupe","Saucer",,,,,
+50,37,"Le couteau
+un couteau
+couteau","Knife",,,,"noun","masc"
+50,38,"La cuillère
+une cuillère
+cuillère","Spoon",,,,"noun","fem"
+50,39,"La petite cuillère
+une petite cuillère
+petite cuillère","Teaspoon",,,,"noun","fem"
+50,40,"La fourchette
+une fourchette","Fork",,,,"noun","fem"
+50,41,"La serviette","Napkin",,,,,
+50,42,"La nappe","Tablecloth",,,,,
+50,43,"La tasse
+une tasse
+tasse","Cup",,,,"noun","fem"
+50,44,"Le verre
+un verre
+verre","Glass",,,,"noun","masc"
+50,45,"Apparaître","To appear
+appear",,,,"verb",
+50,46,"Disparaître","To disappear
+disappear",,,,"verb",
+50,47,"Naître","To be born
+be born",,,,"verb",
+50,48,"Téléphoner","To telephone
+telephone
+to phone
+phone",,,,"verb",
+50,49,"E-mail-adresse","E-mail address (E-mail…)",,,,,
+50,50,"Envoyer","To send
+send",,,,"verb",
+51,1,"Dire","To say
+say",,,,"verb",
+51,2,"Recevoir","To receive
+receive",,,,"verb",
+51,3,"Envoyer","To send
+send",,,,"verb",
+51,4,"L'ordinateur
+un ordinateur
+ordinateur","Computer",,,,"noun","masc"
+51,5,"L'écran","Screen",,,,,
+51,6,"Le clavier","Keyboard",,,,,
+51,7,"La souris
+une souris
+souris","Mouse",,,,"noun","fem"
+51,8,"L'imprimante","Printer",,,,,
+51,9,"Le disque
+un disque
+disque","Disc",,,,"noun","masc"
+51,10,"Utiliser","To use
+use
+to utilise
+utilise
+to utilize
+utilize
+to employ
+employ",,,,"verb",
+51,11,"Taper","To type (on a computer)",,,,,
+51,12,"Sauvegarder","To save (a file)",,,,,
+51,13,"Le fichier
+un fichier
+fichier","File (computing)",,,,"noun","masc"
+51,14,"Le software","Software",,,,,
+51,15,"Le hardware","Hardware",,,,,
+51,16,"Le logiciel
+un logiciel
+logiciel","Software (Log...)",,,,"noun","masc"
+51,17,"Le programme
+un programme
+programme","Program",,,,"noun","masc"
+51,18,"La programmation
+une programmation
+programmation","Programming",,,,"noun","fem"
+51,19,"Le document
+un document
+document","Document; (computing) file)",,,,"noun","masc"
+51,20,"Connecter","To connect
+connect",,,,"verb",
+51,21,"Être connecté","To be connected",,,,,
+51,22,"Le site
+un site
+site","Site",,,,"noun","masc"
+51,23,"Télécharger","To download",,,,,
+51,24,"Cliquer","To click",,,,,
+51,25,"Allumer","To turn on
+turn on",,,,"verb",
+51,26,"Éteindre","To put out (of a fire)
+put out",,,,"verb",
+51,27,"Naviguer sur Internet","To navigate the internet (Nav…sur in…)",,,,,
+51,28,"Les langues slaves","Slavic languages",,,,,
+52,1,"L'aéroport
+un aéroport
+aéroport","Airport",,,,"noun","masc"
+52,2,"Le passeport
+un passeport
+passeport","Passport",,,,"noun","masc"
+52,3,"Le chariot","Shopping cart",,,,,
+52,4,"Les arrivées","Arrivals (at an airport)",,,,,
+52,5,"Les départs","Departures (at an airport)",,,,,
+52,6,"Les bagages","Baggage",,,,,
+52,7,"Les bagages à main","Carry-on baggage",,,,,
+52,8,"La livraison des bagages","Baggage claim",,,,,
+52,9,"Enregistrer","To check in (one's baggage)",,,,,
+52,10,"Arriver en avance","To arrive early",,,,,
+52,11,"Arriver en retard","To arrive late",,,,,
+52,12,"La compagnie aérienne","Airline company",,,,,
+52,13,"Le billet d'avion simple","One-way plane ticket",,,,,
+52,14,"Le billet d'avion aller-retour","Round-trip plane ticket",,,,,
+52,15,"La classe tourisme","Coach (on a plane)",,,,,
+52,16,"La première classe","First class (on a plane)",,,,,
+52,17,"Passer à la douane","To go through customs",,,,,
+52,18,"Le contrôleur","Security officer",,,,,
+52,19,"La porte","Gate (at an airport)",,,,,
+52,20,"Embarquer","To board (a plane)",,,,,
+52,21,"L'avion
+un avion
+avion","Plane, aircraft (masc)",,,,"noun","masc"
+52,22,"Décoller","To take off
+take off",,,,"verb",
+52,23,"Le décollage","Take-off (Noun) (Dé...)",,,,,
+52,24,"Le vol","Flight; theft",,,,,
+52,25,"Le pilote
+un pilote
+pilote","Pilot",,,,"noun","masc"
+52,26,"L'hôtesse de l'air","Flight attendant (Hôt…)",,,,,
+52,27,"Le steward","(Male equivalent of hôtesse de l'air)",,,,,
+52,28,"Le passager
+un passager
+passager","Passenger",,,,"noun","masc"
+52,29,"Atterrir","To land (Att…)",,,,,
+52,30,"L'atterrissage","Landing",,,,,
+52,31,"Athènes","Athens (I think this doesn't go with a definite article)",,,,,
+52,32,"Moscou","Moscow",,,,,
+52,33,"Bucarest","Bucharest",,,,,
+52,34,"Varsovie","Warsaw",,,,,
+52,35,"Vienne","Vienna",,,,,
+52,36,"Londres","London",,,,,
+52,37,"Lisbonne","Lisbon",,,,,
+52,38,"Bruxelles","Brussels",,,,,
+53,1,"Allemand
+allemande","German (Adj)",,,,"adjective",
+53,2,"Américain
+américaine","American (Adj)",,,,"adjective",
+53,3,"Birman","Burmese (Adj)",,,,"adjective",
+53,4,"Écossais","Scottish (Adj)",,,,"adjective",
+53,5,"Israélien","Israeli (Adj)",,,,"adjective",
+53,6,"Japonais
+japonaise","Japanese (Adj)",,,,"adjective",
+53,7,"Anglais
+anglaise","English (Adj)",,,,"adjective",
+53,8,"Australien","Australian (Adj) (Masc)",,,,"adjective",
+53,9,"Britannique","British (Adj)",,,,"adjective",
+53,10,"Belge","Belgian (Adj)",,,,"adjective",
+53,11,"Cambodgien","Cambodian (Adj)",,,,"adjective",
+53,12,"Mauricien","Mauritian (Adj)",,,,"adjective",
+53,13,"Malaisien","Malaysian (Adj)",,,,"adjective",
+53,14,"Canadien
+canadienne","Canadian (Adj)",,,,"adjective",
+53,15,"Portugais
+portugaise","Portuguese (Adj)",,,,"adjective",
+53,16,"Singapourien","Singaporean (Adj)",,,,"adjective",
+53,17,"Suédois
+suédoise","Swedish (Adj)",,,,"adjective",
+53,18,"Coréen","Korean (Adj)",,,,"adjective",
+53,19,"Indien
+indienne","Indian (Adj)",,,,"adjective",
+53,20,"Indonésien","Indonesian (Adj)",,,,"adjective",
+53,21,"Vietnamien","Vietnamese (Adj)",,,,"adjective",
+53,22,"Vénézuélien","Venezuelan (Adj)",,,,"adjective",
+53,23,"Néerlandais
+néerlandaise","Dutch (Adj) (Né...)",,,,"adjective",
+53,24,"Suisse","Swiss (Adj)",,,,"adjective",
+53,25,"Thaïlandais","Thai (Adj)",,,,"adjective",
+53,26,"Philippin","Filipino (Adj)",,,,"adjective",
+53,27,"Mexicain
+mexicaine","Mexican (Adj)",,,,"adjective",
+53,28,"Marocain
+marocaine","Moroccan (Adj)",,,,"adjective",
+53,29,"Néo-Zélandais","New Zealand, New Zealander (Adj)",,,,"adjective",
+53,30,"Polonais
+polonaise","Polish (Adj)",,,,"adjective",
+53,31,"Russe","Russian (Adj)",,,,"adjective",
+53,32,"Sénégalais","Senegalese (Adj)",,,,"adjective",
+53,33,"Irlandais
+irlandaise","Irish (Adj)",,,,"adjective",
+53,34,"Européen
+européenne","European (Adj)",,,,"adjective",
+53,35,"Brésilien","Brazilian (Adj)",,,,"adjective",
+53,36,"Asiatique","Asian (Adj)",,,,"adjective",
+53,37,"Algérien
+algérienne","Algerian (Adj)",,,,"adjective",
+53,38,"Biélorusse","Belarusian (Adj)",,,,"adjective",
+53,39,"Croate","Croatian (Adj)",,,,"adjective",
+53,40,"Slovène","Slovenian (Adj)",,,,"adjective",
+53,41,"Serbe","Serbian (Adj)",,,,"adjective",
+53,42,"Bosniaque","Bosniak (Adj)",,,,"adjective",
+53,43,"Macédonien","Macedonian (Adj)",,,,"adjective",
+53,44,"Monténégrin","Montenegrin (Adj)",,,,"adjective",
+53,45,"Albanais
+albanaise","Albanian (Adj)",,,,"adjective",
+53,46,"Grec","Greek (Adj)",,,,"adjective",
+53,47,"Hongrois","Hungarian (Adj) (Ho…)",,,,"adjective",
+53,48,"Bulgare","Bulgarian (Adj)",,,,"adjective",
+53,49,"Roumain","Romanian (Adj)",,,,"adjective",
+53,50,"Ukrainien","Ukranian (Adj)",,,,"adjective",
+53,51,"Soudanais","Sudanese (Adj)",,,,"adjective",
+53,52,"Arabe","Arabic (Adj)",,,,"adjective",
+53,53,"Égyptien
+égyptienne","Egyptian (Adj)",,,,"adjective",
+53,54,"Gallois","Welsh (Adj)",,,,"adjective",
+53,55,"Slave","Slavic (Adj)",,,,"adjective",
+53,56,"Sud-soudanais","South Sudanese (Adj)",,,,"adjective",
+53,57,"Éthiopien","Ethiopian (Adj)",,,,"adjective",
+53,58,"Norvégien","Norwegian (Adj)",,,,"adjective",
+53,59,"Islandais","Icelandic (Adj)",,,,"adjective",
+53,60,"Groenlandais","Greenlandic (Adj)",,,,"adjective",
+53,61,"Sud-américain","South American (Adj)",,,,"adjective",
+53,62,"Nord-américain","North American (Adj)",,,,"adjective",
+53,63,"Romain","Roman (Adj)",,,,"adjective",
+53,64,"Chinois
+chinoise","Chinese (Adj)",,,,"adjective",
+54,1,"La tâche","Task",,,,,
+54,2,"Le jeu
+un jeu
+jeu","Game; play (at a theatre)",,,,"noun","masc"
+54,3,"Le jouet
+un jouet
+jouet","Toy",,,,"noun","masc"
+54,4,"Réussir","To succeed
+succeed",,,,"verb",
+54,5,"Corriger","To correct
+correct",,,,"verb",
+54,6,"Les vacances
+vacances
+des vacances","Holiday
+vacation
+holidays",,,,"noun plural","fem"
+54,7,"Le bouchon
+un bouchon
+bouchon","Traffic jam (B...)",,,,"noun","masc"
+54,8,"Le parc d'attractions","Amusement park",,,,,
+54,9,"L'autoroute
+une autoroute
+autoroute","Motorway, highway, freeway",,,,"noun","fem"
+54,10,"Certainement","Certainly (with certainty, without doubt) (Adv)
+for sure",,,,"adverb",
+54,11,"La sieste
+une sieste
+sieste","Nap",,,,"noun","fem"
+54,12,"La peinture
+une peinture
+peinture","Painting (not tableau)",,,,"noun","fem"
+54,13,"Vivement","Forcefully, vigorously (Adv) (Viv…)",,,,,
+54,14,"Croire","To believe
+believe",,,,"verb",
+54,15,"Sourire","To smile
+smile",,,,"verb",
+54,16,"Réparer","To repair
+repair
+to fix
+fix",,,,"verb",
+54,17,"Le mode subjonctif","The subjunctive mood",,,,,
+54,18,"Le chômage
+un chômage
+chômage","Unemployment
+joblessness",,,,"noun","masc"
+54,19,"L'employeur
+un employeur
+employeur","Employer",,,,"noun","masc"
+54,20,"Le travail
+travail
+un travail","Work, job, task",,,,"noun","masc"
+54,21,"Tous les jours","Every day (Tous les j...)",,,,,
+54,22,"Chercher","To look for (Ch...)
+look for
+to search for
+search for
+seek
+seek",,,,"verb",
+54,23,"Le chercheur
+chercheur
+un chercheur","Researcher",,,,"noun","masc"
+54,24,"L'entretien
+un entretien
+entretien","Interview (for a job)
+interview",,,,"noun","masc"
+54,25,"L'embauche
+une embauche
+embauche","Hiring",,,,"noun","fem"
+54,26,"Embaucher","To hire
+hire",,,,"verb",
+54,27,"La chance
+une chance
+chance","Chance, luck",,,,"noun","fem"
+55,1,"Avoir mal à…","To have an ache in…, to hurt (Avoir…)",,,,,
+55,2,"Avoir mal à la tête","To have a headache",,,,,
+55,3,"Avoir mal aux dents","To have a toothache",,,,,
+55,4,"Être malade","To be sick",,,,,
+55,5,"Avoir la grippe","To have the flu",,,,,
+55,6,"Avoir de la fièvre","To have a fever",,,,,
+55,7,"Être enrhumé","To have a cold",,,,,
+55,8,"Vomir","To throw up
+throw up
+to vomit
+vomit",,,,"verb",
+55,9,"Tousser","To cough",,,,,
+55,10,"Saigner","To bleed",,,,,
+55,11,"S'évanouir","To faint",,,,,
+55,12,"Éternuer","To sneeze",,,,,
+55,13,"Avoir mal au ventre","To have a bellyache",,,,,
+55,14,"Avoir mal partout","To ache all over",,,,,
+55,15,"Avoir des maux de cœur","To feel sick, nauseous",,,,,
+56,1,"Poliment","Politely (Adv)",,,,,
+56,2,"Constamment","Constantly, endlessly (Adv)",,,,"adverb",
+56,3,"Récemment","Recently, lately (Adv)
+not long ago",,,,"adverb",
+56,4,"Précisément","Precisely",,,,"adverb",
+56,5,"Gentiment","Nicely, friendly, kindly (Adv) (G...)",,,,,
+56,6,"Mauvais
+mauvaise","Bad (Adj)",,,,"adjective",
+56,7,"Mal","Badly (Adv)",,,,,
+56,8,"Meilleur
+meilleure
+le meilleur
+la meilleure","Best, better (Adj)",,,,"Adj",
+56,9,"Mieux","Better (Adv)",,,,"adverb",
+56,10,"Pire","Worse (Adj)",,,,,
+56,11,"Pis","Worse (Adv)",,,,,
+56,12,"Ainsi","Thus (Adv)",,,,"adverb",
+56,13,"Complètement","Completely (Adv)
+totally",,,,"adverb",
+56,14,"Complètement vrai","Completely true (Com…vr…)",,,,,
+56,15,"Pas possible","Not possible (Pas pos…)",,,,,
+56,16,"Tellement","So much (in that manner) (Adv)",,,,"adverb",
+56,17,"Il est tellement bon !","He is so good! (Il est tell… bon !)",,,,,
+56,18,"Jamais","Never (Adv)",,,,"adverb",
+57,1,"La tête
+une tête
+tête","Head",,,,"noun","fem"
+57,2,"Le corps
+un corps
+corps","Body",,,,"noun","masc"
+57,3,"Le bras
+un bras
+bras","Arm",,,,"noun","masc"
+57,4,"La jambe
+une jambe
+jambe","Leg",,,,"noun","fem"
+57,5,"La poitrine
+une poitrine
+poitrine","Chest, breast, bosom",,,,"noun","fem"
+57,6,"Le ventre
+un ventre
+ventre","Stomach (V...)",,,,"noun","masc"
+57,7,"L'épaule
+une épaule
+épaule","Shoulder",,,,"noun","fem"
+57,8,"Le coude
+un coude
+coude","Elbow",,,,"noun","masc"
+57,9,"Le poignet
+poignet
+un poignet","Wrist",,,,"noun","masc"
+57,10,"La main
+main
+une main","Hand",,,,"noun","fem"
+57,11,"Le doigt
+un doigt
+doigt","Finger",,,,"noun","masc"
+57,12,"Le genou
+un genou
+genou","Knee",,,,"noun","masc"
+57,13,"Le pied
+un pied
+pied","Foot",,,,"noun","masc"
+57,14,"L'orteil","Toe",,,,,
+57,15,"L'œil","Eye; eye (of a needle); glyph",,,,,
+57,16,"Les yeux","Eyes (plural of œil)",,,,,
+57,17,"Les œils","(Plural of œil as the eye of a needle or as a glyph, 'les yeux' is for the anatomical eye)",,,,,
+57,18,"La bouche","Mouth",,,,"noun","fem"
+57,19,"La dent","Tooth",,,,,
+57,20,"La langue
+une langue
+langue","Tongue; language",,,,"noun","fem"
+57,21,"Le nez
+un nez
+nez","Nose",,,,"noun","masc"
+57,22,"L'oreille
+une oreille
+oreille","Ear",,,,"noun","fem"
+57,23,"Le cou
+un cou
+cou","Neck",,,,"noun","masc"
+57,24,"Les cheveux
+cheveux
+des cheveux","Hair",,,,"noun plural","masc"
+57,25,"Le cheveu","A headhair (still with definite article)",,,,,
+57,26,"L'ongle","Nail (Masc.)",,,,,
+57,27,"Le poumon
+un poumon
+poumon","Lung",,,,"noun","masc"
+57,28,"L'estomac","Stomach",,,,,
+57,29,"Le cœur","Heart",,,,,
+57,30,"Le foie
+un foie
+foie","Liver",,,,"noun","masc"
+57,31,"L'intestin","Intestine",,,,,
+57,32,"L'os","Bone (Masc.)",,,,,
+57,33,"Le crâne
+un crâne
+crâne","Skull, cranium",,,,"noun","masc"
+57,34,"Le muscle
+un muscle
+muscle","Muscle",,,,"noun","masc"
+57,35,"Le cerveau
+un cerveau
+cerveau","Brain",,,,"noun","masc"
+57,36,"La rate","Spleen",,,,,
+57,37,"L'utérus","Womb",,,,,
+57,38,"Le nombril","Navel, belly button",,,,,
+57,39,"Debout","Standing (Adv)",,,,"adverb",
+57,40,"Assis","Sat, seated (Adj)",,,,,
+57,41,"Couché","Laying, lying down, in bed (Adj)",,,,,
+57,42,"À genoux","Kneeling",,,,,
+57,43,"Accroupir","To crouch, squat",,,,,
+58,1,"Par cœur","By heart",,,,,
+58,2,"Autrement dit","In other words (Aut...di...)",,,,,
+58,3,"En d'autres termes","In other words (En d'a...t...)",,,,,
+58,4,"De temps en temps","From time to time, once in a while (De te...en t...)",,,,,
+58,5,"Retrouver","(transitive) To go back to, to return to (Retrou...)",,,,,
+58,6,"Appuyer","To press; to support (App...)
+press
+to press down
+press down",,,,"verb",
+58,7,"Payer","To pay
+pay",,,,"verb",
+58,8,"Le hochet","Rattle (baby's toy)",,,,,
+58,9,"L'adolescent
+un adolescent
+adolescent","Teenager, adolescent",,,,"noun","masc"
+58,10,"Le flic","(slang, derogatory) copper, pig, rozzer; (police officer) (Fl…)",,,,,
+58,11,"Les flics","The cops",,,,,
+58,12,"Faire l'école buissonnière","To skip classes",,,,,
+58,13,"Danser","To dance
+dance",,,,"verb",
+58,14,"Dormir","To sleep
+sleep",,,,"verb",
+58,15,"Combattre
+se battre","To fight
+fight",,,,"verb",
+58,16,"Rompre","To break up
+break up",,,,"verb",
+58,17,"Rejoindre","To meet, to join
+meet
+join",,,,"verb",
+58,18,"Peindre","To paint
+paint",,,,"verb",
+58,19,"Vaincre","To defeat
+defeat",,,,"verb",
+58,20,"Les nouvelles","News (Nouv…)",,,,,
+58,21,"L'actualité
+une actualité
+actualité","Current events
+current affairs",,,,"noun","fem"
+58,22,"Le voleur
+un voleur
+voleur","Thief",,,,"noun","masc"
+58,23,"L'incendie
+un incendie
+incendie","Fire",,,,"noun","masc"
+58,24,"Le vandalisme
+un vandalisme
+vandalisme","Vandalism",,,,"noun","masc"
+58,25,"L'acte de terrorisme","Act of terrorism",,,,,
+58,26,"La criminalité
+une criminalité
+criminalité","Crime",,,,"noun","fem"
+58,27,"L'élection présidentielle","Presidential election",,,,,
+58,28,"Le sénateur
+un sénateur
+sénateur","Senator",,,,"noun","masc"
+58,29,"Le sénat","Senate",,,,,
+58,30,"Le gouvernement
+un gouvernement
+gouvernement","Government",,,,"noun","masc"
+58,31,"Gouverner","To govern
+govern",,,,"verb",
+58,32,"Le président
+un président
+président","President",,,,"noun","masc"
+58,33,"Le ministre
+un ministre
+ministre","Minister",,,,"noun","masc"
+58,34,"Généreux","Generous (Adj)",,,,,
+58,35,"Gentil","Helpful, kind (Adj) (G…)",,,,,
+58,36,"Vilain","Ugly (Adj) (V…)",,,,,
+58,37,"Laid
+laide","Ugly (Adj) (L...)",,,,"adjective",
+58,38,"Court","Short (Adj)",,,,,
+58,39,"Affreux
+affreuse","Dreadful (Adj)",,,,"adjective",
+58,40,"Méchant
+méchante","Mean (Adj)",,,,"adjective",
+58,41,"Pauvre","Poor (Adj)",,,,"adjective",
+58,42,"Riche","Rich (Adj)",,,,"adjective",
+58,43,"Est
+l'est","East",,,,"noun","masc"
+58,44,"Sud
+le sud","South",,,,"noun","masc"
+58,45,"Ouest
+l'ouest","West",,,,"noun","masc"
+58,46,"Nord
+nord","North",,,,"noun","masc"
+59,1,"L'Afghanistan","Afghanistan",,,,,
+59,2,"L'Afrique du Sud","South Africa",,,,,
+59,3,"L'Arabie saoudite","Saudi Arabia",,,,,
+59,4,"Les Bahamas","The Bahamas",,,,,
+59,5,"L'Argentine","Argentina",,,,,
+59,6,"L'Angleterre","England",,,,,
+59,7,"Le Cambodge
+Cambodge","Cambodia",,,,"noun","masc"
+59,8,"Les Comores","Comoro Islands",,,,,
+59,9,"La Corée du Sud","South Korea",,,,,
+59,10,"La Côte d'Ivoire","Ivory Coast",,,,,
+59,11,"La Belgique","Belgium",,,,,
+59,12,"L'Autriche","Austria",,,,,
+59,13,"L'Allemagne","Germany",,,,,
+59,14,"Le Danemark","Denmark",,,,,
+59,15,"L'Écosse","Scotland",,,,,
+59,16,"L'Égypte","Egypt",,,,,
+59,17,"La Grèce","Greece",,,,,
+59,18,"L'Inde","India",,,,,
+59,19,"Le Cameroun","Cameroon",,,,,
+59,20,"Le Chili","Chile",,,,,
+59,21,"Le Cap-Vert","Cape Verde",,,,,
+59,22,"La Chine","China",,,,,
+59,23,"L'Islande","Iceland",,,,,
+59,24,"L'Irlande","Ireland",,,,,
+59,25,"La Finlande","Finland",,,,,
+59,26,"Les Émirats arabes unis","United Arab Emirates",,,,,
+59,27,"L'Espagne","Spain",,,,,
+59,28,"Le Congo","Congo",,,,,
+59,29,"Le Canada","Canada",,,,,
+59,30,"La Croatie","Croatia",,,,,
+59,31,"Le Brésil","Brazil",,,,,
+59,32,"L'Arménie","Armenia",,,,,
+59,33,"Les États-Unis d'Amérique","The United States of America",,,,,
+59,34,"La Géorgie","Georgia",,,,,
+59,35,"La Transnistrie","Transnistria",,,,,
+59,36,"La Moldavie","Moldova",,,,,
+59,37,"L'Italie","Italy",,,,,
+59,38,"Le Japon","Japan",,,,,
+59,39,"La Jordanie","Jordan",,,,,
+59,40,"Le Koweït","Kuwait",,,,,
+59,41,"Le Liban","Lebanon",,,,,
+59,42,"La Libye","Libya",,,,,
+59,43,"Madagascar","Madagascar (DOESN'T GO WITH DEFINITE ARTICLE)",,,,,
+59,44,"La Macédoine","Macedonia",,,,,
+59,45,"La Lituanie","Lithuania",,,,,
+59,46,"Le Mexique","Mexico",,,,,
+59,47,"Le Maroc","Morocco",,,,,
+59,48,"Le Nigéria","Nigeria",,,,,
+59,49,"La Nouvelle-Zélande","New Zealand",,,,,
+59,50,"L'Ouganda","Uganda",,,,,
+59,51,"La Papouasie-Nouvelle-Guinée","Papua New Guinea",,,,,
+59,52,"Le Pays de Galles","Wales",,,,,
+59,53,"Les Pays-Bas","The Netherlands",,,,,
+59,54,"La Suisse","Switzerland",,,,,
+59,55,"Porto Rico","Puerto Rico",,,,,
+59,56,"La République tchèque","Czech Republic",,,,,
+59,57,"La Roumanie","Romania",,,,,
+59,58,"Le Royaume-Uni","The United Kingdom",,,,,
+59,59,"Le Salvador","El Salvador",,,,,
+59,60,"La Slovaquie","Slovakia",,,,,
+59,61,"La Slovénie","Slovenia",,,,,
+59,62,"Le Soudan","Sudan",,,,,
+59,63,"La Syrie","Syria",,,,,
+59,64,"Le Tchad","Chad",,,,,
+59,65,"La Turquie","Turkey (T…)",,,,,
+59,66,"La Tunisie","Tunisia",,,,,
+59,67,"La Yougoslavie","Yugoslavia",,,,,
+59,68,"La Hongrie","Hungary",,,,,
+59,69,"La Communauté d'Afrique de l'Est","East African Community",,,,,
+59,70,"La Fédération d'Afrique de l'Est","East African Federation",,,,,
+59,71,"L'Union soviétique","Soviet Union",,,,,
+59,72,"L'Union européenne","European Union",,,,,
+60,1,"L’Organisation internationale de la francophonie","Organisation internationale de la Francophonie",,,,,
+60,2,"La France
+France","France",,,,"noun","fem"
+60,3,"L'Andorre","Andorra",,,,,
+60,4,"La Belgique","Belgium",,,,,
+60,5,"Le Bénin","Benin",,,,,
+60,6,"Le Burkina Faso","Burkina Faso",,,,,
+60,7,"Le Burundi","Burundi",,,,,
+60,8,"L’Indochine française","French Indochina",,,,,
+60,9,"Le Cambodge
+Cambodge","Cambodia",,,,"noun","masc"
+60,10,"Le Cameroun","Cameroon",,,,,
+60,11,"La République centrafricaine","Central African Republic",,,,,
+60,12,"RCA","CAR",,,,,
+60,13,"Le Tchad","Chad",,,,,
+60,14,"Les Comores","Comoro Islands",,,,,
+60,15,"Le Gabon","Gabon",,,,,
+60,16,"La Guinée équatoriale","Equatorial Guinea",,,,,
+60,17,"L'Égypte","Egypt",,,,,
+60,18,"La Dominique","Dominica",,,,,
+60,19,"Djibouti","Djibouti",,,,,
+60,20,"La Côte d’Ivoire","Ivory Coast",,,,,
+60,21,"La république du Congo","Republic of Congo",,,,,
+60,22,"La république démocratique du Congo","Democratic Republic of Congo",,,,,
+60,23,"Le Vanuatu","Vanuatu",,,,,
+60,24,"Le Togo","Togo",,,,,
+60,25,"Les Seychelles","Seychelles",,,,,
+60,26,"Le Rwanda","Rwanda",,,,,
+60,27,"Le Niger","Niger",,,,,
+60,28,"Le Maroc","Morocco",,,,,
+60,29,"Monaco","Monaco",,,,,
+60,30,"Maurice","Mauritius",,,,,
+60,31,"Madagascar","Madagascar (DOESN'T GO WITH DEFINITE ARTICLE)",,,,,
+60,32,"Le Mali","Mali",,,,,
+60,33,"La Mauritanie","Mauritania",,,,,
+60,34,"Le Liban","Lebanon",,,,,
+60,35,"Le Luxembourg","Luxembourg",,,,,
+60,36,"Le Laos","Laos",,,,,
+60,37,"Haïti","Haiti",,,,,
+60,38,"La Guinée","Guinea",,,,,
+60,39,"Le Viêt Nam","Vietnam",,,,,
+60,40,"La Nouvelle-Calédonie","New Caledonia",,,,,
+61,1,"Rien
+un rien","Nothing (Pronoun)",,,,"noun","masc"
+61,2,"Quelque chose","Something (Pronoun)",,,,,
+61,3,"Quelqu'un","Someone, somebody, anyone, anybody (Pronoun)",,,,,
+61,4,"Tout","Everything (Pronoun)",,,,,
+61,5,"Tout le monde","Everyone, everybody (Pronoun)",,,,,
+61,6,"Plus tard","Later",,,,,
+61,7,"Plus tôt","Earlier",,,,,
+61,8,"Personne","(with ne) no one, nobody (Pronoun)",,,,,
+61,9,"Jamais","(with ne) never; ever (Adv)",,,,,
+61,10,"Parfois","Sometimes (Adv)",,,,,
+61,11,"Toujours","Always (Adv) (Tou…)",,,,,
+61,12,"Pour toujours","Forever (Adv) (Po…to…)",,,,,
+62,1,"Septante","(Belgium, Switzerland, Congo, Acadian, Savoy) seventy",,,,,
+62,2,"Octante","(archaic) eighty (Oct…)",,,,,
+62,3,"Huitante","(obsolete outside Vaud, Valais and Fribourg in Switzerland, and other dialects:, Acadian) eighty (Hui…)",,,,,
+62,4,"Nonante","(Switzerland, Belgium, Congo, Rwanda, Acadian) ninety",,,,,
+62,5,"Septantième","(Ordinal form of septante)",,,,,
+62,6,"Octantième","(Ordinal form of octante)",,,,,
+62,7,"Huitantième","(Ordinal form of huitante)",,,,,
+62,8,"Nonantième","(Ordinal form of nonante)",,,,,
+62,9,"Septantaine
+La septantaine","(Approximate form of septante)",,,,,
+62,10,"Octantaine
+L'octantaine","(Approximate form of octante)",,,,,
+62,11,"Huitantaine
+La huitantaine","(Approximate form of huitante)",,,,,
+62,12,"Nonantaine
+La nonantaine","(Approximate form of nonante)",,,,,
+63,1,"Veuillez","(Second-person plural imperative of vouloir)",,,,,
+63,2,"Répéter","To repeat
+repeat",,,,"verb",
+63,3,"Ceci","This (Pronoun) (Cec...)
+that",,,,"pronoun",
+63,4,"Épeler","To spell (É…)",,,,,
+63,5,"Occupé","Busy; taken; occupied (Adj) (Oc…)",,,,,
+63,6,"L'amitié
+une amitié
+amitié","Friendship, amity",,,,"noun","fem"
+63,7,"Patienter","To be patient; to wait patiently",,,,,
+63,8,"L'argent
+argent","Money; silver",,,,"noun","masc"
+63,9,"La carte de débit","Debit card",,,,,
+63,10,"Le bureau de change","Exchage office",,,,,
+63,11,"Le bateau
+un bateau
+bateau","Boat",,,,"noun","masc"
+63,12,"La climatisation","Air conditioning (La c…)",,,,,
+63,13,"Le péage","(transport) toll, payment; toll booth",,,,,
+63,14,"Stationner","To park (bring to a halt) (St…)",,,,,
+63,15,"L'essence
+une essence
+essence","Petrol, gas; (philosophy, theology) essence",,,,"noun","fem"
+63,16,"La douane
+une douane
+douane","Customs",,,,"noun","fem"
+63,17,"L'avocat
+un avocat
+avocat","Lawyer
+sollicitor
+barrister
+attorney",,,,"noun","masc"
+63,18,"L'auberge de jeunesse","Youth hostel",,,,,
+63,19,"Le terrain de camping","Campground",,,,,
+63,20,"Le logement
+un logement
+logement","Accommodation",,,,"noun","masc"
+63,21,"La réservation","Reservation, booking",,,,,
+63,22,"Par avance","In advace (Par a…)",,,,,
+63,23,"Fonctionner","To function
+function",,,,"verb",
+63,24,"La couverture
+une couverture
+couverture","Blanket",,,,"noun","fem"
+63,25,"La serviette","Napkin",,,,,
+63,26,"L'erreur","Error (feminine)",,,,,
+63,27,"Les objets de valeur","Objects of value",,,,,
+63,28,"Recommander","To recommend, to endorse; to command, to order (Rec…)",,,,,
+63,29,"La recommandation
+recommandation
+une recommandation","Recommendation",,,,"noun","fem"
+63,30,"Potable","Potable, drinkable; (colloquial) OK, passable. (Adj)",,,,,
+63,31,"L'appartement","Apartment, flat",,,,,
+63,32,"Louer","To rent
+rent",,,,"verb",
+63,33,"L'hospitalité","Hospitality",,,,,
+63,34,"La vaisselle
+une vaisselle
+vaisselle","Crockery, tableware",,,,"noun","fem"
+63,35,"La poubelle
+une poubelle
+poubelle","Rubbish; bin, trash can
+garbage can
+rubbish bin",,,,"noun","fem"
+63,36,"Remercier","To thank (someone); (euphemistic) to fire (an employee)",,,,,
+63,37,"Amicalement","Friendly (in a friendly manner) (Adv) (Am…)",,,,,
+63,38,"Cordialement","Cordially; (used to end a letter) regards, yours sincerely (Adv)",,,,,
+63,39,"Le commissariat de police","Police station",,,,,
+63,40,"La monnaie
+une monnaie
+monnaie","Change (coins)",,,,"noun","fem"
+63,41,"Le reçu","Receipt",,,,,
+63,42,"Le sac
+un sac
+sac","Bag",,,,"noun","masc"
+63,43,"Baisser","To lower
+lower",,,,"verb",
+63,44,"Le sous-vêtement","Undergarment, piece of underwear",,,,,
+63,45,"Le renseignement
+un renseignement
+renseignement","Information
+piece of information",,,,"noun","masc"
+63,46,"Serré
+serrée","Tight (Adj)",,,,"adjective",
+63,47,"Le plan de la ville","Map of the city",,,,,
+63,48,"Le guide de conversation","Phrasebook",,,,,
+63,49,"Allô","(telephony) used to confirm that the person being addressed is listening, or to confirm if anyone is listening (Interjection)",,,,,
+63,50,"Le chargeur","(Electrical) Charger",,,,,
+63,51,"Le portable","Cell phone; laptop",,,,,
+63,52,"La carte SIM","SIM card",,,,,
+63,53,"L'ONU","The UN",,,,,
+63,54,"L'Organisation des Nations unies","The United Nations (Organization of United Nations)",,,,,
+63,55,"L'interprète","(translation studies) interpreter (as opposed to translator) (Interpreter)",,,,,
+63,56,"Le collègue
+un collègue
+collègue","Colleague (can be male or female)",,,,"noun","masc"
+63,57,"Les endroits touristiques","Tourist places",,,,,
+63,58,"Le tourisme
+un tourisme
+tourisme","Tourism",,,,"noun","masc"
+63,59,"Le plaisir
+un plaisir
+plaisir","Pleasure",,,,"noun","masc"
+63,60,"Tutoyer","(transitive) to thou (to address (someone) using the informal second-person pronoun tu rather than the formal vous)",,,,,
+63,61,"Vouvoyer","(transitive) to address someone using the formal pronoun vous rather than the informal tu, to use the V-form, to ""you"" (as opposed to ""to ""thou"""")",,,,,
+63,62,"Formidable !","Tremendous!",,,,"adjective",
+63,63,"Blaguer","To joke, to joke about (Bl…)",,,,,
+63,64,"Le métier
+un métier
+métier","Trade, occupation, job",,,,"noun","masc"
+63,65,"La licence","Bachelor's degree (more accurately in France Bac+3)",,,,,
+63,66,"Célibataire","Single (without a life partner) (Adj)",,,,,
+63,67,"Le loisir
+un loisir
+loisir","Leisure",,,,"noun","masc"
+63,68,"Sous-titré","Subtitled (Adj)",,,,,
+63,69,"Félicitations !
+Félicitations!
+Félicitations","Congratulations!",,,,,
+63,70,"Joyeux anniversaire !
+Joyeux anniversaire
+Joyeux anniversaire!","Happy Birthday",,,,,
+63,71,"Joyeuses Pâques !
+Joyeuses Pâques!
+Joyeuses Pâques","Happy Easter",,,,,
+63,72,"Joyeux Noël !
+Joyeux Noël!
+Joyeux Noël","Merry Christmas",,,,,
+63,73,"Le sommeil
+un sommeil
+sommeil","Sleep",,,,"noun","masc"
+63,74,"Navré","Sorry! (a heartfelt apology, usually for a death, loss, etc.) (Interjection)",,,,,
+63,75,"Les droits des animaux","Rights of animals",,,,,
+63,76,"Grave","Serious; solemn (Adj) (Gr…)",,,,,
+63,77,"La religion
+religion
+une religion","Religion",,,,"noun","fem"
+63,78,"L'athée","Atheist",,,,,
+63,79,"Le musulman
+musulmane","Muslim",,,,"adjective",
+63,80,"Le chrétien
+chrétienne","Christian",,,,"adjective",
+63,81,"Le croyant
+un croyant
+croyant","Believer",,,,"noun","masc"
+63,82,"Le dieu
+un dieu
+dieu","God",,,,"noun","masc"
+63,83,"Interdit
+interdite","Prohibited, forbidden (Adj)",,,,"adjective",
+63,84,"Le sac à dos
+un sac à dos
+sac à dos","Rucksack, backpack",,,,"noun","masc"
+63,85,"Le portefeuille
+portefeuille
+un portefeuille","Wallet",,,,"noun","masc"
+63,86,"L'ambassade
+une ambassade
+ambassade","Embassy",,,,"noun","fem"
+63,87,"Le consulat","Consulate (the residency of a consul)",,,,,
+63,88,"Le médecin
+un médecin
+médecin","Doctor, GP
+general practitioner
+family doctor",,,,"noun","masc"
+63,89,"La fièvre jaune","Yellow fever",,,,,
+63,90,"Fumer","To smoke
+smoke",,,,"verb",
+63,91,"Allergique","Allergic (Adj)",,,,,
+63,92,"Inquiet
+inquiète","Worried; anxious (Adj)",,,,"adjective",
+63,93,"Faible","Weak, frail (Adj)
+feeble",,,,"adjective",
+63,94,"Le vertige","Dizziness, vertigo (V…)",,,,,
+63,95,"La nausée","Nausea",,,,,
+63,96,"Le frisson","A shiver or thrill of fright that can be strangely pleasurable, as when reading good horror fiction; An experience of intense excitement",,,,,
+63,97,"La diarrhée","Diarrhea (medical condition)",,,,,
+63,98,"La coutume
+une coutume
+coutume","Custom",,,,"noun","fem"
+63,99,"Montrer","To show
+show",,,,"verb",
+63,100,"La littérature","Literature",,,,"noun","fem"
+63,101,"L'anthropologie","Anthropology",,,,,
+63,102,"Les langues étrangères","Foreign languages",,,,,
+63,103,"L'Afrique subsaharienne","Subsaharan Africa",,,,,
+63,104,"La Voïvodine","Vojvodina",,,,,
+63,105,"Souvent","Often (Adv)",,,,"adverb",
+63,106,"Rarement","Rarely (Adv)",,,,"adverb",
+63,107,"Les langues indigènes","Indigenous languages",,,,,
+63,108,"En ce qui concerne
+En ce qui concerne...","Concerning, as to, as far as ... is concerned (Preposition)",,,,,
+63,109,"En ce qui me concerne
+En ce qui me concerne...","As far as I'm concerned",,,,,
+63,110,"Poser une question","To ask a question (P...une q...)",,,,,
+63,111,"À mon avis…
+À mon avis","In my opinion…",,,,,
+63,112,"Inquiéter","To worry; (reflexive) to be worried, to worry
+worry",,,,"verb",
+63,113,"Le souci
+souci
+un souci","Worry (S...)",,,,"noun","masc"
+63,114,"Reconnaissant
+reconnaissante","Grateful (Adj)",,,,"adjective",
+63,115,"Acharné","Fierce; relentless (Adj)",,,,,
+63,116,"Le bosseur","Hard worker (can also be an adjective meaning hardworking) (B…)",,,,,
+63,117,"Le bout","End, extremity, tip (of a physical object)",,,,,
+63,118,"Le locuteur natif","Native speaker",,,,,
+63,119,"Le débutant","Debutant, newbie, beginner",,,,,
+63,120,"Débuter
+commencer","To begin (D...)
+begin
+to start
+to start off
+to start out
+to make one's debut
+start
+start off
+start out
+;ake one's debut",,,,"verb",
+63,121,"Améliorer","To improve
+improve
+to make better
+make better",,,,"verb",
+63,122,"Le doctorat","Doctorate",,,,,
+63,123,"Gérer","To manage
+manage",,,,"verb",
+63,124,"La métropole","(Europe, only with definite article) Continental France, not including its various oversea territories",,,,,
+64,1,"Longtemps","A long time (Adv) (L...)
+a long while
+long",,,,"adverb",
+64,2,"Fermé","Shut, closed (Adj)",,,,,
+64,3,"Vieux","Old (Adj) (V…)",,,,,
+64,4,"Pauvre","Poor (Adj)",,,,"adjective",
+64,5,"Mauvais
+mauvaise","Bad (Adj)",,,,"adjective",
+64,6,"Sec
+sèche","Dry (Adj)",,,,"adjective",
+64,7,"Lent
+lente","Slow (Adj)",,,,"adjective",
+64,8,"Bas","Low (Adj)",,,,,
+64,9,"Vide","Empty (Adj)",,,,,
+64,10,"Mou","Soft, pliable (Adj)",,,,,
+64,11,"Maigre","Meagre, skinny, lean (Adj) (M…)",,,,,
+64,12,"Court","Short (Adj)",,,,,
+64,13,"Bon marché","Cheap, inexpensive (Adj) (Bon ma…)",,,,,
+64,14,"Foncé","(of a colour) dark (having a dark shade) (Adj)",,,,,
+64,15,"Lourd","Heavy (Adj)",,,,,
+64,16,"Laid
+laide","Ugly (Adj) (L...)",,,,"adjective",
+64,17,"Triste","Sad",,,,"adjective",
+64,18,"Discuter","To discuss, to talk about
+discuss
+talk about",,,,"verb",
+64,19,"Nager","To swim
+swim",,,,"verb",
+64,20,"Se marier","To get married
+get married",,,,"verb",
+64,21,"Naître","To be born
+be born",,,,"verb",
+64,22,"Neiger","(impersonal) To snow",,,,,
+64,23,"Lire","To read
+read",,,,"verb",
+65,1,"L'amitié
+une amitié
+amitié","Friendship, amity",,,,"noun","fem"
+65,2,"Précis","Precise, exact (Adj)",,,,,
+65,3,"Précisément","Precisely (Adv) (Pr…)",,,,,
+65,4,"La piste","Track; trail (P…)",,,,,
+65,5,"L'ami d'enfance","Childhood friend",,,,,
+65,6,"L'ami du sexe opposé","Friend of the opposite sex",,,,,
+65,7,"Le témoignage","Testimony (Té…)",,,,,
+65,8,"Le sondage","Poll, survey (S…)",,,,,
+65,9,"Moyen
+moyenne","Average (Adj)",,,,"adjective",
+65,10,"La moyenne","(mathematics) average, mean (M…)",,,,,
+65,11,"La confiance","Confidence, trust (C…)",,,,,
+65,12,"Partager","To share (P…)",,,,,
+65,13,"Le pote","(Informal) Mate, buddy (P…)",,,,,
+65,14,"Raconter","To recount; to tell; to narrate (Rac…)",,,,,
+65,15,"Le meilleur ami","Best friend (M…a…)",,,,,
+65,16,"En avoir marre","(informal) (transitive with de) to be fed up (with), to have had it, to be sick and tired (of) (En avoir mar...)",,,,,
+65,17,"L'ami toxique","Toxic friend",,,,,
+65,18,"Patient","Patient (Adj)",,,,,
+65,19,"L'impatience
+une impatience
+impatience","Impatience",,,,"noun","fem"
+65,20,"Impatient
+impatiente","Impatient (Adj)",,,,"adjective",
+65,21,"La patience
+une patience
+patience","Patience",,,,"noun","fem"
+65,22,"La compétence","Competence (Co…)",,,,,
+65,23,"La tolérance","Tolerance (T…)",,,,,
+65,24,"Passionnant","Evoking passion or enthusiasm (Adj) (Pas…)",,,,,
+65,25,"Intéressant","Interesting (Adj)",,,,,
+65,26,"L'autorité","Authority",,,,,
+65,27,"La disponibilité","Availability (D…)",,,,,
+65,28,"Agressif","Agressive (Adj) (A…)",,,,,
+65,29,"La curiosité","Curiosity (C…)",,,,,
+65,30,"Généreux","Generous (Adj)",,,,,
+65,31,"Chaleureux","Warm, agreeable (Adj) (Chal…)",,,,,
+65,32,"La froideur","Coldness, cold (Fr…)",,,,,
+65,33,"L'égoïsme","Egoism (tendency to think of self) (Ég…)",,,,,
+65,34,"L'humour","Humor (H…)",,,,,
+66,1,"Brutal","Brutal (Adj)",,,,,
+66,2,"Agressif","Agressive (Adj) (A…)",,,,,
+66,3,"Naturel","Natural (Adj)",,,,,
+66,4,"Clair","Clear (Adj)",,,,,
+66,5,"Distinct","Distinct (Adj)",,,,,
+66,6,"Sincère","Sincere (Adj)",,,,,
+66,7,"Simple","Simple (Adj)",,,,,
+66,8,"Sec
+sèche","Dry (Adj)",,,,"adjective",
+66,9,"Régulier","Regular (Adj)",,,,,
+66,10,"Long
+longue","Long (Adj) (L...)
+lengthy",,,,"adjective",
+66,11,"Mou","Soft, pliable (Adj)",,,,,
+66,12,"Léger
+légère","Light (Adj) (Lég...)",,,,"adjective",
+66,13,"Actif","Active (Adj)",,,,,
+66,14,"Passif","Passive (Adj)",,,,,
+66,15,"Fou","Mad, crazy (Adj) (F…)",,,,,
+66,16,"Naïf","Naive (Adj)",,,,,
+66,17,"Affectueux","Affectionate (Adj)",,,,,
+66,18,"Doux","Sweet (Adj)",,,,,
+66,19,"Premier","First (Adj)",,,,,
+66,20,"Frais","Fresh (Adj)",,,,,
+66,21,"Fier","Proud (Adj)",,,,,
+66,22,"La façon","Way; manner; fashion",,,,,
+66,23,"Répondre","To answer
+answer
+to reply
+reply",,,,"verb",
+66,24,"Jamais","(with ne) never; ever (Adv)",,,,,
+66,25,"La manière
+une maniére
+maniére","Manner (M...)",,,,"noun","fem"
+66,26,"Adresser","To address
+address",,,,"verb",
+66,27,"La méchanceté","Nastiness, malice, wickedness (La m…)",,,,,
+66,28,"Coquin","Mischievous (Adj)",,,,,
+66,29,"La blague","Joke",,,,,
+66,30,"Blaguer","To joke, to joke about (Bl…)",,,,,
+66,31,"Timide","Timid, shy (Adj) (T…)",,,,,
+66,32,"Vif","Keen, sharp; lively (Adj)",,,,,
+66,33,"Sage","Wise (Adj) (S…)",,,,,
+66,34,"Obéir","To obey",,,,,
+66,35,"Féliciter","To congratulate",,,,,
+66,36,"Rebelle","Rebellious (Adj)",,,,,
+66,37,"La thèse de doctorat","Doctor's thesis",,,,,
+67,1,"Le suicide","Suicide",,,,,
+67,2,"La bouteille de vin","Bottle of wine",,,,,
+67,3,"En fait","(modal) actually; in fact (really) (En f...)",,,,,
+67,4,"En réalité","In reality, in practice, in truth, in actuality, actually, really (En r...)",,,,,
+67,5,"Assez","Enough (Adv) (Ass...)",,,,,
+67,6,"Assembler","To assemble (Ass...)",,,,,
+67,7,"Le livre de classe","Classbook, textbook (Le livre de cl...)",,,,,
+67,8,"Déménager","(intransitive) to move house, to leave a house (Dém...)",,,,,
+67,9,"Emménager","To move in (to a new home) (Emm...)",,,,,
+67,10,"Le manuel d'arabe standard moderne","Textbook of Modern Standard Arabic",,,,,
+68,1,"La prononciation","Pronunciation",,,,,
+68,2,"Correctement","Correctly (Adv) (C...)",,,,"adverb",
+68,3,"Proprement","Properly; cleanly (in a way that's not dirty) (Adv) (Prop...)",,,,,
+68,4,"Convenablement","Appropriately; accordingly; suitably (Adv) (Con...)",,,,,
+68,5,"Correct","Correct (Adj) (C...)",,,,,
+68,6,"Incorrectement","Incorrectly (Adv) (In...)",,,,,
+68,7,"Parfaitement","Perfectly (Adv)",,,,,
+68,8,"Exactement","Exactly (Adv)",,,,"adverb",
+68,9,"L'erreur","Mistake, error (E...)",,,,,
+68,10,"Erroné","Erroneous, mistaken (Adj)",,,,,
+68,11,"Imparfait","Imperfect, flawed (Adj) (Imp...)",,,,,
+68,12,"Imparfaitement","Imperfectly (Adv) (Imp...)",,,,,
+68,13,"Balbutier","To stammer; to stutter (Balb...)",,,,,
+68,14,"Bégayer","To stammer (Bég...)",,,,,
+69,1,"Les langues ouraliennes","Uralic languages",,,,,
+69,2,"Les langues slaves","Slavic languages",,,,,
+69,3,"Les langues indigènes","Indigenous languages",,,,,
+69,4,"Les langues étrangères","Foreign languages",,,,,
+69,5,"Les langues slaves méridionales","South Slavic languages",,,,,
+69,6,"Les langues slaves orientales","East-Slavic languages",,,,,
+69,7,"Les langues slaves occidentales","West-Slavic languages",,,,,
+69,8,"Les langues italiques","Italic languages",,,,,
+69,9,"Les langues latino-falisques","Latino-Faliscan languages",,,,,
+69,10,"Les langues romanes","Romance languages",,,,,
+69,11,"Les langues germaniques","Germanic languages",,,,,
+69,12,"Les langues indo-européennes","Indo-European languages",,,,,
+69,13,"Les langues anatoliennes","Anatolian languages",,,,,
+69,14,"Les langues balto-slaves","Balto-Slavic languages",,,,,
+69,15,"Les langues celtiques","Celtic languages",,,,,
+69,16,"Les langues helléniques","Hellenic languages",,,,,
+69,17,"Les langues indo-iraniennes","Indo-Iranian languages",,,,,
+69,18,"Les langues tokhariennes","Tocharian languages",,,,,
+69,19,"Les langues d'oïl","The langues d'oïl",,,,,
+69,20,"Les langues gallo-romanes","Gallo-Romance languages",,,,,
+69,21,"Les langues fenniques","Finnic languages",,,,,
+69,22,"Les langues ougriennes","Ugric languages",,,,,
+69,23,"Les langues finno-ougriennes","Finno-Ugric languages",,,,,
+69,24,"Les langues indo-aryennes","Indo-Aryan languages",,,,,
+69,25,"Les langues iraniennes","Iranian languages",,,,,
+69,26,"Les langues dravidiennes","Dravidian languages",,,,,
+69,27,"Les langues austronésiennes","Austronesian languages",,,,,
+69,28,"Les langues sino-tibétaines","Sino-Tibetan languages",,,,,
+69,29,"Les langues taï-kadaï","Tai-Kadai languages",,,,,
+69,30,"Les langues des Andaman","Andamanese languages",,,,,
+69,31,"Les langues turciques","Turkic languages",,,,,
+69,32,"Les langues mongoles","Mongolic languages",,,,,
+69,33,"Les langues toungouses","Tungusic languages",,,,,
+69,34,"Les langues afro-asiatiques","Afro-Asiatic languages",,,,,
+69,35,"Les langues chamito-sémitiques","Hamito-Semitic languages",,,,,
+69,36,"Les langues berbères","Berber languages",,,,,
+69,37,"Les langues tchadiques","Chadic languages",,,,,
+69,38,"Les langues couchitiques","Cushitic languages",,,,,
+69,39,"Les langues omotiques","Omotic languages",,,,,
+69,40,"Les langues sémitiques","Semitic languages",,,,,
+69,41,"Les langues nigéro-congolaises","Niger-Congo languages",,,,,
+69,42,"Les langues atlantico-congolaises","Atlantic-Congo languages",,,,,
+69,43,"Les langues sénégambiennes","Senegambian languages",,,,,
+69,44,"Les langues bénoué-congolaises","Benue–Congo languages",,,,,
+69,45,"Les langues bantoïdes méridionales","Southern Bantoid languages",,,,,
+69,46,"Les langues bantoues","Bantu languages",,,,,
+69,47,"Les langues mandées","Mande languages",,,,,
+69,48,"Les langues mandingues","Manding languages",,,,,
+69,49,"Les langues dogon","Dogon languages",,,,,
+69,50,"Les langues kordofaniennes","Kordofanian languages",,,,,
+69,51,"Les langues nilo-sahariennes","Nilo-Saharan languages",,,,,
+69,52,"Les langues sahariennes","Saharan languages",,,,,
+69,53,"Les langues na-dené","Na-Dene languages",,,,,
+69,54,"Les langues dené-ienisseïennes","Dené–Yeniseian languages",,,,,
+69,55,"Les langues algiques","Algic languages",,,,,
+69,56,"Les langues mayas","Maya languages",,,,,
+69,57,"Les langues uto-aztèques","Uto-Aztecan languages",,,,,
+69,58,"Les langues tupi-guarani","Tupi–Guarani languages",,,,,
+69,59,"Les langues arawakiennes","Arawakan languages",,,,,
+69,60,"Les langues khoïsan","Khoisan languages",,,,,
+69,61,"Les langues vasconiques","Vasconic languages",,,,,
+69,62,"Les langues austroasiatiques","Austroasiatic languages",,,,,
+69,63,"Les langues kartvéliennes","Kartvelian languages",,,,,
+69,64,"Les langues caucasiennes du Nord-Est","Northeast Caucasian languages",,,,,
+69,65,"Les langues caucasiennes de l'ouest","Northwest Caucasian languages",,,,,
+70,1,"Le latin","Latin language",,,,,
+70,2,"Le latin classique","Classical Latin",,,,,
+70,3,"Le latin vulgaire","Vulgar Latin",,,,,
+70,4,"Le grec ancien","Ancient Greek",,,,,
+70,5,"Le grec moderne","Modern Greek",,,,,
+70,6,"L'ancien français","Old French",,,,,
+70,7,"Le moyen français","Middle French",,,,,
+70,8,"L'égyptien ancien","Ancient Egyptian",,,,,
+70,9,"Le copte","Coptic language",,,,,
+70,10,"Le moyen égyptien","Middle Egyptian",,,,,
+70,11,"Le méroïtique","Meroitic language",,,,,
+70,12,"L'ancien nubien","Old Nubian",,,,,
+70,13,"L’arabe standard moderne","Modern Standard Arabic",,,,,
+70,14,"L’arabe classique","Classical Arabic",,,,,
+70,15,"L'arabe soudanais","Sudanese Arabic",,,,,
+70,16,"L'arabe égyptien","Egyptian Arabic",,,,,
+70,17,"L'arabe levantin","Levantine Arabic",,,,,
+70,18,"L'arabe maghrébin","Maghrebi Arabic",,,,,
+70,19,"Le maltais","Maltese language",,,,,
+70,20,"Le macédonien","Macedonian language",,,,,
+70,21,"Le bulgare","Bulgarian language",,,,,
+70,22,"Le tchèque","Czech language",,,,,
+70,23,"Le slovaque","Slovak language",,,,,
+70,24,"L'abkhaze","Abkhaz language",,,,,
+70,25,"Le soninké","Soninke language",,,,,
+70,26,"Le hindi","Hindi language",,,,,
+70,27,"L'ourdou","Urdu language",,,,,
+70,28,"L'irlandais","Irish language",,,,,
+70,29,"Le basque","Basque language",,,,,
+70,30,"Le breton","Breton language",,,,,
+70,31,"Le sumérien","Sumerian language",,,,,
+70,32,"Le khmer","Khmer language",,,,,
+70,33,"Le vietnamien","Vietnamese language",,,,,
+70,34,"Le mandarin","Mandarin language",,,,,
+70,35,"Le cantonais","Cantonese language",,,,,
+70,36,"Le roumain","Romanian language",,,,,
+70,37,"Le moldave","Moldovan language",,,,,
+70,38,"Le chtokavien","Shtokavian",,,,,
+70,39,"Le tchakavien","Chakavian",,,,,
+70,40,"Le kaïkavien","Kajkavian",,,,,
+70,41,"Le dioula","Dyula language",,,,,
+70,42,"Le malgache","Malagasy language",,,,,
+70,43,"L'afrikaans","Afrikaans language",,,,,
+70,44,"L'islandais","Icelandic language",,,,,
+70,45,"Le vieux norrois","Old Norse",,,,,
+70,46,"Le vieil anglais","Old English",,,,,
+70,47,"Le moyen anglais","Middle English",,,,,
+70,48,"L’anglais moderne naissant","Early Modern English",,,,,
+70,49,"Le normand","Norman language",,,,,
+70,50,"Le pendjabi","Punjabi language",,,,,
+70,51,"Le thaï","Thai language",,,,,
+70,52,"Le créole haïtien","Haitian Creole",,,,,
+70,53,"Le mongol","Mongolian language",,,,,
+70,54,"Le kurde","Kurdish language",,,,,
+70,55,"L’hébreu","Hebrew language",,,,,
+70,56,"L'araméen","Aramaic language",,,,,
+70,57,"Le géorgien","Georgian language",,,,,
+70,58,"L'arménien","Armenian language",,,,,
+70,59,"Le tchétchène","Chechen language",,,,,
+70,60,"Le persan","Persian language",,,,,
+70,61,"Le sango","Sango language",,,,,
+70,62,"Le navajo","Navajo language",,,,,
+70,63,"Le zoulou","Zulu language",,,,,
+70,64,"Le guègue","Gheg language",,,,,
+70,65,"Le tosque","Tosk language",,,,,
+70,66,"Le gagaouze","Gagauz language",,,,,
+71,1,"Reconnaître","To recognize (R...)",,,,,
+71,2,"L'état non reconnu","Unrecognized state",,,,,
+71,3,"Le moldave","Moldovan language",,,,,
+71,4,"La Moldavie","Moldova",,,,,
+71,5,"La Transnistrie","Transnistria",,,,,
+71,6,"Le rouble de Transnistrie","Transnistrian ruble",,,,,
+71,7,"La citoyenneté","Citizenship",,,,,
+71,8,"La double citoyenneté","Dual citizenship",,,,,
+71,9,"La citoyenneté multiple","Multiple citizenship",,,,,
+71,10,"La double nationalité","Dual nationality (this is the most common phrasing)",,,,,
+71,11,"L’Abkhazie","Abkhazia",,,,,
+71,12,"La république d'Artsakh","Republic of Artsakh",,,,,
+71,13,"L'Ossétie du Sud-Alanie","Republic of South Ossetia – The State of Alania",,,,,
+71,14,"La République populaire de Lougansk","Luhansk People's Republic",,,,,
+71,15,"La république populaire de Donetsk","Donetsk People's Republic",,,,,
+71,16,"La Gagaouzie","Gagauzia",,,,,
+71,17,"L'Union soviétique","Soviet Union",,,,,
+71,18,"L'indépendance","Independence",,,,,
+71,19,"L'autonomie","Autonomy",,,,,
+72,1,"Le miracle","Miracle",,,,,
+72,2,"Communiquer","To communicate",,,,,
+72,3,"La surprise","Surprise",,,,,
+72,4,"Inattendu","Unexpected (Adj) (Ina...)",,,,,
+72,5,"Inhabituel","Unusual, uncustomary (Adj)",,,,,
+72,6,"Anormal
+anormale","Abnormal (Adj)",,,,"adjective",
+72,7,"Effrayé","Afraid (Adj)",,,,,
+72,8,"L'arbre","Tree",,,,,
+72,9,"La peau","Skin",,,,,
+72,10,"La salutation","Greeting (Saluta...)",,,,,
+72,11,"Décrire","To describe",,,,,
+72,12,"Têtu","Stubborn, headstrong",,,,,
+72,13,"Joindre","To join",,,,,
+72,14,"Inscrire","To inscribe; (reflexive) to sign up, register",,,,,
+72,15,"L'oreiller","Pillow",,,,,
+72,16,"Le gant","Glove",,,,,
+72,17,"Le souci
+souci
+un souci","Worry (S...)",,,,"noun","masc"
+72,18,"La formalité","Formality",,,,,
+72,19,"Tuer","To kill",,,,,
+72,20,"Pleurer","To cry, to weep",,,,,
+72,21,"L'écharpe","Scarf",,,,,
+72,22,"La génétique","Genetics",,,,,
+72,23,"L'interrupteur","Switch (like a lightswitch)",,,,,
+72,24,"Le chargeur","(Electrical) Charger",,,,,
+72,25,"La prise","Electrical socket, wall socket",,,,,
+72,26,"L'ennemi","Enemy",,,,,
+72,27,"Le pari de Pascal","Pascal's Wager",,,,,
+73,1,"La typologie linguistique","Linguistic typology",,,,,
+73,2,"La description linguistique","Descriptive linguistics",,,,,
+73,3,"La langue fusionnelle","Fusional language",,,,,
+73,4,"La langue agglutinante","Agglutinative language",,,,,
+73,5,"La langue synthétique","Synthetic language",,,,,
+73,6,"La langue polysynthétique","Polysynthetic language",,,,,
+73,7,"Le langage naturel","Natural language",,,,,
+73,8,"La langue analytique","Analytic language",,,,,
+73,9,"La linguistique comparée","Comparative linguistics",,,,,
+73,10,"La linguistique historique","Historical linguistics",,,,,
+73,11,"La superfamille","Superfamily",,,,,
+73,12,"La macrofamille","Macrofamily",,,,,
+73,13,"L'isolat","Isolate",,,,,
+73,14,"La langue en voie de disparition","Endangered language",,,,,
+73,15,"La langue morte","Dead language",,,,,
+73,16,"Le dictionnaire","Dictionary",,,,,
+73,17,"Le lexique","Lexicon; vocabulary",,,,,
+73,18,"Le créole","Creole language",,,,,
+73,19,"Le pidgin","Pidgin",,,,,
+73,20,"La description","Description",,,,,
+73,21,"La langue tonale","Tonal language",,,,,
+74,1,"La novlangue","Newspeak",,,,,
+74,2,"Attrayant","Attractive (Adj) (Attray...)",,,,,
+74,3,"Éloquent","Eloquent (Adj)",,,,,
+74,4,"Grammaticalement correct","Grammatically correct",,,,,
+74,5,"Le locuteur natif","Native speaker",,,,,
+74,6,"Les lunettes","Glasses",,,,,
+74,7,"Le cynisme","Cynicism",,,,,
+74,8,"Traduire","To translate
+translate",,,,"verb",
+74,9,"Oublieux","Forgetful (Adj)",,,,,
+75,1,"L'accent américain","American accent",,,,,
+75,2,"Décrire","To describe",,,,,
+75,3,"La monophtongue","(phonetics, phonology) monophthong",,,,,
+75,4,"La diphtongue","(phonetics, phonology) diphthong",,,,,
+75,5,"La triphtongue","(phonetics, phonology) triphthong",,,,,
+75,6,"La tétraphtongue","(phonetics, phonology) tetraphthong",,,,,
+75,7,"L'aspiration","(Phonetics) Aspiration",,,,,
+75,8,"Aspiré","Aspirated (Adj)",,,,,
+75,9,"Le mode d'articulation","Manner of articulation",,,,,
+75,10,"Le point d’articulation","Place of articulation",,,,,
+75,11,"Le canal vocal","Vocal tract",,,,,
+75,12,"La prononciation","Pronunciation",,,,,
+76,1,"L'amour","Love",,,,,
+76,2,"Les Balkans","The Balkans",,,,,
+76,3,"L'homme d'État","Statesman",,,,,
+76,4,"L'entre-deux-guerres","Interwar period",,,,,
+76,5,"La Seconde Guerre mondiale","Second World War",,,,,
+76,6,"La guerre froide","The Cold War",,,,,
+76,7,"La guerre civile","Civil War",,,,,
+76,8,"La neutralité","Neutrality",,,,,
+76,9,"Le président à vie","President for life",,,,,
+76,10,"Le chef d'État","Head of state",,,,,
+76,11,"Le mouvement des non-alignés","Non-Alignment Movement",,,,,
+76,12,"L'Union européenne","European Union",,,,,
+76,13,"La fédération du Mali","Federation of Mali",,,,,
+76,14,"Le drapeau","Flag",,,,,
+76,15,"Le Soudan français","French Sudan",,,,,
+76,16,"La monogamie","Monogamy",,,,,
+76,17,"Les Songhaïs","The Songhai",,,,,
+76,18,"L’Afrique de l’Ouest","West Africa",,,,,
+76,19,"Le Moyen Âge","Middle Ages",,,,,
+76,20,"Le commerce transsaharien","Trans-Saharan trade",,,,,
+76,21,"L'oued","Wadi",,,,,
+76,22,"Tombouctou","Timbuktu",,,,,
+76,23,"Le fleuve Niger","The River Niger",,,,,
+76,24,"Les Touaregs","Tuaregs",,,,,
+76,25,"La transhumance","Transhumance",,,,,
+76,26,"L'anglicisme","Anglicism",,,,,
+76,27,"Le tifinagh","Tifinagh",,,,,
+76,28,"La cuisine mauritanienne","Mauritanian cuisine",,,,,
+77,1,"L'apostasie","Apostasy",,,,,
+77,2,"Le Judaïsme","Judaism",,,,,
+77,3,"Le Juif","Jew (Male)",,,,,
+77,4,"Le peul","Fula language",,,,,
+77,5,"Le chèche","Tagelmust (T...)",,,,,
+77,6,"L’empire du Ghana","Empire of Ghana",,,,,
+77,7,"Le plateau","Plateau",,,,,
+77,8,"Le patrimoine mondial","World Heritage",,,,,
+77,9,"Le gentilé","Demonym (G...)",,,,,
+77,10,"L'Union africaine","African Union",,,,,
+77,11,"La Ligue arabe","Arab League",,,,,
+77,12,"L’océan Atlantique","Atlantic Ocean",,,,,
+77,13,"Le point de contrôle","Checkpoint (like at a border)",,,,,
+77,14,"Le salaire","Salary",,,,,
+77,15,"Le bureau
+un bureau
+bureau","Desk; office",,,,"noun","masc"
+77,16,"Le tampon de passeport","Passport stamp",,,,,
+77,17,"Le cours de français","French course",,,,,
+77,18,"Le niveau de langue","Language level",,,,,
+77,19,"La colère","Anger",,,,,
+77,20,"D'où?","From where?",,,,,
+77,21,"La tristesse","Sadness",,,,,
+77,22,"Sous peu","Soon, shortly, in a moment (Adv) (S...p...)",,,,,
+77,23,"Jeune","Young (Adj)",,,,,
+77,24,"La jeunesse","Youth (Je...)",,,,,
+77,25,"Le musicien de rue","Street musician",,,,,
+77,26,"La dislocation de la Yougoslavie","The Breakup of Yugoslavia",,,,,
+77,27,"Le temps libre","Free time",,,,,
+77,28,"Occupé","Busy; taken; occupied (Adj) (Oc…)",,,,,
+77,29,"La balafre","Gash (on face); scar",,,,,
+77,30,"La cicatrice","Scar (C...)",,,,,
+77,31,"La griffe","Claw (G...)",,,,,
+77,32,"Griffer","To scratch",,,,,
+77,33,"Le chien errant","Stray dog",,,,,
+77,34,"Le chat errant","Stray cat",,,,,
+77,35,"Le footballeur","Footballer",,,,,
+77,36,"La mer Adriatique","Adriatic Sea",,,,,
+77,37,"La province autonome de Voïvodine","Autonomous Province of Vojvodina",,,,,
+77,38,"La Slavonie","Slavonija",,,,,
+77,39,"Le chant","Singing",,,,,
+77,40,"Le chant de gorge","Throat singing",,,,,
+77,41,"La psychologie","Psychology",,,,,
+77,42,"Les feuilles de coca","Coca leaves",,,,,
+77,43,"L'empathie","Empathy",,,,,
+77,44,"L'apathie","Apathy",,,,,
+77,45,"Ambivalent","Ambivalent (Adj)",,,,,
+77,46,"Le cosmopolite","Cosmopolite",,,,,
+77,47,"La position","Position",,,,,
+77,48,"Le Latino","Latino",,,,,
+77,49,"La cocaïne","Cocaine",,,,,
+77,50,"Le système d’écriture","Writing system",,,,,
+78,1,"Le manuscrit","Manuscript",,,,,
+78,2,"La signature","Signature",,,,,
+78,3,"Signer","(transitive) to sign (put a signature on)",,,,,
+78,4,"Le gladiateur","Gladiator",,,,,
+78,5,"La traduction
+une traduction
+traduction","Translation",,,,"noun","fem"
+78,6,"Le traducteur","Translator",,,,,
+78,7,"Traduisible","Translatable (Adj)",,,,,
+78,8,"La traductrice","(feminine equivalent of traducteur)",,,,,
+78,9,"Corriger","To correct
+correct",,,,"verb",
+78,10,"Relire","To proofread, to read through (look for mistakes) (R...)",,,,,
+78,11,"Le procès","Trial; lawsuit",,,,,
+78,12,"Le site Web","Website",,,,,
+78,13,"Sentir","To smell; to feel",,,,,
+78,14,"L'odeur","Smell, odour (feminine)",,,,,
+78,15,"Renifler","To sniff (Ren...)",,,,,
+78,16,"Vénérer","To worship; to venerate (V...)",,,,,
+78,17,"Amérindien","American Indian (Noun and Adjective)",,,,,
+78,18,"La sieste","Siesta, nap",,,,,
+78,19,"Le somme","Nap; doze; quick sleep (So...)",,,,,
+78,20,"La capitale","Capital, capital city",,,,,
+78,21,"Le vaisseau spatial","Spaceship",,,,,
+78,22,"Le billet d'avion","Airplane ticket",,,,,
+78,23,"Le pourboire","Tip, gratuity",,,,,
+78,24,"Le lagniappe","(Louisiana) tip (extra money given to e.g. a waiter in appreciation of service)",,,,,
+78,25,"Le vaudou","Voodoo",,,,,
+78,26,"Le chameau","Camel",,,,,
+78,27,"Le lait de chamelle","Camel milk (Lait de ch...)",,,,,
+78,28,"Le président
+un président
+président","President",,,,"noun","masc"
+78,29,"Le premier ministre","Prime minister",,,,,
+78,30,"Le plus grande ville","The largest city",,,,,
+78,31,"La langue officielle","Official language",,,,,
+78,32,"La monnaie","Currency",,,,,
+78,33,"Le fleuve","River",,,,,
+78,34,"Pluriethnique","Multiethnic (Adj)",,,,,
+78,35,"Le pays pluriethnique","Multiethnic country",,,,,
+78,36,"Majoritairement","Mostly, majoritarily (as a majority) (Adv) (Maj...)",,,,,
+78,37,"Peupler","To populate",,,,,
+78,38,"L'arabophone","Arabophone",,,,,
+78,39,"Le hassanophone","Hassanophone (speaker of Hassaniya)",,,,,
+78,40,"Souligner","(transitive) to highlight, to emphasize (put emphasis on) (Sou...)",,,,,
+78,41,"Le monastère","Monastery",,,,,
+78,42,"Le moine","Monk",,,,,
+78,43,"La colonisation","Colonization",,,,,
+78,44,"La Mauritanie indépendante","Independent Mauritania",,,,,
+78,45,"Le terrorisme","Terrorism",,,,,
+78,46,"La démographie","Demography",,,,,
+78,47,"L'esclavage","Slavery",,,,,
+78,48,"L'éducation","Education",,,,,
+78,49,"Le mariage","Marriage",,,,,
+78,50,"La romanisation","Romanization",,,,,
+78,51,"L'Azawad","Azawad",,,,,
+78,52,"Le légionnaire","Legionnaire",,,,,
+78,53,"La Légion étrangère","Foreign Legion",,,,,
+78,54,"Entièrement","Entirely (Adv)",,,,,
+79,1,"Saharien","Saharan (Adj)",,,,,
+79,2,"Sahélien","Sahelian (Adj)",,,,,
+79,3,"Le territoire","Territory, country",,,,,
+79,4,"L'appellation","Name, appellation",,,,,
+79,5,"Principal","Main (Adj)",,,,,
+79,6,"Le Caire","Cairo",,,,,
+79,7,"Alexandrie","Alexandria",,,,,
+79,8,"Le smartphone","Smartphone",,,,,
+79,9,"L'Empire ottoman","Ottoman Empire",,,,,
+79,10,"L’Empire byzantin","Byzantine Empire",,,,,
+79,11,"La voyelle longue","Long vowel",,,,,
+79,12,"L'Empire romain","Roman Empire",,,,,
+79,13,"Barbare","Barbaric (Adj); Barbarian (Noun)",,,,,
+79,14,"Médiéval","Medieval (Adj)",,,,,
+79,15,"La liturgie","Liturgy",,,,,
+79,16,"Le latin ecclésiastique","Ecclesiastical Latin",,,,,
+79,17,"Parfois","Sometimes (Adv)",,,,,
+79,18,"Le saint","Saint",,,,,
+79,19,"La prière","Prayer",,,,,
+79,20,"Prendre un bain de soleil","To sunbathe",,,,,
+79,21,"Le coup de soleil","Sunburn",,,,,
+79,22,"Bronzer","To suntan",,,,,
+79,23,"Le sable","Sand",,,,,
+79,24,"La tempête de sable","Sandstorm",,,,,
+79,25,"La pyramide","Pyramid",,,,,
+79,26,"Sécher","To dry",,,,,
+79,27,"Les yeux bleus","Blue eyes",,,,,
+79,28,"Conquérir","To conquer",,,,,
+79,29,"La péninsule des balkans","Balkan Peninsula",,,,,
+79,30,"L'Europe centrale","Central Europe",,,,,
+79,31,"La musique traditionnelle","Folk music, traditional music",,,,,
+79,32,"Soi-disant","So-called, supposed (so named); self-proclaimed (Adj)",,,,,
+79,33,"Le Coran","Qur'an",,,,,
+79,34,"La Bible","Bible",,,,,
+79,35,"Le tatouage","Tattoo",,,,,
+79,36,"Le talent","Talent",,,,,
+79,37,"Talentueux","Talented (Adj)",,,,,
+79,38,"Sentimental","Sentimental (Adj)",,,,,
+79,39,"L'émotion","Emotion, feeling",,,,,
+79,40,"La brique","Brick",,,,,
+79,41,"La coutume
+une coutume
+coutume","Custom",,,,"noun","fem"
+79,42,"Cultivé","(usually of a person) cultured; cultivated (C…)",,,,,
+79,43,"Utile","Useful (Adj)",,,,,
+79,44,"Le taux de natalité","Birth rate",,,,,
+79,45,"Les Pieds-noirs","The Pieds-Noirs",,,,,
+79,46,"Le sac plastique","Plastic bag",,,,,
+79,47,"L'ex copine","Ex girlfriend",,,,,
+79,48,"La république de Raguse","The Republic of Ragusa",,,,,
+79,49,"L'habitant","Inhabitant",,,,,
+79,50,"L'histoire
+une histoire
+histoire","Story, tale; history",,,,"noun","fem"
+79,51,"Le château","Castle",,,,,
+79,52,"Le siège","Chair; seat",,,,,
+79,53,"Le tourisme
+un tourisme
+tourisme","Tourism",,,,"noun","masc"
+79,54,"Le lieu de naissance","Place of birth",,,,,
+79,55,"La date de naissance","Date of birth",,,,,
+79,56,"Le nom de naissance","Name at birth",,,,,
+79,57,"La date de décès","Date of death",,,,,
+79,58,"Le lieu de décès","Place of death",,,,,
+79,59,"Le parti politique","Political party",,,,,
+80,1,"L'étymologie","Etymology",,,,,
+80,2,"Le dictateur","Dictator",,,,,
+80,3,"La théocratie","Theocracy",,,,,
+80,4,"La république islamique","Islamic Republic",,,,,
+80,5,"Athée","Atheistic (Adj)",,,,,
+80,6,"L'athée","Atheist",,,,,
+80,7,"L'orateur","Orator",,,,,
+80,8,"L'intellectuel","Intellectual",,,,,
+80,9,"La culture populaire","Popular culture",,,,,
+80,10,"L’américanisation","Americanization",,,,,
+80,11,"L'overtourisme","Overtourism",,,,,
+80,12,"L'idéalisme","Idealism",,,,,
+80,13,"L'interventionnisme","Interventionism",,,,,
+80,14,"La chance
+une chance
+chance","Chance, luck",,,,"noun","fem"
+80,15,"Confus","Confused (Adj)",,,,,
+80,16,"Bizarre","Bizarre (Adj)",,,,,
+80,17,"Étrange","Strange (Adj)",,,,"adjective",
+80,18,"Chanceux","With good luck, fortunate (Adj)",,,,,
+80,19,"La préférence
+une préférence
+préférence","Preference",,,,"noun","fem"
+80,20,"Le dégoût","Disgust",,,,,
+80,21,"Dégoûter","To disgust",,,,,
+80,22,"Dégoûtant","Disgusting (Adj)",,,,,
+80,23,"Avaler","To swallow",,,,,
+80,24,"Soutenir","To support (Sou…)",,,,,
+80,25,"Le propriétaire","Property owner, landlord",,,,,
+80,26,"Le loyer","Rent (amount of money due for renting property)",,,,,
+80,27,"La bonne","Maid (B...)",,,,,
+80,28,"La maîtresse","Mistress",,,,,
+80,29,"La poésie","Poetry",,,,,
+80,30,"La strophe","(poetry) stanza",,,,,
+80,31,"Rimer","(intransitive) to rhyme (of two words, whose final syllables are the same)",,,,,
+80,32,"La rime","Rhyme",,,,,
+80,33,"Le compositeur","Composer",,,,,
+80,34,"Inoubliable","Unforgettable (Adj)",,,,,
+80,35,"Incroyable","Incredible (Adj)",,,,,
+80,36,"Irremplaçable","Irreplaceable (Adj)",,,,,
+80,37,"Impossible","Impossible (Adj)",,,,,
+80,38,"Improbable","Improbable (Adj)",,,,,
+80,39,"Rare","Rare (Adj)",,,,,
+80,40,"Rarement","Rarely (Adv)",,,,"adverb",
+80,41,"Accablant","Overwhelming (Adj)",,,,,
+80,42,"L'exagération","Exaggeration",,,,,
+80,43,"Exagéré","Exaggerated (Adj)",,,,,
+80,44,"Le buveur","Drinker",,,,,
+80,45,"Le groupe ethnique","Ethnic group",,,,,
+81,1,"Le système d’écriture","Writing system",,,,,
+81,2,"L’écriture arabe","Arab script",,,,,
+81,3,"L’alphabet cyrillique","Cyrillic alphabet",,,,,
+81,4,"L'alphabet latin","Latin alphabet",,,,,
+81,5,"L'alphabet grec","Greek alphabet",,,,,
+81,6,"L'alphabet glagolitique","Glagolitic alphabet",,,,,
+81,7,"Le guèze","Ge'ez",,,,,
+81,8,"Le n’ko","N'ko",,,,,
+81,9,"Le tifinagh","Tifinagh",,,,,
+81,10,"L'alphabet phénicien","Phoenician alphabet",,,,,
+81,11,"L'alphabet copte","Coptic alphabet",,,,,
+81,12,"L'alphabet nubien","Nubian alphabet",,,,,
+81,13,"L’alphabet méroïtique","Meroitic script",,,,,
+81,14,"L'alphabet adlam","Adlam alphabet",,,,,
+81,15,"Le syllabaire kpelle","Kpelle syllabary",,,,,
+81,16,"L'alphabet africain de référence","African Reference Alphabet",,,,,
+81,17,"Les caractères chinois","Chinese characters",,,,,
+81,18,"Le hangeul","Hangul",,,,,
+81,19,"Les écritures du japonais","Japanese scripts",,,,,
+81,20,"Les runes hongroises","Hungarian runes",,,,,
+81,21,"L'alphabet phonétique international","International Phonetic Alphabet",,,,,
+81,22,"L'alphabet sudarabique","South Arabian Script",,,,,
+81,23,"L’alphabet arménien","Armenian alphabet",,,,,
+81,24,"L’alphabet géorgien","Georgian alphabet",,,,,
+81,25,"L’écriture hiéroglyphique égyptienne","Egyptian hieroglyphic script",,,,,
+81,26,"L’écriture maya","Maya script",,,,,
+81,27,"L’ogham","Ogham",,,,,
+81,28,"La devanagari","Devanagari",,,,,
+81,29,"L'alphasyllabaire thaï","Thai alphasyllabary",,,,,
+81,30,"L'alphasyllabaire khmer","Khmer alphasyllabary",,,,,
+81,31,"L'écriture birmane","Burmese script",,,,,
+81,32,"L’alphabet hébraïque","Hebrew script",,,,,
+81,33,"L’alphasyllabaire bengali","Bengali alphasyllabary",,,,,
+81,34,"L'écriture tibétaine","Tibetan script",,,,,
+81,35,"L'alphabet mongol traditionnel","Traditional mongolian alphabet",,,,,
+81,36,"L’écriture cunéiforme","Cuneiform script",,,,,
+81,37,"Les hiéroglyphes hittites","Hittite hieroglyphs",,,,,
+81,38,"Le linéaire A","Linear A",,,,,
+81,39,"Le linéaire B","Linear B",,,,,
+81,40,"Les hiéroglyphes crétois","Cretan hieroglyphs",,,,,
+81,41,"La brahmi","Brahmi script",,,,,
+81,42,"Le syllabaire chypriote","Cypriot syllabary",,,,,
+81,43,"Le syllabaire chypro-minoen","Cypro-Minoan syllabary",,,,,
+81,44,"L’alphabet turc ottoman","Ottoman Turkish alphabet",,,,,
+81,45,"Le système de numération arabo-indien","The Indo–Arabic numeral system",,,,,
+81,46,"La numération romaine","Roman numeration",,,,,
+81,47,"La numération maya","Maya numeration",,,,,
+81,48,"La numération égéenne","Aegean numerals",,,,,
+81,49,"Le vieil italique","Old Italic",,,,,
+81,50,"Le syllabaire inuktitut","Inuktitut syllabics",,,,,
+81,51,"Le syllabaire cherokee","Cherokee syllabary",,,,,
+81,52,"Le cyrillique bosnien","Bosnian Cyrillic",,,,,
+81,53,"Le cyrillique croate","Croatian Cyrillic",,,,,
+81,54,"Le Hodh","Hodh (a region of West Africa, today part of Mauritania)",,,,,
+81,55,"L'alphabet secret","Secret alphabet",,,,,
+81,56,"L'alphabet secret des templiers","The secret alphabet of the Templars",,,,,
+81,57,"Les alphabets secrets d'origine arabe","Secret alphabets of Arabic origin",,,,,
+81,58,"Les alphabets secrets du Hodh","Secret alphabets from Hodh",,,,,
+81,59,"Le syllabaire","Syllabary",,,,,
+81,60,"L'alphabet consonantique","Consonantal alphabet (another word for abjad)",,,,,
+81,61,"L'abjad","Abjad",,,,,
+81,62,"L'abjad impur","Impure abjad",,,,,
+81,63,"L'alphasyllabaire","Alphasyllabary (another word for abugida)",,,,,
+81,64,"L'abugida","Abugida",,,,,
+81,65,"Le semi-syllabaire","Semi-syllabary",,,,,
+81,66,"Le logogramme","Logogram",,,,,
+81,67,"L'écriture logographique","Logographic script",,,,,
+81,68,"Le pictogramme","Pictogram",,,,,
+81,69,"L'idéogramme","Ideogram",,,,,
+81,70,"L'alphabet à traits","Featural alphabet",,,,,
+81,71,"La digraphie","Digraphia",,,,,
+82,1,"Le h aspiré","Aspirated 'h'",,,,,
+82,2,"Le héros
+un héros
+héros","Hero (example of aspirated h)",,,,"noun","masc"
+82,3,"Le hassanophone","Hassanophone (speaker of Hassaniya)",,,,,
+82,4,"La halle","Hall; covered market or similar building (H…)",,,,,
+82,5,"Le hibou
+un hibou
+hibou","Owl",,,,"noun","masc"
+82,6,"Le hâbleur","Braggart, boaster",,,,,
+82,7,"La hache","Axe",,,,,
+82,8,"Le haschich","Hashish",,,,,
+82,9,"Le hajj","The Hajj",,,,,
+82,10,"La Haye","The Hague",,,,,
+82,11,"Le hadîth","Hadith",,,,,
+82,12,"Le hamster","Hamster",,,,,
+82,13,"Le handball","Handball",,,,,
+82,14,"Le harcèlement","Harassment",,,,,
+82,15,"La harpe
+une harpe
+harpe","Harp (instrument)",,,,"noun","fem"
+82,16,"Le hasard","Hazard; chance",,,,,
+82,17,"La hâte","Haste",,,,,
+82,18,"La hausse","Rise, increase",,,,,
+82,19,"La hauteur","Height, altitude",,,,,
+82,20,"Le haut-parleur","Loudspeaker",,,,,
+82,21,"Le hiatus","Hiatus",,,,,
+82,22,"Le hiéroglyphe","Hieroglyph",,,,,
+82,23,"La hiérarchie","Hierarchy",,,,,
+82,24,"Le hittite","Hittite",,,,,
+82,25,"Le hobby","Hobby",,,,,
+82,26,"Le hockey","Hockey",,,,,
+82,27,"La Hollande","Holland",,,,,
+82,28,"Le Honduras","Honduras",,,,,
+82,29,"La Hongrie","Hungary",,,,,
+82,30,"Le hoquet","(onomatopoeia) hiccup (spasm of the diaphragm)",,,,,
+82,31,"La horde","Horde",,,,,
+82,32,"La houka","Hookah",,,,,
+82,33,"Le huguenot","Huguenot",,,,,
+82,34,"Le Hulk","The Hulk",,,,,
+83,1,"Ravissant","Ravishing, delightful, entrancing (Adj) (R...)",,,,,
+83,2,"La beauté","Beauty",,,,,
+83,3,"Le bonheur","Happiness",,,,,
+83,4,"Le papillon","Butterfly",,,,,
+83,5,"La généalogie","Genealogy",,,,,
+83,6,"Le remède","Remedy",,,,,
+83,7,"Le médicament","Medicine, drug (M...)",,,,,
+83,8,"La drogue","Drug (narcotic)",,,,,
+83,9,"L'influence","Influence",,,,,
+83,10,"Influencer","To infuence",,,,,
+83,11,"Le richard","(informal, derogatory) rich person, moneybags, capitalist, bourgeois",,,,,
+83,12,"La cause","Cause",,,,,
+83,13,"Le garde","Guard",,,,,
+83,14,"Excéder","To exceed",,,,,
+83,15,"La tristesse","Sadness",,,,,
+83,16,"Le descendant","Descendant",,,,,
+83,17,"L'ancêtre","Forefather; ancestor",,,,,
+83,18,"La progéniture","Offspring, progeny",,,,,
+83,19,"Le géniteur","Progenitor, parent",,,,,
+83,20,"Apparenté","Related (Adj)",,,,,
+83,21,"La relation","Relation; relationship",,,,,
+83,22,"Le parent","Relative, relation, family member; (in the plural) parents",,,,,
+83,23,"Le workaholique","Workaholic (W...)",,,,,
+83,24,"Le bourreau de travail","Workaholic (B...)",,,,,
+84,1,"Le calendrier","Calendar",,,,,
+84,2,"La Terreur","The Reign of Terror",,,,,
+84,3,"La Première République","The First French Republic",,,,,
+84,4,"Le comité de salut public","The Committee of Public Safety",,,,,
+84,5,"La société des amis de la Constitution","The Society of the Friends of the Constitution",,,,,
+84,6,"Les jacobins","The Jacobins",,,,,
+84,7,"Les sans-culottes","The ""without breeches"", the common people of the lower classes in late 18th-century France",,,,,
+84,8,"Maximilien François Marie Isidore de Robespierre","(Maximilien Robespierre's full name)",,,,,
+84,9,"Le royaume de France","The Kingdom of France",,,,,
+84,10,"Le calendrier révolutionnaire français","The French Revolutionary Calendar",,,,,
+84,11,"La Révolution française","The French Revolution",,,,,
+84,12,"L'Ancien Régime","The 'old rule', the Ancien Régime",,,,,
+84,13,"La déchristianisation","Dechristianization",,,,,
+84,14,"Le culte de l'Être suprême","The Cult of the Supreme Being",,,,,
+84,15,"Le culte de la Raison","The Cult of Reason",,,,,
+84,16,"Le culte décadaire","The Decadary Cult",,,,,
+84,17,"Le temple de la Raison","Temple of Reason",,,,,
+84,18,"Le Corse","The Corsican (a byname of Napoleon)",,,,,
+84,19,"Le tiers état","The Third Estate",,,,,
+84,20,"La noblesse","The nobility",,,,,
+84,21,"Le clergé","The clergy",,,,,
+84,22,"Les États généraux","The Estates General",,,,,
+85,1,"Que j'apprenne","Apprendre",,,,,
+85,2,"Que je naisse","Naître",,,,,
+85,3,"Que je sois","Être",,,,,
+85,4,"Que j'aie","Avoir",,,,,
+85,5,"Que j'aille","Aller",,,,,
+85,6,"Que j'offre","Offrir",,,,,
+85,7,"Que j'assoie","Asseoir (can also be que j'asseye)",,,,,
+85,8,"Que je parle","Parler",,,,,
+85,9,"Que j'ouvre","Ouvrir",,,,,
+85,10,"Que je veuille","Vouloir",,,,,
+85,11,"Que je puisse","Pouvoir",,,,,
+85,12,"Que je voie","Voir",,,,,
+85,13,"Que je meure","Mourir",,,,,
+85,14,"Qu'il faille","Falloir",,,,,
+85,15,"Que je devienne","Devenir",,,,,
+85,16,"Que je doive","Devoir",,,,,
+85,17,"Que je vienne","Venir",,,,,
+85,18,"Que je mette","Mettre",,,,,
+85,19,"Que je prenne","Prendre",,,,,
+85,20,"Que je fasse","Faire",,,,,
+85,21,"Que je boive","Boire",,,,,
+85,22,"Que je mange","Manger",,,,,
+85,23,"Que je paraisse","Paraître",,,,,
+85,24,"Que je coure","Courir",,,,,
+85,25,"Qu'il semble","Sembler",,,,,
+85,26,"Que je parte","Partir",,,,,
+85,27,"Que je sorte","Sortir",,,,,
+85,28,"Que je rie","Rire",,,,,
+85,29,"Que je sourie","Sourire",,,,,
+85,30,"Que je comprenne","Comprendre",,,,,
+85,31,"Que je conduise","Conduire",,,,,
+85,32,"Que je connaisse","Connaître",,,,,
+85,33,"Que je sache","Savoir",,,,,
+85,34,"Que je permette","Permettre",,,,,
+85,35,"Que je vive","Vivre",,,,,
+85,36,"Que j'habite","Habiter",,,,,
+85,37,"Que je plaise","Plaire",,,,,
+85,38,"Qu'il pleuve","Pleuvoir",,,,,
+85,39,"Que je construise","Construire",,,,,
+85,40,"Que je lise","Lire",,,,,
+85,41,"Que je vaille","Valoir",,,,,
+85,42,"Que je tienne","Tenir",,,,,
+85,43,"Que je reçoive","Recevoir",,,,,
+85,44,"Que j'écrive","Écrire",,,,,
+85,45,"Que je dise","Dire",,,,,
+85,46,"Que je couvre","Couvrir",,,,,
+85,47,"Que je suive","Suivre",,,,,
+85,48,"Que je croie","Croire",,,,,
+85,49,"Que je pense","Penser",,,,,
+85,50,"Que je craigne","Craindre",,,,,
+85,51,"Que je peigne","Peindre",,,,,
+85,52,"Que je taise","Taire",,,,,
+85,53,"Que j'acquière","Acquérir",,,,,
+85,54,"Que je déçoive","Décevoir",,,,,
+85,55,"Que j'instruise","Instruire",,,,,
+85,56,"Que je souffre","Souffrir",,,,,
+85,57,"Que je joigne","Joindre",,,,,
+85,58,"Que je produise","Produire",,,,,
+86,1,"Je veux","Vouloir",,,,,
+86,2,"J'apprends","Apprendre",,,,,
+86,3,"Je dis","Dire",,,,,
+86,4,"Je nais","Naître",,,,,
+86,5,"J'offre","Offrir",,,,,
+86,6,"J'ouvre","Ouvrir",,,,,
+86,7,"Je peux","Pouvoir",,,,,
+86,8,"Je vois","Voir",,,,,
+86,9,"Je meurs","Mourir",,,,,
+86,10,"Il faut","Falloir",,,,,
+86,11,"Je deviens","Devenir",,,,,
+86,12,"Je viens","Venir",,,,,
+86,13,"Je mets","Mettre",,,,,
+86,14,"Je sais","Savoir",,,,,
+86,15,"Je fais","Faire",,,,,
+86,16,"Je prends","Prendre",,,,,
+86,17,"Je bois","Boire",,,,,
+86,18,"Je mange","Manger",,,,,
+86,19,"Je parais","Paraître",,,,,
+86,20,"Je cours","Courir",,,,,
+86,21,"J'entends","Entendre",,,,,
+86,22,"Il semble","Sembler",,,,,
+86,23,"Je pars","Partir",,,,,
+86,24,"Je sors","Sortir",,,,,
+86,25,"Je ris","Rire",,,,,
+86,26,"Je souris","Sourire",,,,,
+86,27,"Je comprends","Comprendre",,,,,
+86,28,"Je conduis","Conduire",,,,,
+86,29,"Je connais","Connaître",,,,,
+86,30,"Je permets","Permettre",,,,,
+86,31,"Je vis","Vivre",,,,,
+86,32,"J'habite","Habiter",,,,,
+86,33,"Je plais","Plaire",,,,,
+86,34,"Il pleut","Pleuvoir",,,,,
+86,35,"Je construis","Construire",,,,,
+86,36,"J'écris","Écrire",,,,,
+86,37,"Je vaux","Valoir",,,,,
+86,38,"Je reçois","Recevoir",,,,,
+86,39,"Je couvre","Couvrir",,,,,
+86,40,"Je suis","Suivre",,,,,
+86,41,"Je crois","Croire",,,,,
+86,42,"Je pense","Penser",,,,,
+86,43,"Je crains","Craindre",,,,,
+86,44,"Je peins","Peindre",,,,,
+86,45,"Je tais","Taire",,,,,
+86,46,"J'acquiers","Acquérir",,,,,
+86,47,"Je déçois","Décevoir",,,,,
+86,48,"J'instruis","Instruire",,,,,
+86,49,"Je souffre","Souffrir",,,,,
+86,50,"Je joins","Joindre",,,,,
+86,51,"Je produis","Produire",,,,,
+87,1,"Le mien","Mine",,,,,
+87,2,"Le tien","Yours",,,,,
+87,3,"Le sien","His/hers",,,,,
+87,4,"Le nôtre","Ours",,,,,
+87,5,"Le vôtre","Yours (plural)",,,,,
+87,6,"Le leur","Theirs",,,,,
+88,1,"Tourner un film","To make a film",,,,,
+88,2,"Ennuyeux
+ennuyeuse","Boring, dull (Adj)",,,,"adjective",
+88,3,"Le réalisateur
+un réalisateur
+réalisateur","Director, film maker",,,,"noun","masc"
+88,4,"Le metteur en scène","(Another word for film director) (M...)",,,,,
+88,5,"La pièce de théâtre","Play (theatrical)",,,,,
+88,6,"Le documentaire
+un documentaire
+documentaire","Documentary",,,,"noun","masc"
+88,7,"Le scénario","Screenplay",,,,,
+88,8,"La bande-annonce","Movie trailer",,,,,
+88,9,"La bande-originale","Original soundtrack",,,,,
+88,10,"La Bénoué","The Benue River",,,,,
+89,1,"En voulant","Vouloir",,,,,
+89,2,"En dormant","Dormir",,,,,
+89,3,"En ayant","Avoir",,,,,
+89,4,"En étant","Être",,,,,
+89,5,"En sachant","Savoir",,,,,
+89,6,"En choisissant","Choisir",,,,,
+89,7,"En parlant","Parler",,,,,
+89,8,"En mangeant","Manger",,,,,
+89,9,"En gérant","Gérer",,,,,
+89,10,"En payant","Payer",,,,,
+89,11,"En écrivant","Écrire",,,,,
+89,12,"En voyant","Voir",,,,,
+89,13,"En ouvrant","Ouvrir",,,,,
+89,14,"En mourant","Mourir",,,,,
+89,15,"En partant","Partir",,,,,
+89,16,"En souriant","Sourire",,,,,
+89,17,"En sortant","Sortir",,,,,
+89,18,"En comprenant","Comprendre",,,,,
+89,19,"En entendant","Entendre",,,,,
+89,20,"En s'entendant","Se entendre",,,,,
+89,21,"En communiquant","Communiquer",,,,,
+90,1,"Rien d'autre","Nothing else",,,,,
+90,2,"Brûlant","Burning (Adj)",,,,,
+90,3,"L'espoir
+un espoir
+espoir","Hope, expectation, expectancy",,,,"noun","masc"

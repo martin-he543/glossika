@@ -197,7 +197,7 @@ export default function GlyphyNew({ appState, updateState }: GlyphyNewProps) {
 
   const unlockItem = (item: ReviewItem) => {
     const updates = {
-      srsStage: 'apprentice' as GlyphySRSStage,
+      srsStage: 'seed' as GlyphySRSStage,
       unlockedAt: Date.now(),
     };
 
@@ -218,11 +218,11 @@ export default function GlyphyNew({ appState, updateState }: GlyphyNewProps) {
 
   const getSRSColor = (stage: GlyphySRSStage): string => {
     switch (stage) {
-      case 'apprentice': return '#f35656';
-      case 'guru': return '#9e5bd9';
-      case 'master': return '#00a2ff';
-      case 'enlightened': return '#00c2ff';
-      case 'burned': return '#4a4a4a';
+      case 'seed': return '#f35656';
+      case 'sprout': return '#9e5bd9';
+      case 'seedling': return '#00a2ff';
+      case 'plant': return '#00c2ff';
+      case 'tree': return '#4a4a4a';
       case 'locked': return '#d0d7de';
       default: return '#d0d7de';
     }
@@ -276,13 +276,13 @@ export default function GlyphyNew({ appState, updateState }: GlyphyNewProps) {
           <div className="stat-card">
             <div className="stat-label">Apprentices</div>
             <div className="stat-value" style={{ color: '#f35656' }}>
-              {[...radicals, ...kanji, ...vocabulary].filter(i => i.srsStage === 'apprentice').length}
+              {[...radicals, ...kanji, ...vocabulary].filter(i => i.srsStage === 'seed').length}
             </div>
           </div>
           <div className="stat-card">
             <div className="stat-label">Gurus</div>
             <div className="stat-value" style={{ color: '#9e5bd9' }}>
-              {[...radicals, ...kanji, ...vocabulary].filter(i => i.srsStage === 'guru').length}
+              {[...radicals, ...kanji, ...vocabulary].filter(i => i.srsStage === 'sprout').length}
             </div>
           </div>
         </div>

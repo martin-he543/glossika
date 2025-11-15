@@ -130,26 +130,89 @@ export function createWordsFromCSV(
   const words: Word[] = [];
   const now = Date.now();
 
+  if (rows.length === 0) {
+    console.warn('createWordsFromCSV: No rows provided');
+    return words;
+  }
+
+  // Debug: Log available headers from first row
+  const headers = Object.keys(rows[0]);
+  console.log('Available CSV headers:', headers);
+  console.log('Using columns:', { nativeCol, targetCol, levelCol });
+
+  // Find additional columns that might contain part of speech or pronunciation
+  const findColumn = (patterns: string[]): string | undefined => {
+    if (rows.length === 0) return undefined;
+    const headers = Object.keys(rows[0]);
+    for (const pattern of patterns) {
+      const found = headers.find(h => h.toLowerCase().includes(pattern.toLowerCase()));
+      if (found) return found;
+    }
+    return undefined;
+  };
+
+  const partOfSpeechCol = findColumn(['part of speech', 'partofspeech', 'pos', 'type', 'word type']);
+  const pronunciationCol = findColumn(['pronunciation', 'phonetic', 'ipa', 'reading', 'sound']);
+  
+  if (partOfSpeechCol) console.log('Found part of speech column:', partOfSpeechCol);
+  if (pronunciationCol) console.log('Found pronunciation column:', pronunciationCol);
+
+  // Since PapaParse transforms headers to lowercase, ensure we use lowercase column names
+  // But also handle case where column names might not match exactly
+  const getRowValue = (row: CSVRow, colName: string): string => {
+    if (!colName) return '';
+    // Try exact match first (headers are already lowercase due to transformHeader)
+    if (row[colName]) return row[colName];
+    // Try lowercase version
+    const lower = colName.toLowerCase();
+    if (row[lower]) return row[lower];
+    // Try finding a matching key (case-insensitive)
+    const matchingKey = Object.keys(row).find(k => k.toLowerCase() === lower);
+    if (matchingKey) return row[matchingKey];
+    return '';
+  };
+
+  let skippedCount = 0;
   for (const row of rows) {
-    const native = row[nativeCol]?.trim();
-    const target = row[targetCol]?.trim();
+    const native = getRowValue(row, nativeCol)?.trim() || '';
+    const target = getRowValue(row, targetCol)?.trim() || '';
 
     if (!native || !target) {
+      skippedCount++;
+      // Debug first few skipped rows
+      if (skippedCount <= 3) {
+        console.warn(`Skipping row ${skippedCount}:`, {
+          native: `"${native}"`,
+          target: `"${target}"`,
+          rowKeys: Object.keys(row),
+          nativeCol,
+          targetCol
+        });
+      }
       continue; // Skip empty rows
     }
 
     // Parse level from CSV if level column is specified
     let level: number | undefined = undefined;
-    if (levelCol && row[levelCol]) {
-      const levelValue = parseInt(row[levelCol].trim(), 10);
-      if (!isNaN(levelValue) && levelValue > 0) {
-        level = levelValue;
+    if (levelCol) {
+      const levelValue = getRowValue(row, levelCol);
+      if (levelValue) {
+        const parsed = parseInt(levelValue.trim(), 10);
+        if (!isNaN(parsed) && parsed > 0) {
+          level = parsed;
+        }
       }
     }
     // Default to level 1 if no level specified
     if (!level) {
       level = 1;
     }
+
+    // Extract part of speech if available
+    const partOfSpeech = partOfSpeechCol ? (getRowValue(row, partOfSpeechCol)?.trim() || undefined) : undefined;
+    
+    // Extract pronunciation if available
+    const pronunciation = pronunciationCol ? (getRowValue(row, pronunciationCol)?.trim() || undefined) : undefined;
 
     words.push({
       id: `${courseId}-${now}-${words.length}`,
@@ -162,7 +225,14 @@ export function createWordsFromCSV(
       srsLevel: 0,
       masteryLevel: 'seed',
       level,
+      partOfSpeech,
+      pronunciation,
     });
+  }
+
+  console.log(`createWordsFromCSV: Created ${words.length} words, skipped ${skippedCount} rows`);
+  if (words.length > 0) {
+    console.log('Sample word:', words[0]);
   }
 
   return words;
@@ -280,7 +350,8 @@ export function createClozeFromTatoeba(rows: CSVRow[], courseId: string): ClozeS
         language,
         courseId,
         createdAt: now,
-        masteryLevel: 0,
+        masteryLevel: 'seed',
+        srsLevel: 0,
         correctCount: 0,
         wrongCount: 0,
       });

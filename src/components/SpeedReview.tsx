@@ -3,6 +3,7 @@ import { Word } from '../types';
 import { storage } from '../storage';
 import { updateSRSLevel, getMasteryLevel, calculateNextReview } from '../utils/srs';
 import { leaderboard } from '../utils/leaderboard';
+import { recordStudyActivity } from '../utils/activityTracking';
 import KeyboardShortcuts from './KeyboardShortcuts';
 
 interface SpeedReviewProps {
@@ -134,6 +135,7 @@ export default function SpeedReview({ courseId, words, course, onUpdate }: Speed
 
     // Award XP for speed review question
     leaderboard.awardSpeedReviewXP(courseId);
+    recordStudyActivity(courseId, 1);
 
     onUpdate();
   };

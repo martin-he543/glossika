@@ -1,16 +1,16 @@
 import { GlyphySRSStage, Radical, Kanji, Vocabulary } from '../types';
 
-// Glyphy SRS stage progression thresholds
+// Glyphy SRS stage progression thresholds (plant-based)
 const SRS_THRESHOLDS = {
-  apprentice: { correct: 2, interval: 4 * 60 * 60 * 1000 }, // 4 hours
-  guru: { correct: 4, interval: 8 * 60 * 60 * 1000 }, // 8 hours
-  master: { correct: 6, interval: 24 * 60 * 60 * 1000 }, // 1 day
-  enlightened: { correct: 8, interval: 7 * 24 * 60 * 60 * 1000 }, // 7 days
-  burned: { correct: 9, interval: Infinity }, // Never review again
+  seed: { correct: 2, interval: 4 * 60 * 60 * 1000 }, // 4 hours
+  sprout: { correct: 4, interval: 8 * 60 * 60 * 1000 }, // 8 hours
+  seedling: { correct: 6, interval: 24 * 60 * 60 * 1000 }, // 1 day
+  plant: { correct: 8, interval: 7 * 24 * 60 * 60 * 1000 }, // 7 days
+  tree: { correct: 9, interval: Infinity }, // Never review again
 };
 
 // Stage order for progression
-const STAGE_ORDER: GlyphySRSStage[] = ['apprentice', 'guru', 'master', 'enlightened', 'burned'];
+const STAGE_ORDER: GlyphySRSStage[] = ['seed', 'sprout', 'seedling', 'plant', 'tree'];
 
 export function getNextSRSStage(currentStage: GlyphySRSStage, isCorrect: boolean, correctStreak: number): GlyphySRSStage {
   if (currentStage === 'locked') {
@@ -18,12 +18,12 @@ export function getNextSRSStage(currentStage: GlyphySRSStage, isCorrect: boolean
   }
 
   if (!isCorrect) {
-    // Reset to apprentice on incorrect
-    return 'apprentice';
+    // Reset to seed on incorrect
+    return 'seed';
   }
 
   const currentIndex = STAGE_ORDER.indexOf(currentStage);
-  if (currentIndex === -1) return 'apprentice';
+  if (currentIndex === -1) return 'seed';
 
   // Check if we have enough correct answers to advance
   const threshold = SRS_THRESHOLDS[currentStage];
@@ -38,11 +38,11 @@ export function getNextSRSStage(currentStage: GlyphySRSStage, isCorrect: boolean
 }
 
 export function calculateNextReview(stage: GlyphySRSStage): number | undefined {
-  if (stage === 'locked' || stage === 'burned') {
+  if (stage === 'locked' || stage === 'tree') {
     return undefined;
   }
 
-  const threshold = SRS_THRESHOLDS[stage];
+  const threshold = SRS_THRESHOLDS[stage as Exclude<GlyphySRSStage, 'locked' | 'tree'>];
   if (threshold.interval === Infinity) {
     return undefined;
   }
@@ -54,13 +54,13 @@ export function getCorrectStreak(item: Radical | Kanji | Vocabulary): number {
   // For now, use correct count as a proxy for streak
   // In a production system, you'd track consecutive correct answers separately
   // This is a simplified version that works for the basic progression
-  if (item.srsStage === 'apprentice') {
+  if (item.srsStage === 'seed') {
     return item.correctCount;
-  } else if (item.srsStage === 'guru') {
+  } else if (item.srsStage === 'sprout') {
     return Math.max(0, item.correctCount - 2);
-  } else if (item.srsStage === 'master') {
+  } else if (item.srsStage === 'seedling') {
     return Math.max(0, item.correctCount - 4);
-  } else if (item.srsStage === 'enlightened') {
+  } else if (item.srsStage === 'plant') {
     return Math.max(0, item.correctCount - 6);
   }
   return item.correctCount;
@@ -88,7 +88,7 @@ export function getItemsDueForReview<T extends Radical | Kanji | Vocabulary>(
 ): T[] {
   const now = Date.now();
   return items.filter(item => {
-    if (item.srsStage === 'locked' || item.srsStage === 'burned') {
+    if (item.srsStage === 'locked' || item.srsStage === 'tree') {
       return false;
     }
     if (!item.nextReview) {
@@ -119,13 +119,13 @@ export function canUnlockLevel(
   const prevKanji = kanji.filter(k => k.level === prevLevel);
   const prevVocab = vocabulary.filter(v => v.level === prevLevel);
 
-  // All items in previous level must be at least "guru" stage
+  // All items in previous level must be at least "sprout" stage
   const allPrevItems = [...prevRadicals, ...prevKanji, ...prevVocab];
   const allMastered = allPrevItems.every(item => 
-    item.srsStage === 'guru' || 
-    item.srsStage === 'master' || 
-    item.srsStage === 'enlightened' || 
-    item.srsStage === 'burned'
+    item.srsStage === 'sprout' || 
+    item.srsStage === 'seedling' || 
+    item.srsStage === 'plant' || 
+    item.srsStage === 'tree'
   );
 
   return allMastered;

@@ -2,7 +2,7 @@ import { storage } from '../storage';
 import { StudyActivity, CourseStreak } from '../types';
 
 /**
- * Record study activity (universal, not per course)
+ * Record study activity for a course on a given date
  */
 export function recordStudyActivity(courseId: string, itemCount: number = 1): void {
   const state = storage.load();
@@ -10,45 +10,41 @@ export function recordStudyActivity(courseId: string, itemCount: number = 1): vo
   
   const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
   
-  // Aggregate all activity for the day (universal)
   const existingIndex = state.studyActivity.findIndex(
-    a => a.date === today
+    a => a.courseId === courseId && a.date === today
   );
   
   if (existingIndex !== -1) {
     state.studyActivity[existingIndex].count += itemCount;
   } else {
     state.studyActivity.push({
-      courseId: 'all', // Use 'all' to indicate universal activity
+      courseId,
       date: today,
       count: itemCount,
     });
   }
   
-  // Update overall streak
-  updateOverallStreak();
+  // Update streak for this course
+  updateStreak(courseId);
   
   storage.save(state);
 }
 
 /**
- * Update overall streak (universal, not per course)
+ * Update streak for a course
  */
-function updateOverallStreak(): void {
+function updateStreak(courseId: string): void {
   const state = storage.load();
   if (!state.courseStreaks) state.courseStreaks = [];
   
   const today = new Date();
   const todayStr = today.toISOString().split('T')[0];
-  const yesterday = new Date(today);
-  yesterday.setDate(yesterday.getDate() - 1);
-  const yesterdayStr = yesterday.toISOString().split('T')[0];
   
-  let streak = state.courseStreaks.find(s => s.courseId === 'all');
+  let streak = state.courseStreaks.find(s => s.courseId === courseId);
   
   if (!streak) {
     streak = {
-      courseId: 'all',
+      courseId,
       currentStreak: 1,
       longestStreak: 1,
       lastStudied: todayStr,
@@ -77,52 +73,34 @@ function updateOverallStreak(): void {
 }
 
 /**
- * Get overall streak (universal)
- */
-export function getOverallStreak(): CourseStreak | null {
-  const state = storage.load();
-  if (!state.courseStreaks) return null;
-  return state.courseStreaks.find(s => s.courseId === 'all') || null;
-}
-
-/**
- * Get streak for a course (deprecated - use getOverallStreak)
+ * Get streak for a course
  */
 export function getCourseStreak(courseId: string): CourseStreak | null {
-  return getOverallStreak();
+  const state = storage.load();
+  if (!state.courseStreaks) return null;
+  return state.courseStreaks.find(s => s.courseId === courseId) || null;
 }
 
 /**
- * Get study activity (universal, aggregated by date)
+ * Get study activity for a course (last 365 days)
  */
 export function getStudyActivity(courseId: string | null = null): StudyActivity[] {
   const state = storage.load();
   if (!state.studyActivity) return [];
   
-  // Always return universal activity (aggregated by date)
-  const activityMap = new Map<string, number>();
-  state.studyActivity.forEach(a => {
-    const existing = activityMap.get(a.date) || 0;
-    activityMap.set(a.date, existing + a.count);
-  });
-  
-  // Convert to array
-  const activities: StudyActivity[] = Array.from(activityMap.entries()).map(([date, count]) => ({
-    courseId: 'all',
-    date,
-    count,
-  }));
+  const filtered = courseId 
+    ? state.studyActivity.filter(a => a.courseId === courseId)
+    : state.studyActivity;
   
   // Sort by date descending
-  return activities.sort((a, b) => b.date.localeCompare(a.date));
+  return filtered.sort((a, b) => b.date.localeCompare(a.date));
 }
 
 /**
- * Get activity heatmap data (universal, last 365 days)
+ * Get activity heatmap data (last 365 days)
  */
 export function getActivityHeatmap(courseId: string | null = null): Map<string, number> {
-  // Always return universal activity (ignore courseId)
-  const activities = getStudyActivity(null);
+  const activities = getStudyActivity(courseId);
   const heatmap = new Map<string, number>();
   
   activities.forEach(activity => {
@@ -133,40 +111,11 @@ export function getActivityHeatmap(courseId: string | null = null): Map<string, 
 }
 
 /**
- * Check if user studied today (universal)
+ * Check if user studied today
  */
 export function studiedToday(courseId: string): boolean {
   const today = new Date().toISOString().split('T')[0];
-  const activities = getStudyActivity(null);
+  const activities = getStudyActivity(courseId);
   return activities.some(a => a.date === today && a.count > 0);
-}
-
-/**
- * Get recent streak days (last 5 days with flame emoji) - universal
- */
-export function getRecentStreakDays(courseId: string | null = null): { date: string; studied: boolean }[] {
-  // Always return universal activity
-  const activities = getStudyActivity(null);
-  const activityMap = new Map<string, boolean>();
-  activities.forEach(a => {
-    if (a.count > 0) {
-      activityMap.set(a.date, true);
-    }
-  });
-  
-  const result: { date: string; studied: boolean }[] = [];
-  const today = new Date();
-  
-  for (let i = 4; i >= 0; i--) {
-    const date = new Date(today);
-    date.setDate(date.getDate() - i);
-    const dateStr = date.toISOString().split('T')[0];
-    result.push({
-      date: dateStr,
-      studied: activityMap.has(dateStr) || false,
-    });
-  }
-  
-  return result;
 }
 

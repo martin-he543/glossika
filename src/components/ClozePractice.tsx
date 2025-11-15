@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { AppState, ClozeSentence, ClozeCourse } from '../types';
 import { storage } from '../storage';
 import { parseCSV, createClozeFromTatoeba } from '../utils/csv';
+import { updateClozeSRS } from '../utils/clozeSRS';
 import { leaderboard } from '../utils/leaderboard';
+import { recordStudyActivity } from '../utils/activityTracking';
 import CreateClozeCourseModal from './CreateClozeCourseModal';
 import ClozeCourseSettings from './ClozeCourseSettings';
 import KeyboardShortcuts from './KeyboardShortcuts';
@@ -46,9 +48,9 @@ export default function ClozePractice({ appState, updateState }: ClozePracticePr
   const courseSentences = selectedCourseId 
     ? (appState.clozeSentences || []).filter(s => s.courseId === selectedCourseId)
     : [];
-  const availableSentences = courseSentences.filter(s => s.masteryLevel < 5);
-  const newSentences = courseSentences.filter(s => s.masteryLevel === 0);
-  const reviewSentences = courseSentences.filter(s => s.masteryLevel > 0 && s.masteryLevel < 5);
+  const availableSentences = courseSentences.filter(s => s.masteryLevel !== 'tree');
+  const newSentences = courseSentences.filter(s => s.masteryLevel === 'seed' || s.srsLevel === 0);
+  const reviewSentences = courseSentences.filter(s => s.masteryLevel !== 'seed' && s.masteryLevel !== 'tree');
   
   // Determine what "Continue" should do
   const getContinueMode = (): 'learn' | 'review' => {
@@ -145,13 +147,11 @@ export default function ClozePractice({ appState, updateState }: ClozePracticePr
       message: isCorrect ? 'Correct!' : `Incorrect. The answer is "${currentClozeData.answer}"`
     });
 
-    const wasNew = currentSentence.masteryLevel === 0;
-    const newMasteryLevel = isCorrect
-      ? Math.min(currentSentence.masteryLevel + 1, 5)
-      : Math.max(currentSentence.masteryLevel - 1, 0);
-
+    const wasNew = currentSentence.masteryLevel === 'seed' || currentSentence.srsLevel === 0;
+    const updates = updateClozeSRS(currentSentence, isCorrect);
+    
     storage.updateClozeSentence(currentSentence.id, {
-      masteryLevel: newMasteryLevel,
+      ...updates,
       correctCount: currentSentence.correctCount + (isCorrect ? 1 : 0),
       wrongCount: currentSentence.wrongCount + (isCorrect ? 0 : 1),
     });
@@ -164,6 +164,9 @@ export default function ClozePractice({ appState, updateState }: ClozePracticePr
       }
     }
 
+    if (selectedCourseId) {
+      recordStudyActivity(selectedCourseId, 1);
+    }
     setCorrectCount(prev => prev + (isCorrect ? 1 : 0));
     setQuestionsAnswered(prev => prev + 1);
 
@@ -326,7 +329,7 @@ export default function ClozePractice({ appState, updateState }: ClozePracticePr
           <div className="grid">
             {clozeCourses.map(course => {
               const sentences = appState.clozeSentences.filter(s => s.courseId === course.id);
-              const learned = sentences.filter(s => s.masteryLevel > 0).length;
+              const learned = sentences.filter(s => s.masteryLevel !== 'seed' && s.masteryLevel !== 'tree').length;
               const total = sentences.length;
               const progressPercent = total > 0 ? (learned / total) * 100 : 0;
 

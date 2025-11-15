@@ -36,15 +36,15 @@ export default function CharacterCourseDetail({ appState, updateState }: Charact
   const stats = useMemo(() => {
     const srsStages = {
       locked: characters.filter(k => k.srsStage === 'locked').length,
-      apprentice: characters.filter(k => k.srsStage === 'apprentice').length,
-      guru: characters.filter(k => k.srsStage === 'guru').length,
-      master: characters.filter(k => k.srsStage === 'master').length,
-      enlightened: characters.filter(k => k.srsStage === 'enlightened').length,
-      burned: characters.filter(k => k.srsStage === 'burned').length,
+      seed: characters.filter(k => k.srsStage === 'seed').length,
+      sprout: characters.filter(k => k.srsStage === 'sprout').length,
+      seedling: characters.filter(k => k.srsStage === 'seedling').length,
+      plant: characters.filter(k => k.srsStage === 'plant').length,
+      tree: characters.filter(k => k.srsStage === 'tree').length,
     };
 
     const learned = characters.filter(k => k.srsStage !== 'locked').length;
-    const mastered = characters.filter(k => k.srsStage === 'burned').length;
+    const mastered = characters.filter(k => k.srsStage === 'tree').length;
 
     // Get levels from course or extract from characters
     const courseLevels = course.levels || [1];
@@ -52,7 +52,7 @@ export default function CharacterCourseDetail({ appState, updateState }: Charact
       level,
       total: characters.filter(k => (k.level || k.waniKaniLevel || 1) === level).length,
       learned: characters.filter(k => (k.level || k.waniKaniLevel || 1) === level && k.srsStage !== 'locked').length,
-      mastered: characters.filter(k => (k.level || k.waniKaniLevel || 1) === level && k.srsStage === 'burned').length,
+      mastered: characters.filter(k => (k.level || k.waniKaniLevel || 1) === level && k.srsStage === 'tree').length,
     }));
 
     return { srsStages, learned, mastered, levelStats };
@@ -115,24 +115,24 @@ export default function CharacterCourseDetail({ appState, updateState }: Charact
               <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{stats.srsStages.locked}</div>
             </div>
             <div style={{ padding: '12px', border: '1px solid #d0d7de', borderRadius: '4px' }}>
-              <div style={{ fontSize: '12px', color: '#656d76', marginBottom: '4px' }}>🔴 Apprentice</div>
-              <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{stats.srsStages.apprentice}</div>
+              <div style={{ fontSize: '12px', color: '#656d76', marginBottom: '4px' }}>🌱 Seed</div>
+              <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{stats.srsStages.seed}</div>
             </div>
             <div style={{ padding: '12px', border: '1px solid #d0d7de', borderRadius: '4px' }}>
-              <div style={{ fontSize: '12px', color: '#656d76', marginBottom: '4px' }}>🟣 Guru</div>
-              <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{stats.srsStages.guru}</div>
+              <div style={{ fontSize: '12px', color: '#656d76', marginBottom: '4px' }}>🌿 Sprout</div>
+              <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{stats.srsStages.sprout}</div>
             </div>
             <div style={{ padding: '12px', border: '1px solid #d0d7de', borderRadius: '4px' }}>
-              <div style={{ fontSize: '12px', color: '#656d76', marginBottom: '4px' }}>🔵 Master</div>
-              <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{stats.srsStages.master}</div>
+              <div style={{ fontSize: '12px', color: '#656d76', marginBottom: '4px' }}>🌱 Seedling</div>
+              <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{stats.srsStages.seedling}</div>
             </div>
             <div style={{ padding: '12px', border: '1px solid #d0d7de', borderRadius: '4px' }}>
-              <div style={{ fontSize: '12px', color: '#656d76', marginBottom: '4px' }}>⚪ Enlightened</div>
-              <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{stats.srsStages.enlightened}</div>
+              <div style={{ fontSize: '12px', color: '#656d76', marginBottom: '4px' }}>🌳 Plant</div>
+              <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{stats.srsStages.plant}</div>
             </div>
             <div style={{ padding: '12px', border: '1px solid #d0d7de', borderRadius: '4px' }}>
-              <div style={{ fontSize: '12px', color: '#656d76', marginBottom: '4px' }}>⚫ Burned</div>
-              <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{stats.srsStages.burned}</div>
+              <div style={{ fontSize: '12px', color: '#656d76', marginBottom: '4px' }}>🌲 Tree</div>
+              <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{stats.srsStages.tree}</div>
             </div>
           </div>
         </div>

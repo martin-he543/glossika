@@ -67,20 +67,29 @@ export default function CreateCourseModal({ onClose, onSuccess }: CreateCourseMo
       }
 
       // Try to find common column names
-      const nativeCols = headers.filter(h => 
-        h.toLowerCase().includes('native') || 
-        h.toLowerCase().includes('english') ||
-        h.toLowerCase().includes('source')
-      );
-      const targetCols = headers.filter(h => 
-        h.toLowerCase().includes('target') || 
-        h.toLowerCase().includes('translation') ||
-        h.toLowerCase().includes('foreign')
-      );
-      const levelCols = headers.filter(h => 
-        h.toLowerCase().includes('level') || 
-        h.toLowerCase() === 'lvl'
-      );
+      const nativeCols = headers.filter(h => {
+        const lower = h.toLowerCase();
+        return lower.includes('native') || 
+               lower.includes('english') ||
+               lower.includes('source') ||
+               lower === 'definition' ||
+               lower.includes('definition');
+      });
+      const targetCols = headers.filter(h => {
+        const lower = h.toLowerCase();
+        return lower.includes('target') || 
+               lower.includes('translation') ||
+               lower.includes('foreign') ||
+               lower === 'label' ||
+               lower.includes('label') ||
+               lower.includes('word') ||
+               lower.includes('term');
+      });
+      const levelCols = headers.filter(h => {
+        const lower = h.toLowerCase();
+        return lower.includes('level') || 
+               lower === 'lvl';
+      });
 
       setNativeCol(nativeCols[0] || headers[0]);
       setTargetCol(targetCols[0] || headers[1]);
@@ -164,7 +173,14 @@ export default function CreateCourseModal({ onClose, onSuccess }: CreateCourseMo
         const batch = rows.slice(start, end);
         
         const batchWords = createWordsFromCSV(batch, course.id, nativeCol, targetCol, levelCol || undefined);
-        allWords.push(...batchWords);
+      
+      // Debug: log first batch to verify words are being created
+      if (i === 0 && batchWords.length > 0) {
+        console.log('Sample words from first batch:', batchWords.slice(0, 3));
+        console.log('Columns used:', { nativeCol, targetCol, levelCol });
+      }
+      
+      allWords.push(...batchWords);
         
         // Update progress: 50-90% for processing
         const progressPercent = 50 + Math.floor(((i + 1) / totalBatches) * 40);

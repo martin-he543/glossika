@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { AppState, Kanji } from '../types';
 import { storage } from '../storage';
 import { parseCSV, createKanjiFromCSV } from '../utils/csv';
@@ -28,32 +28,45 @@ export default function Glyphy({ appState, updateState }: GlyphyProps) {
   const [quickReviewWords, setQuickReviewWords] = useState<Kanji[]>([]);
   const [delimiter, setDelimiter] = useState<string>('auto');
   const [additionalColumns, setAdditionalColumns] = useState<string[]>([]);
+  const currentKanjiIdRef = useRef<string | null>(null);
 
-  const kanji = appState.kanji.filter(k => k.language === language);
+  const kanji = useMemo(() => appState.kanji.filter(k => k.language === language), [appState.kanji, language]);
   // Support both old (srsLevel) and new (srsStage) interfaces
-  const newKanji = kanji.filter(k => {
+  const newKanji = useMemo(() => kanji.filter(k => {
     if (k.srsLevel !== undefined) return k.srsLevel === 0;
-    return k.srsStage === 'locked' || k.srsStage === 'apprentice';
-  });
-  const reviewKanji = kanji.filter(k => {
+    return k.srsStage === 'locked' || k.srsStage === 'seed';
+  }), [kanji]);
+  const reviewKanji = useMemo(() => kanji.filter(k => {
     if (k.srsLevel !== undefined) return k.srsLevel > 0;
-    return k.srsStage !== 'locked' && k.srsStage !== 'burned';
-  });
+    return k.srsStage !== 'locked' && k.srsStage !== 'tree';
+  }), [kanji]);
 
-  useEffect(() => {
-    if (activeTab === 'learn' && newKanji.length > 0) {
-      loadNextKanji();
-    } else if (activeTab === 'review' && reviewKanji.length > 0) {
-      loadNextKanji();
-    } else if (activeTab === 'quick') {
-      loadQuickReview();
+  const generateOptions = useCallback((current: Kanji) => {
+    if (!current) return;
+    // Only generate options if this is a different kanji
+    if (currentKanjiIdRef.current === current.id) {
+      return; // Options already generated for this kanji
     }
-  }, [activeTab, language, mode, questionType]);
+    currentKanjiIdRef.current = current.id;
+    
+    const correctAnswer = questionType === 'meaning' ? current.meaning : current.pronunciation;
+    const otherKanji = kanji
+      .filter(k => k.id !== current.id)
+      .map(k => questionType === 'meaning' ? k.meaning : k.pronunciation)
+      .filter((val, idx, arr) => arr.indexOf(val) === idx);
 
-  const loadNextKanji = () => {
+    const shuffled = [...otherKanji].sort(() => Math.random() - 0.5);
+    const wrongAnswers = shuffled.slice(0, 3);
+    const allOptions = [correctAnswer, ...wrongAnswers].sort(() => Math.random() - 0.5);
+    setOptions(allOptions);
+  }, [kanji, questionType]);
+
+  const loadNextKanji = useCallback(() => {
     const availableKanji = activeTab === 'learn' ? newKanji : reviewKanji;
     if (availableKanji.length === 0) {
       setCurrentKanji(null);
+      setOptions([]);
+      currentKanjiIdRef.current = null;
       return;
     }
 
@@ -62,11 +75,26 @@ export default function Glyphy({ appState, updateState }: GlyphyProps) {
     setSelectedAnswer('');
     setUserInput('');
     setFeedback(null);
+    currentKanjiIdRef.current = null; // Reset ref so options will be generated
 
-    if (mode === 'multiple') {
+    // Only generate options if in multiple choice mode
+    if (mode === 'multiple' && randomKanji) {
       generateOptions(randomKanji);
+    } else {
+      setOptions([]);
     }
-  };
+  }, [activeTab, newKanji, reviewKanji, mode, generateOptions]);
+
+  useEffect(() => {
+    // Only load initial kanji when switching tabs or language, not on every render
+    if (activeTab === 'learn' && newKanji.length > 0 && !currentKanji) {
+      loadNextKanji();
+    } else if (activeTab === 'review' && reviewKanji.length > 0 && !currentKanji && !feedback) {
+      loadNextKanji();
+    }
+    // Quick review is handled separately via button click
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab, language]);
 
   const loadQuickReview = () => {
     const shuffled = reviewKanji.sort(() => Math.random() - 0.5).slice(0, quickReviewCount);
@@ -80,20 +108,7 @@ export default function Glyphy({ appState, updateState }: GlyphyProps) {
     }
   };
 
-  const generateOptions = (current: Kanji) => {
-    const correctAnswer = questionType === 'meaning' ? current.meaning : current.pronunciation;
-    const otherKanji = kanji
-      .filter(k => k.id !== current.id)
-      .map(k => questionType === 'meaning' ? k.meaning : k.pronunciation)
-      .filter((val, idx, arr) => arr.indexOf(val) === idx);
-
-    const shuffled = otherKanji.sort(() => Math.random() - 0.5);
-    const wrongAnswers = shuffled.slice(0, 3);
-    const allOptions = [correctAnswer, ...wrongAnswers].sort(() => Math.random() - 0.5);
-    setOptions(allOptions);
-  };
-
-  const handleMultipleChoice = (answer: string) => {
+  const handleMultipleChoice = useCallback((answer: string) => {
     if (feedback || !currentKanji) return;
 
     const correctAnswer = questionType === 'meaning' ? currentKanji.meaning : currentKanji.pronunciation;
@@ -105,24 +120,9 @@ export default function Glyphy({ appState, updateState }: GlyphyProps) {
       message: isCorrect ? 'Correct!' : `Incorrect. The answer is "${correctAnswer}"`,
     });
 
+    // Update progress but don't regenerate options
     updateKanjiProgress(isCorrect);
-
-    if (activeTab === 'quick' && isCorrect) {
-      setTimeout(() => {
-        if (currentIndex < quickReviewWords.length - 1) {
-          setCurrentIndex(currentIndex + 1);
-          setCurrentKanji(quickReviewWords[currentIndex + 1]);
-          setSelectedAnswer('');
-          setFeedback(null);
-          if (mode === 'multiple') {
-            generateOptions(quickReviewWords[currentIndex + 1]);
-          }
-        } else {
-          loadQuickReview();
-        }
-      }, 500);
-    }
-  };
+  }, [feedback, currentKanji, questionType]);
 
   const handleTypeAnswer = useCallback(() => {
     if (feedback || !userInput.trim() || !currentKanji) return;
@@ -139,25 +139,27 @@ export default function Glyphy({ appState, updateState }: GlyphyProps) {
   }, [feedback, userInput, currentKanji, questionType]);
 
   const handleNext = useCallback(() => {
-    if (feedback) {
-      if (activeTab === 'quick') {
-        if (currentIndex < quickReviewWords.length - 1) {
-          const nextIndex = currentIndex + 1;
-          setCurrentIndex(nextIndex);
-          setCurrentKanji(quickReviewWords[nextIndex]);
-          setSelectedAnswer('');
-          setFeedback(null);
-          if (mode === 'multiple' && quickReviewWords[nextIndex]) {
-            generateOptions(quickReviewWords[nextIndex]);
-          }
-        } else {
-          loadQuickReview();
+    if (!feedback) return;
+    
+    if (activeTab === 'quick') {
+      if (currentIndex < quickReviewWords.length - 1) {
+        const nextIndex = currentIndex + 1;
+        setCurrentIndex(nextIndex);
+        setCurrentKanji(quickReviewWords[nextIndex]);
+        setSelectedAnswer('');
+        setUserInput('');
+        setFeedback(null);
+        if (mode === 'multiple' && quickReviewWords[nextIndex]) {
+          generateOptions(quickReviewWords[nextIndex]);
         }
       } else {
-        loadNextKanji();
+        loadQuickReview();
       }
+    } else {
+      // For learn and review modes, load next kanji
+      loadNextKanji();
     }
-  }, [feedback, activeTab, currentIndex, quickReviewWords, mode]);
+  }, [feedback, activeTab, currentIndex, quickReviewWords, mode, generateOptions, loadNextKanji]);
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -338,13 +340,13 @@ export default function Glyphy({ appState, updateState }: GlyphyProps) {
       total: kanjiAtLevel.length,
       mastered: kanjiAtLevel.filter(k => {
         if (k.masteryLevel !== undefined) return k.masteryLevel >= 5;
-        return k.srsStage === 'master' || k.srsStage === 'enlightened' || k.srsStage === 'burned';
+        return k.srsStage === 'seedling' || k.srsStage === 'plant' || k.srsStage === 'tree';
       }).length,
     };
   });
 
   const currentLevel = Math.max(...kanji.map(k => k.waniKaniLevel || 1), 1);
-  const nextLevelProgress = kanji.filter(k => (k.waniKaniLevel || 1) === currentLevel && k.masteryLevel >= 5).length;
+  const nextLevelProgress = kanji.filter(k => (k.waniKaniLevel || 1) === currentLevel && (k.masteryLevel !== undefined ? k.masteryLevel >= 5 : (k.srsStage === 'seedling' || k.srsStage === 'plant' || k.srsStage === 'tree'))).length;
   const nextLevelTotal = kanji.filter(k => (k.waniKaniLevel || 1) === currentLevel).length;
 
   const stats = {
@@ -352,11 +354,11 @@ export default function Glyphy({ appState, updateState }: GlyphyProps) {
     new: newKanji.length,
     learning: kanji.filter(k => {
       if (k.srsLevel !== undefined) return k.srsLevel > 0 && k.srsLevel < 5;
-      return k.srsStage === 'apprentice' || k.srsStage === 'guru';
+      return k.srsStage === 'seed' || k.srsStage === 'sprout';
     }).length,
     mastered: kanji.filter(k => {
       if (k.srsLevel !== undefined) return k.srsLevel >= 5;
-      return k.srsStage === 'master' || k.srsStage === 'enlightened' || k.srsStage === 'burned';
+      return k.srsStage === 'seedling' || k.srsStage === 'plant' || k.srsStage === 'tree';
     }).length,
     totalCorrect: kanji.reduce((sum, k) => sum + k.correctCount, 0),
     totalWrong: kanji.reduce((sum, k) => sum + k.wrongCount, 0),

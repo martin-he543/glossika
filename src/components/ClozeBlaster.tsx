@@ -84,7 +84,7 @@ export default function ClozeBlaster({ appState, updateState }: ClozeBlasterProp
               <div className="grid">
                 {courses.map(course => {
                   const sentences = appState.clozeSentences.filter(s => s.courseId === course.id);
-                  const mastered = sentences.filter(s => s.masteryLevel >= 5).length;
+                  const mastered = sentences.filter(s => s.masteryLevel === 'tree').length;
                   const total = sentences.length;
                   const progressPercent = total > 0 ? (mastered / total) * 100 : 0;
 
@@ -170,7 +170,8 @@ export default function ClozeBlaster({ appState, updateState }: ClozeBlasterProp
                         ...s,
                         id: `cloze-${Date.now()}-${s.id}`,
                         courseId: newCourse.id,
-                        masteryLevel: 0,
+                        masteryLevel: 'seed' as const,
+                        srsLevel: 0,
                         correctCount: 0,
                         wrongCount: 0,
                       }));

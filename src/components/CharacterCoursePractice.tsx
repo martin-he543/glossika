@@ -4,8 +4,7 @@ import { AppState, Kanji, Radical, Vocabulary, GlyphySRSStage } from '../types';
 import { storage } from '../storage';
 import { getUnlockableItems, getItemsByLevel } from '../utils/glyphySRS';
 import { createReviewQueue, updateSRSProgressForReview } from '../utils/waniKaniSRS';
-import { recordStudyActivity, getOverallStreak } from '../utils/activityTracking';
-import ActivityHeatmap from './ActivityHeatmap';
+import { recordStudyActivity, getCourseStreak } from '../utils/activityTracking';
 import './CharacterCoursePractice.css';
 
 interface CharacterCoursePracticeProps {
@@ -46,6 +45,21 @@ export default function CharacterCoursePractice({ appState, updateState }: Chara
       navigate('/');
     }
   }, [course, navigate]);
+
+  // Generate options when review index changes
+  useEffect(() => {
+    if (viewMode === 'reviews' && reviewQueue.length > 0 && currentReviewIndex < reviewQueue.length) {
+      const currentReview = reviewQueue[currentReviewIndex];
+      if (currentReview) {
+        generateOptionsForReview(currentReview.item, currentReview.type);
+        setShowAnswer(false);
+        setFeedback(null);
+        setShowMnemonic(false);
+        setSelectedAnswer('');
+        setUserInput('');
+      }
+    }
+  }, [viewMode, reviewQueue, currentReviewIndex, radicals, characters, vocabulary]);
 
   if (!course) {
     return <div className="loading">Course not found</div>;
@@ -89,11 +103,11 @@ export default function CharacterCoursePractice({ appState, updateState }: Chara
   const srsBreakdown = useMemo(() => {
     const allItems = [...radicals, ...characters, ...vocabulary];
     return {
-      apprentice: allItems.filter(i => i.srsStage === 'apprentice'),
-      guru: allItems.filter(i => i.srsStage === 'guru'),
-      master: allItems.filter(i => i.srsStage === 'master'),
-      enlightened: allItems.filter(i => i.srsStage === 'enlightened'),
-      burned: allItems.filter(i => i.srsStage === 'burned'),
+      seed: allItems.filter(i => i.srsStage === 'seed'),
+      sprout: allItems.filter(i => i.srsStage === 'sprout'),
+      seedling: allItems.filter(i => i.srsStage === 'seedling'),
+      plant: allItems.filter(i => i.srsStage === 'plant'),
+      tree: allItems.filter(i => i.srsStage === 'tree'),
     };
   }, [radicals, characters, vocabulary]);
 
@@ -107,17 +121,17 @@ export default function CharacterCoursePractice({ appState, updateState }: Chara
       radicals: {
         total: levelRadicals.length,
         learned: levelRadicals.filter(r => r.srsStage !== 'locked').length,
-        guru: levelRadicals.filter(r => r.srsStage === 'guru' || r.srsStage === 'master' || r.srsStage === 'enlightened' || r.srsStage === 'burned').length,
+        sprout: levelRadicals.filter(r => r.srsStage === 'sprout' || r.srsStage === 'seedling' || r.srsStage === 'plant' || r.srsStage === 'tree').length,
       },
       kanji: {
         total: levelKanji.length,
         learned: levelKanji.filter(k => k.srsStage !== 'locked').length,
-        guru: levelKanji.filter(k => k.srsStage === 'guru' || k.srsStage === 'master' || k.srsStage === 'enlightened' || k.srsStage === 'burned').length,
+        sprout: levelKanji.filter(k => k.srsStage === 'sprout' || k.srsStage === 'seedling' || k.srsStage === 'plant' || k.srsStage === 'tree').length,
       },
       vocabulary: {
         total: levelVocab.length,
         learned: levelVocab.filter(v => v.srsStage !== 'locked').length,
-        guru: levelVocab.filter(v => v.srsStage === 'guru' || v.srsStage === 'master' || v.srsStage === 'enlightened' || v.srsStage === 'burned').length,
+        sprout: levelVocab.filter(v => v.srsStage === 'sprout' || v.srsStage === 'seedling' || v.srsStage === 'plant' || v.srsStage === 'tree').length,
       },
     };
   }, [radicals, characters, vocabulary, currentLevel]);
@@ -130,7 +144,7 @@ export default function CharacterCoursePractice({ appState, updateState }: Chara
     const timeSlots = new Map<string, number>();
     
     [...radicals, ...characters, ...vocabulary].forEach(item => {
-      if (item.nextReview && item.srsStage !== 'locked' && item.srsStage !== 'burned') {
+      if (item.nextReview && item.srsStage !== 'locked' && item.srsStage !== 'tree') {
         const reviewDate = new Date(item.nextReview);
         const hoursUntil = Math.ceil((item.nextReview - now) / (1000 * 60 * 60));
         
@@ -166,8 +180,8 @@ export default function CharacterCoursePractice({ appState, updateState }: Chara
     return sorted.map(([time, count]) => ({ time, count }));
   }, [radicals, characters, vocabulary]);
 
-  // Get overall streak
-  const streak = getOverallStreak();
+  // Get streak for this course
+  const streak = getCourseStreak(courseId!);
 
   const handleStartLessons = () => {
     if (unlockableItems.length === 0) {
@@ -177,7 +191,6 @@ export default function CharacterCoursePractice({ appState, updateState }: Chara
     setViewMode('lessons');
     setCurrentLessonIndex(0);
     setLessonsCompleted(0);
-    recordStudyActivity(courseId!, unlockableItems.length);
     refreshData();
   };
 
@@ -196,19 +209,18 @@ export default function CharacterCoursePractice({ appState, updateState }: Chara
     setShowMnemonic(false);
     const firstReview = reviewQueueMemo[0];
     generateOptionsForReview(firstReview.item, firstReview.type);
-    recordStudyActivity(courseId!, reviewQueueMemo.length);
     refreshData();
   };
 
   const unlockItem = (item: Radical | Kanji | Vocabulary) => {
     const updates = {
-      srsStage: 'apprentice' as GlyphySRSStage,
+      srsStage: 'seed' as GlyphySRSStage,
       unlockedAt: Date.now(),
       meaningCorrect: 0,
       meaningWrong: 0,
       readingCorrect: 0,
       readingWrong: 0,
-      nextReview: Date.now() + (4 * 60 * 60 * 1000), // 4 hours for apprentice
+      nextReview: Date.now() + (4 * 60 * 60 * 1000), // 4 hours for seed
     };
 
     if ('word' in item) {
@@ -220,6 +232,10 @@ export default function CharacterCoursePractice({ appState, updateState }: Chara
     }
 
     setLessonsCompleted(prev => prev + 1);
+    
+    if (courseId) {
+      recordStudyActivity(courseId, 1);
+    }
     
     // Move to next lesson or finish
     if (currentLessonIndex < unlockableItems.length - 1) {
@@ -309,31 +325,47 @@ export default function CharacterCoursePractice({ appState, updateState }: Chara
       message: isCorrect ? 'Correct!' : `Incorrect. The answer is "${correctAnswer}"`,
     });
 
+    if (courseId) {
+      recordStudyActivity(courseId, 1);
+    }
     refreshData();
   };
 
   const handleNextReview = () => {
     if (!feedback) return;
     
-    // Get fresh review queue (items may have changed)
-    const freshRadicals = (storage.load().radicals || []).filter(r => r.language === course?.language);
-    const freshKanji = (storage.load().kanji || []).filter(k => k.language === course?.language);
-    const freshVocab = (storage.load().vocabulary || []).filter(v => v.language === course?.language);
-    const freshQueue = createReviewQueue([...freshRadicals, ...freshKanji, ...freshVocab]);
+    const nextIndex = currentReviewIndex + 1;
     
-    if (freshQueue.length > 0) {
-      setReviewQueue(freshQueue);
-      setCurrentReviewIndex(0);
+    if (nextIndex >= reviewQueue.length) {
+      // Get fresh review queue (items may have changed)
+      const freshRadicals = (storage.load().radicals || []).filter(r => r.language === course?.language);
+      const freshKanji = (storage.load().kanji || []).filter(k => k.language === course?.language);
+      const freshVocab = (storage.load().vocabulary || []).filter(v => v.language === course?.language);
+      const freshQueue = createReviewQueue([...freshRadicals, ...freshKanji, ...freshVocab]);
+      
+      if (freshQueue.length > 0) {
+        setReviewQueue(freshQueue);
+        setCurrentReviewIndex(0);
+        setShowAnswer(false);
+        setUserInput('');
+        setSelectedAnswer('');
+        setFeedback(null);
+        setShowMnemonic(false);
+        generateOptionsForReview(freshQueue[0].item, freshQueue[0].type);
+      } else {
+        // Finished reviews
+        setViewMode('dashboard');
+        refreshData();
+      }
+    } else {
+      // Move to next review in current queue
+      setCurrentReviewIndex(nextIndex);
       setShowAnswer(false);
       setUserInput('');
       setSelectedAnswer('');
       setFeedback(null);
       setShowMnemonic(false);
-      generateOptionsForReview(freshQueue[0].item, freshQueue[0].type);
-    } else {
-      // Finished reviews
-      setViewMode('dashboard');
-      refreshData();
+      // Options will be generated by useEffect when currentReviewIndex changes
     }
   };
 
@@ -354,18 +386,18 @@ export default function CharacterCoursePractice({ appState, updateState }: Chara
     }
   };
 
-  const handleSRSStageClick = (stage: GlyphySRSStage) => {
+  const handleSRSStageClick = (stage: Exclude<GlyphySRSStage, 'locked'>) => {
     setSelectedSRSStage(stage);
     setViewMode('srs-stage');
   };
 
   const getSRSColor = (stage: GlyphySRSStage): string => {
     switch (stage) {
-      case 'apprentice': return '#f35656';
-      case 'guru': return '#9e5bd9';
-      case 'master': return '#00a2ff';
-      case 'enlightened': return '#00c2ff';
-      case 'burned': return '#4a4a4a';
+      case 'seed': return '#f35656';
+      case 'sprout': return '#9e5bd9';
+      case 'seedling': return '#00a2ff';
+      case 'plant': return '#00c2ff';
+      case 'tree': return '#4a4a4a';
       case 'locked': return '#d0d7de';
       default: return '#d0d7de';
     }
@@ -390,11 +422,17 @@ export default function CharacterCoursePractice({ appState, updateState }: Chara
         </div>
 
         {/* Streak Display */}
-        {streak && (
-          <div className="streak-widget">
-            <div style={{ fontSize: '24px', fontWeight: 600 }}>
-              🔥 {streak.currentStreak} day streak
-            </div>
+        {streak && streak.currentStreak > 0 && (
+          <div style={{ 
+            marginBottom: '24px',
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '8px',
+            fontSize: '20px',
+            fontWeight: 600,
+            color: '#24292f'
+          }}>
+            🔥 {streak.currentStreak}
           </div>
         )}
 
@@ -461,48 +499,48 @@ export default function CharacterCoursePractice({ appState, updateState }: Chara
           <div className="srs-breakdown-grid">
             <div 
               className="srs-stage-card"
-              style={{ borderColor: getSRSColor('apprentice') }}
-              onClick={() => handleSRSStageClick('apprentice')}
+              style={{ borderColor: getSRSColor('seed') }}
+              onClick={() => handleSRSStageClick('seed')}
             >
-              <div className="srs-stage-indicator" style={{ backgroundColor: getSRSColor('apprentice') }}></div>
-              <div className="srs-stage-name">Apprentice</div>
-              <div className="srs-stage-count">{srsBreakdown.apprentice.length}</div>
+              <div className="srs-stage-indicator" style={{ backgroundColor: getSRSColor('seed') }}></div>
+              <div className="srs-stage-name">🌱 Seed</div>
+              <div className="srs-stage-count">{srsBreakdown.seed.length}</div>
             </div>
             <div 
               className="srs-stage-card"
-              style={{ borderColor: getSRSColor('guru') }}
-              onClick={() => handleSRSStageClick('guru')}
+              style={{ borderColor: getSRSColor('sprout') }}
+              onClick={() => handleSRSStageClick('sprout')}
             >
-              <div className="srs-stage-indicator" style={{ backgroundColor: getSRSColor('guru') }}></div>
-              <div className="srs-stage-name">Guru</div>
-              <div className="srs-stage-count">{srsBreakdown.guru.length}</div>
+              <div className="srs-stage-indicator" style={{ backgroundColor: getSRSColor('sprout') }}></div>
+              <div className="srs-stage-name">🌿 Sprout</div>
+              <div className="srs-stage-count">{srsBreakdown.sprout.length}</div>
             </div>
             <div 
               className="srs-stage-card"
-              style={{ borderColor: getSRSColor('master') }}
-              onClick={() => handleSRSStageClick('master')}
+              style={{ borderColor: getSRSColor('seedling') }}
+              onClick={() => handleSRSStageClick('seedling')}
             >
-              <div className="srs-stage-indicator" style={{ backgroundColor: getSRSColor('master') }}></div>
-              <div className="srs-stage-name">Master</div>
-              <div className="srs-stage-count">{srsBreakdown.master.length}</div>
+              <div className="srs-stage-indicator" style={{ backgroundColor: getSRSColor('seedling') }}></div>
+              <div className="srs-stage-name">🌱 Seedling</div>
+              <div className="srs-stage-count">{srsBreakdown.seedling.length}</div>
             </div>
             <div 
               className="srs-stage-card"
-              style={{ borderColor: getSRSColor('enlightened') }}
-              onClick={() => handleSRSStageClick('enlightened')}
+              style={{ borderColor: getSRSColor('plant') }}
+              onClick={() => handleSRSStageClick('plant')}
             >
-              <div className="srs-stage-indicator" style={{ backgroundColor: getSRSColor('enlightened') }}></div>
-              <div className="srs-stage-name">Enlightened</div>
-              <div className="srs-stage-count">{srsBreakdown.enlightened.length}</div>
+              <div className="srs-stage-indicator" style={{ backgroundColor: getSRSColor('plant') }}></div>
+              <div className="srs-stage-name">🌳 Plant</div>
+              <div className="srs-stage-count">{srsBreakdown.plant.length}</div>
             </div>
             <div 
               className="srs-stage-card"
-              style={{ borderColor: getSRSColor('burned') }}
-              onClick={() => handleSRSStageClick('burned')}
+              style={{ borderColor: getSRSColor('tree') }}
+              onClick={() => handleSRSStageClick('tree')}
             >
-              <div className="srs-stage-indicator" style={{ backgroundColor: getSRSColor('burned') }}></div>
-              <div className="srs-stage-name">Burned</div>
-              <div className="srs-stage-count">{srsBreakdown.burned.length}</div>
+              <div className="srs-stage-indicator" style={{ backgroundColor: getSRSColor('tree') }}></div>
+              <div className="srs-stage-name">🌲 Tree</div>
+              <div className="srs-stage-count">{srsBreakdown.tree.length}</div>
             </div>
           </div>
         </div>
@@ -526,36 +564,36 @@ export default function CharacterCoursePractice({ appState, updateState }: Chara
               <div className="progress-item">
                 <div className="progress-item-label">Radicals</div>
                 <div className="progress-item-stats">
-                  {levelProgress.radicals.guru} / {levelProgress.radicals.total} to Guru
+                  {levelProgress.radicals.sprout} / {levelProgress.radicals.total} to Sprout
                 </div>
                 <div className="progress-bar">
                   <div 
                     className="progress-fill" 
-                    style={{ width: `${levelProgress.radicals.total > 0 ? (levelProgress.radicals.guru / levelProgress.radicals.total) * 100 : 0}%` }}
+                    style={{ width: `${levelProgress.radicals.total > 0 ? (levelProgress.radicals.sprout / levelProgress.radicals.total) * 100 : 0}%` }}
                   />
                 </div>
               </div>
               <div className="progress-item">
                 <div className="progress-item-label">Kanji</div>
                 <div className="progress-item-stats">
-                  {levelProgress.kanji.guru} / {levelProgress.kanji.total} to Guru
+                  {levelProgress.kanji.sprout} / {levelProgress.kanji.total} to Sprout
                 </div>
                 <div className="progress-bar">
                   <div 
                     className="progress-fill" 
-                    style={{ width: `${levelProgress.kanji.total > 0 ? (levelProgress.kanji.guru / levelProgress.kanji.total) * 100 : 0}%` }}
+                    style={{ width: `${levelProgress.kanji.total > 0 ? (levelProgress.kanji.sprout / levelProgress.kanji.total) * 100 : 0}%` }}
                   />
                 </div>
               </div>
               <div className="progress-item">
                 <div className="progress-item-label">Vocabulary</div>
                 <div className="progress-item-stats">
-                  {levelProgress.vocabulary.guru} / {levelProgress.vocabulary.total} to Guru
+                  {levelProgress.vocabulary.sprout} / {levelProgress.vocabulary.total} to Sprout
                 </div>
                 <div className="progress-bar">
                   <div 
                     className="progress-fill" 
-                    style={{ width: `${levelProgress.vocabulary.total > 0 ? (levelProgress.vocabulary.guru / levelProgress.vocabulary.total) * 100 : 0}%` }}
+                    style={{ width: `${levelProgress.vocabulary.total > 0 ? (levelProgress.vocabulary.sprout / levelProgress.vocabulary.total) * 100 : 0}%` }}
                   />
                 </div>
               </div>
@@ -563,17 +601,13 @@ export default function CharacterCoursePractice({ appState, updateState }: Chara
           </div>
         </div>
 
-        {/* Activity Heatmap */}
-        <div className="heatmap-section">
-          <ActivityHeatmap days={365} />
-        </div>
       </div>
     );
   }
 
   // SRS Stage view
   if (viewMode === 'srs-stage' && selectedSRSStage && selectedSRSStage !== 'locked') {
-    const items = srsBreakdown[selectedSRSStage];
+    const items = srsBreakdown[selectedSRSStage as Exclude<GlyphySRSStage, 'locked'>];
     
     return (
       <div className="character-practice-container">

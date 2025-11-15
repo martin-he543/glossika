@@ -3,6 +3,7 @@ import { Word } from '../types';
 import { storage } from '../storage';
 import { updateSRSLevel, getMasteryLevel, calculateNextReview } from '../utils/srs';
 import { leaderboard } from '../utils/leaderboard';
+import { recordStudyActivity } from '../utils/activityTracking';
 import KeyboardShortcuts from './KeyboardShortcuts';
 import QuestionCountSelector from './QuestionCountSelector';
 import LessonSummary from './LessonSummary';
@@ -148,6 +149,7 @@ export default function LearnWords({ courseId, words, course, onUpdate }: LearnW
       leaderboard.awardWordXP(courseId);
     }
 
+    recordStudyActivity(courseId, 1);
     setCorrectCount(prev => prev + (isCorrect ? 1 : 0));
     setQuestionsAnswered(prev => prev + 1);
 

@@ -114,7 +114,11 @@ export default function Glossary({ appState, updateState }: GlossaryProps) {
           comparison = (courseA?.name || '').localeCompare(courseB?.name || '');
           break;
         case 'mastery':
-          comparison = a.masteryLevel - b.masteryLevel;
+          // Convert masteryLevel string to number for sorting
+          const masteryOrder: Record<string, number> = { 'seed': 0, 'sprout': 1, 'seedling': 2, 'plant': 3, 'tree': 4 };
+          const aLevel = typeof a.masteryLevel === 'string' ? (masteryOrder[a.masteryLevel] ?? 0) : (a.masteryLevel || 0);
+          const bLevel = typeof b.masteryLevel === 'string' ? (masteryOrder[b.masteryLevel] ?? 0) : (b.masteryLevel || 0);
+          comparison = aLevel - bLevel;
           break;
         case 'correct':
           comparison = a.correctCount - b.correctCount;
@@ -558,7 +562,7 @@ export default function Glossary({ appState, updateState }: GlossaryProps) {
                         </div>
                         <div style={{ display: 'flex', gap: '16px', fontSize: '12px', color: '#656d76' }}>
                           <span>Course: {course?.name || 'Unknown'}</span>
-                          <span>Mastery: {sentence.masteryLevel}/5</span>
+                          <span>Mastery: {typeof sentence.masteryLevel === 'string' ? sentence.masteryLevel : `${sentence.masteryLevel}/5`}</span>
                           <span>Correct: {sentence.correctCount}</span>
                           <span>Wrong: {sentence.wrongCount}</span>
                         </div>
