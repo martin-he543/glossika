@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Course, Word } from '../types';
+import { Course } from '../types';
 import { storage } from '../storage';
 import { LANGUAGES } from '../utils/languages';
 import { parseCSV, createWordsFromCSV } from '../utils/csv';
@@ -77,8 +77,6 @@ export default function CreateCourseModal({ onClose, onSuccess }: CreateCourseMo
       // 1. Try exact matches first
       // 2. Try language names
       // 3. Fall back to positional (first = native, second = target)
-      
-      const normalizedHeaders = headers.map(h => h.toLowerCase().trim());
       
       // Find native column
       const nativePatterns = ['native', 'english', 'en', 'source', 'definition'];

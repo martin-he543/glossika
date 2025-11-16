@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { AppState, ClozeCourse, ClozeSentence } from '../types';
 import { storage } from '../storage';
 import { leaderboard } from '../utils/leaderboard';
@@ -19,6 +19,7 @@ interface ClozeCourseDetailProps {
 }
 
 export default function ClozeCourseDetail({ course, appState, updateState, onBack }: ClozeCourseDetailProps) {
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState<'practice' | 'library' | 'statistics'>('practice');
   const [activeMode, setActiveMode] = useState<'continue' | 'learn' | 'review' | 'speed' | 'flashcards' | 'difficult' | null>(null);
   const [currentSentence, setCurrentSentence] = useState<ClozeSentence | null>(null);
@@ -34,11 +35,24 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
   const [showSettings, setShowSettings] = useState(false);
   const [practiceSentences, setPracticeSentences] = useState<ClozeSentence[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [streakKey, setStreakKey] = useState(0); // Force StreakDisplay to refresh
 
   const sentences = appState.clozeSentences.filter(s => s.courseId === course.id);
   const availableSentences = sentences.filter(s => s.masteryLevel !== 'tree');
   const newSentences = sentences.filter(s => s.masteryLevel === 'seed' || s.srsLevel === 0);
   const reviewSentences = sentences.filter(s => s.masteryLevel !== 'seed' && s.masteryLevel !== 'tree');
+  
+  // Refresh course data when navigating back from edit page
+  useEffect(() => {
+    // Only refresh if we're on the cloze course detail page (not the edit page)
+    if (location.pathname === `/cloze-course/${course.id}`) {
+      const newState = storage.load();
+      updateState({ 
+        clozeCourses: newState.clozeCourses,
+        clozeSentences: newState.clozeSentences 
+      });
+    }
+  }, [location.pathname, course.id, updateState]);
   
   // Determine what "Continue" should do
   const getContinueMode = (): 'learn' | 'review' => {
@@ -119,12 +133,16 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
       leaderboard.awardSentenceXP(course.id);
     }
 
+    // Record study activity - this is critical for streak tracking
     recordStudyActivity(course.id, 1);
     setCorrectCount(prev => prev + (isCorrect ? 1 : 0));
     setQuestionsAnswered(prev => prev + 1);
+    
+    // Force StreakDisplay to refresh by updating key
+    setStreakKey(prev => prev + 1);
 
     updateState({ clozeSentences: storage.load().clozeSentences });
-  }, [currentSentence, userAnswer, feedback]);
+  }, [currentSentence, userAnswer, feedback, course.id, updateState]);
 
   const handleNext = useCallback(() => {
     if (!feedback) return;
@@ -133,7 +151,7 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
     setUserAnswer('');
     const nextIndex = currentIndex + 1;
     setCurrentIndex(nextIndex);
-    setQuestionsAnswered(prev => prev + 1);
+    // Don't increment questionsAnswered here - it's already incremented in handleAnswer
     
     if (nextIndex >= questionCount || nextIndex >= practiceSentences.length) {
       setShowSummary(true);
@@ -237,6 +255,9 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
           <Link to="/glossary" className="btn">
             Glossary
           </Link>
+          <Link to={`/cloze-course/${course.id}/edit`} className="btn">
+            Edit
+          </Link>
           <button className="btn" onClick={() => setShowSettings(true)}>
             Settings
           </button>
@@ -245,7 +266,7 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
 
       {/* Streak Display */}
       <div style={{ marginBottom: '24px' }}>
-        <StreakDisplay courseId={course.id} />
+        <StreakDisplay key={streakKey} courseId={course.id} />
       </div>
 
       <div className="tabs">

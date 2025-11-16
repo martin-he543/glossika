@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import { AppState } from '../types';
 import { storage } from '../storage';
 import CharacterCourseSettings from './CharacterCourseSettings';
@@ -12,10 +12,23 @@ interface CharacterCourseDetailProps {
 export default function CharacterCourseDetail({ appState, updateState }: CharacterCourseDetailProps) {
   const { courseId } = useParams<{ courseId: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const [showSettings, setShowSettings] = useState(false);
 
   const course = appState.characterCourses.find(c => c.id === courseId);
   const characters = appState.kanji.filter(k => k.language === course?.language);
+
+  // Refresh course data when navigating back from edit page
+  useEffect(() => {
+    // Only refresh if we're on the character course detail page (not the edit page)
+    if (location.pathname === `/character-course/${courseId}`) {
+      const newState = storage.load();
+      updateState({ 
+        characterCourses: newState.characterCourses,
+        kanji: newState.kanji 
+      });
+    }
+  }, [location.pathname, courseId, updateState]);
 
   useEffect(() => {
     if (!course) {
@@ -81,6 +94,9 @@ export default function CharacterCourseDetail({ appState, updateState }: Charact
           </Link>
           <Link to="/glossary" className="btn">
             Glossary
+          </Link>
+          <Link to={`/character-course/${courseId}/edit`} className="btn">
+            Edit
           </Link>
           <button className="btn" onClick={() => setShowSettings(true)}>
             Settings

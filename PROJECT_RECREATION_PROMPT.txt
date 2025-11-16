@@ -1,0 +1,612 @@
+PROJECT RECREATION PROMPT: Glossika Language Learning Platform
+================================================================
+
+This document provides comprehensive instructions to recreate the entire Glossika language learning platform from scratch. The project is a full-stack application combining features from Memrise, Quizlet, Anki, WaniKani, and Clozemaster.
+
+PROJECT OVERVIEW
+----------------
+Glossika is a comprehensive language learning platform that combines multiple learning modalities:
+- Word-based vocabulary courses (Memrise-style)
+- Cloze deletion sentence practice (Clozemaster-style)
+- Character learning for Japanese Kanji and Chinese Hanzi (WaniKani-style)
+- SRS-based spaced repetition
+- Flashcard system with keyboard shortcuts
+- Course repository for community sharing
+- Leaderboards and progress tracking
+
+TECH STACK
+----------
+
+Frontend:
+- React 18.2.0
+- TypeScript 5.3.3
+- Vite 5.0.8 (build tool)
+- React Router DOM 6.20.0
+- PapaParse 5.4.1 (CSV parsing)
+- date-fns 2.30.0
+- LocalStorage for data persistence
+
+Backend (ClozeBlaster API):
+- Node.js 18+
+- Express 4.18.2
+- TypeScript 5.3.2
+- PostgreSQL 14+
+- pg (PostgreSQL client) 8.11.3
+- bcrypt 5.1.1 (password hashing)
+- jsonwebtoken 9.0.2 (JWT authentication)
+- multer 1.4.5 (file uploads)
+- zod 3.22.4 (validation)
+- Redis 4.6.10 (optional caching)
+- Jest 29.7.0 (testing)
+
+PROJECT STRUCTURE
+-----------------
+
+Root Directory:
+- package.json (frontend dependencies)
+- vite.config.ts (Vite configuration)
+- tsconfig.json (TypeScript config)
+- index.html (entry HTML)
+- public/favicon.svg
+- src/ (frontend source)
+- clozeblaster-backend/ (backend API)
+- datasets/ (sample CSV data)
+- docs/ (documentation)
+
+Frontend (src/):
+- App.tsx (main app component with routing)
+- App.css (global styles, GitHub-inspired design)
+- main.tsx (entry point)
+- types.ts (TypeScript type definitions)
+- storage.ts (LocalStorage abstraction layer)
+- components/ (React components - see detailed list below)
+- utils/ (utility functions - see detailed list below)
+
+Backend (clozeblaster-backend/):
+- src/index.ts (Express server entry)
+- src/db/connection.ts (PostgreSQL connection pool)
+- src/routes/ (API routes)
+  - auth.ts (authentication endpoints)
+  - play.ts (gameplay endpoints)
+  - reviews.ts (review queue endpoints)
+  - collections.ts (collection management)
+  - leaderboard.ts (leaderboard endpoints)
+- src/utils/
+  - srs.ts (SRS algorithm implementations)
+  - cloze-generator.ts (cloze item generation)
+- src/scripts/seed.ts (database seeding)
+- src/tests/ (Jest tests)
+- database/schema.sql (PostgreSQL schema)
+- package.json (backend dependencies)
+- tsconfig.json (TypeScript config)
+- jest.config.js (Jest configuration)
+
+TYPE DEFINITIONS (src/types.ts)
+--------------------------------
+
+Key Types:
+- Word: Vocabulary word with SRS tracking
+- Course: Word-based course
+- ClozeCourse: Sentence-based cloze course
+- CharacterCourse: Kanji/Hanzi course
+- ClozeSentence: Individual cloze exercise
+- Kanji: Japanese/Chinese character
+- Radical: Character component
+- Vocabulary: Word built from kanji
+- AppState: Complete application state
+- GlyphySRSStage: 'seed' | 'sprout' | 'seedling' | 'plant' | 'tree' | 'locked'
+- MasteryLevel: 'seed' | 'sprout' | 'seedling' | 'plant' | 'tree'
+
+Each type includes:
+- Unique IDs (string)
+- SRS tracking (srsLevel, masteryLevel, nextReview, lastReviewed)
+- Progress metrics (correctCount, wrongCount)
+- Metadata (createdAt, courseId, etc.)
+
+STORAGE LAYER (src/storage.ts)
+-------------------------------
+
+LocalStorage abstraction with methods:
+- load(): Load AppState from localStorage
+- save(state): Save AppState to localStorage
+- Course operations: addCourse, updateCourse, deleteCourse
+- Word operations: addWords, updateWord, getWordsByCourse
+- ClozeCourse operations: addClozeCourse, updateClozeCourse, deleteClozeCourse
+- ClozeSentence operations: addClozeSentence, updateClozeSentence, deleteClozeSentence
+- CharacterCourse operations: addCharacterCourse, updateCharacterCourse, deleteCharacterCourse
+- Kanji/Radical/Vocabulary operations: addKanji, updateKanji, deleteKanji, etc.
+- Progress tracking: updateProgress
+
+Includes migration logic for SRS stage name updates.
+
+SRS SYSTEMS
+-----------
+
+1. Word SRS (src/utils/srs.ts):
+   - Simple staged system with intervals
+   - Mastery levels: seed → sprout → seedling → plant → tree
+   - Review intervals based on difficulty (easy/medium/hard/impossible)
+   - Next review calculation based on SRS level
+
+2. Cloze SRS (src/utils/clozeSRS.ts):
+   - Similar to word SRS but adapted for sentences
+   - Mastery level progression
+   - Time-based review scheduling
+
+3. Glyphy SRS (src/utils/waniKaniSRS.ts, src/utils/glyphySRS.ts):
+   - Plant-based stages: seed → sprout → seedling → plant → tree
+   - Separate tracking for meaning and reading
+   - Must pass both meaning AND reading to advance
+   - Interval-based review scheduling
+   - Supports Radical, Kanji, and Vocabulary
+
+4. Backend SRS (clozeblaster-backend/src/utils/srs.ts):
+   - Staged SRS: Default algorithm matching Clozemaster
+     * 0% → Same day (1 hour)
+     * 25% → 1 day
+     * 50% → 10 days
+     * 75% → 30 days
+     * 100% → 180 days
+   - SM-2 Algorithm: Anki-style with ease factors
+   - Point calculation with streak bonuses
+
+FRONTEND COMPONENTS
+-------------------
+
+Main App Structure (src/App.tsx):
+- BrowserRouter with React Router
+- Authentication guard (shows Auth component if not logged in)
+- Navigation component with mobile menu support
+- Routes:
+  - / → Dashboard
+  - /course/:courseId → CourseDetail
+  - /course/:courseId/edit → EditWordCoursePage
+  - /repository → CourseRepository
+  - /cloze-course/:courseId → ClozeCourseDetail
+  - /cloze-course/:courseId/edit → EditClozeCoursePage
+  - /character-course/:courseId → CharacterCourseDetail
+  - /character-course/:courseId/edit → EditCharacterCoursePage
+  - /character-course/:courseId/practice → CharacterCoursePractice
+  - /glyphy → Glyphy
+  - /glossary → Glossary
+  - /leaderboard → Leaderboard
+  - /leaderboard/course/:courseId → Leaderboard (course-specific)
+  - /settings → UserSettings
+  - /profile → UserProfile
+  - /profile/:userId → UserProfile (other users)
+
+Core Components:
+- Dashboard.tsx: Main course listing and overview
+- CourseDetail.tsx: Word course detail with Learn/Review/Flashcards tabs
+- ClozeCourseDetail.tsx: Cloze course detail with practice modes
+- CharacterCourseDetail.tsx: Kanji/Hanzi course detail
+- CharacterCoursePractice.tsx: Character practice interface
+- CourseRepository.tsx: Public course browser and search
+- CreateCourseModal.tsx: Create word course from CSV
+- CreateClozeCourseModal.tsx: Create cloze course from CSV
+- CreateCharacterCourseModal.tsx: Create character course from CSV
+- EditWordCoursePage.tsx: Edit word course
+- EditClozeCoursePage.tsx: Edit cloze course
+- EditCharacterCoursePage.tsx: Edit character course
+
+Learning Components:
+- LearnWords.tsx: Learn new words with type-in and multiple choice
+- ReviewWords.tsx: SRS-based review with garden visualization
+- Flashcards.tsx: Anki-style flashcards with keyboard shortcuts
+- ClozePractice.tsx: Cloze deletion practice
+- ClozeBlasterPlay.tsx: Backend-integrated cloze practice
+- CharacterCoursePractice.tsx: Character practice modes
+- Glyphy.tsx: Legacy Glyphy interface
+- GlyphyNew.tsx: New Glyphy interface
+- SpeedReview.tsx: 60-second quick review
+- DifficultWords.tsx: Practice difficult words
+- LearnWordsModal.tsx: Modal for learning new words
+
+Utility Components:
+- UserAvatar.tsx: User avatar with dropdown menu
+- UserProfile.tsx: User profile page
+- UserSettings.tsx: User settings
+- Leaderboard.tsx: Leaderboard display
+- Glossary.tsx: Learned words glossary
+- LessonSummary.tsx: Lesson completion summary
+- StreakDisplay.tsx: Streak counter
+- ActivityHeatmap.tsx: GitHub-style activity heatmap
+- KeyboardShortcuts.tsx: Keyboard shortcuts display
+- QuestionCountSelector.tsx: Select number of questions
+- LevelDetailModal.tsx: Level details modal
+
+Settings Components:
+- CourseSettings.tsx: Course settings
+- ClozeCourseSettings.tsx: Cloze course settings
+- CharacterCourseSettings.tsx: Character course settings
+
+UTILITY FUNCTIONS (src/utils/)
+-------------------------------
+
+- auth.ts: Authentication utilities (getCurrentUser, login, logout)
+- srs.ts: Word SRS calculations
+- clozeSRS.ts: Cloze SRS calculations
+- waniKaniSRS.ts: WaniKani-style SRS for characters
+- glyphySRS.ts: Glyphy SRS system
+- srsStageMigration.ts: Migration utilities for SRS stage names
+- csv.ts: CSV parsing and processing
+- tts.ts: Text-to-speech utilities (Web Speech API)
+- leaderboard.ts: Leaderboard calculations
+- activityTracking.ts: Study activity tracking
+- userProfile.ts: User profile utilities
+- languageDisplay.ts: Language name formatting
+- languages.ts: Language definitions
+- demoFrenchCourse.ts: Demo course data
+
+BACKEND API (clozeblaster-backend/)
+-----------------------------------
+
+Server Configuration (src/index.ts):
+- Express server on port 3001 (or PORT env var)
+- CORS enabled
+- JSON body parser
+- Error handling middleware
+- Health check endpoint: GET /health
+
+Routes:
+
+1. Authentication (src/routes/auth.ts):
+   - POST /api/auth/signup: Register new user
+     * Body: { email, username, password }
+     * Returns: { token, user }
+   - POST /api/auth/login: Login user
+     * Body: { email, password }
+     * Returns: { token, user }
+
+2. Play (src/routes/play.ts):
+   - GET /api/play/new: Get cloze items for practice
+     * Query: language, mode (mc/input/listen), page, limit, collection_id
+     * Returns: { items, total, page }
+   - POST /api/play/answer: Submit answer
+     * Body: { cloze_item_id, answer, time_ms }
+     * Returns: { is_correct, feedback, points_awarded, progress }
+
+3. Reviews (src/routes/reviews.ts):
+   - GET /api/reviews/queue: Get items due for review
+     * Query: language, limit
+     * Returns: { items }
+
+4. Collections (src/routes/collections.ts):
+   - GET /api/collections: List collections
+     * Query: language, public (boolean)
+     * Returns: { collections }
+   - POST /api/collections: Create collection from CSV
+     * Body: FormData with CSV file
+     * Returns: { collection, items_created }
+
+5. Leaderboard (src/routes/leaderboard.ts):
+   - GET /api/leaderboard: Get leaderboard
+     * Query: language, limit
+     * Returns: { entries }
+
+DATABASE SCHEMA (clozeblaster-backend/database/schema.sql)
+-----------------------------------------------------------
+
+Tables:
+
+1. users:
+   - id (SERIAL PRIMARY KEY)
+   - email (VARCHAR(255) UNIQUE)
+   - username (VARCHAR(100) UNIQUE)
+   - hashed_password (VARCHAR(255))
+   - preferred_languages (JSONB)
+   - streak (INTEGER)
+   - points (INTEGER)
+   - created_at, updated_at (TIMESTAMP)
+
+2. languages:
+   - id (SERIAL PRIMARY KEY)
+   - code (VARCHAR(10) UNIQUE)
+   - name (VARCHAR(100))
+   - native_name (VARCHAR(100))
+   - created_at (TIMESTAMP)
+
+3. sentences:
+   - id (SERIAL PRIMARY KEY)
+   - language_id (INTEGER → languages)
+   - text_native (TEXT)
+   - text_target (TEXT)
+   - source (VARCHAR(255))
+   - tags (JSONB)
+   - difficulty (VARCHAR(20))
+   - frequency_rank (INTEGER)
+   - created_at, updated_at (TIMESTAMP)
+
+4. cloze_items:
+   - id (SERIAL PRIMARY KEY)
+   - sentence_id (INTEGER → sentences)
+   - cloze_word (VARCHAR(255))
+   - masked_text (TEXT)
+   - word_position (INTEGER)
+   - mode_flags (JSONB)
+   - audio_url (VARCHAR(500))
+   - created_at (TIMESTAMP)
+
+5. user_sentence_progress:
+   - user_id (INTEGER → users)
+   - cloze_item_id (INTEGER → cloze_items)
+   - mastery_percent (INTEGER 0-100)
+   - srs_stage (INTEGER)
+   - last_seen, next_review_at (TIMESTAMP)
+   - correct_count, incorrect_count (INTEGER)
+   - srs_type (VARCHAR(20): 'staged' | 'sm2')
+   - sm2_ease_factor, sm2_interval, sm2_repetition_count
+   - created_at, updated_at (TIMESTAMP)
+   - PRIMARY KEY (user_id, cloze_item_id)
+
+6. collections:
+   - id (SERIAL PRIMARY KEY)
+   - name (VARCHAR(255))
+   - owner_id (INTEGER → users)
+   - language_id (INTEGER → languages)
+   - description (TEXT)
+   - is_public (BOOLEAN)
+   - created_at, updated_at (TIMESTAMP)
+
+7. collection_sentences:
+   - collection_id (INTEGER → collections)
+   - sentence_id (INTEGER → sentences)
+   - created_at (TIMESTAMP)
+   - PRIMARY KEY (collection_id, sentence_id)
+
+8. reviews:
+   - id (SERIAL PRIMARY KEY)
+   - user_id (INTEGER → users)
+   - cloze_item_id (INTEGER → cloze_items)
+   - answer (TEXT)
+   - is_correct (BOOLEAN)
+   - time_ms (INTEGER)
+   - mastery_before, mastery_after (INTEGER)
+   - points_awarded (INTEGER)
+   - created_at (TIMESTAMP)
+
+9. leaderboard_entries:
+   - language_id (INTEGER → languages)
+   - user_id (INTEGER → users)
+   - points (INTEGER)
+   - updated_at (TIMESTAMP)
+   - PRIMARY KEY (language_id, user_id)
+
+Indexes:
+- Sentences by language_id, difficulty
+- Cloze items by sentence_id
+- Progress by user_id, next_review_at
+- Collections by owner_id, language_id
+- Collection sentences by collection_id, sentence_id
+- Reviews by user_id, cloze_item_id, created_at
+- Leaderboard by language_id, points DESC
+
+Triggers:
+- Auto-update updated_at timestamp on users, sentences, collections, user_sentence_progress
+
+STYLING (src/App.css)
+---------------------
+
+Design Philosophy:
+- GitHub-inspired design (no gradients, clean interface)
+- Right-aligned navigation bar
+- Responsive layout
+- Smooth animations
+- Color scheme:
+  * Primary: #0969da (GitHub blue)
+  * Success: #2da44e (GitHub green)
+  * Danger: #da3633 (GitHub red)
+  * Background: #ffffff
+  * Border: #d0d7de
+  * Text: #24292f
+
+Key Classes:
+- .navbar: Sticky navigation bar
+- .btn, .btn-primary, .btn-learn, .btn-review: Button styles
+- .card, .course-card: Card layouts
+- .quiz-container, .quiz-question, .quiz-options: Quiz interface
+- .flashcard, .flashcard-inner: Flashcard 3D flip animation
+- .garden, .garden-item: Garden visualization for SRS
+- .modal, .modal-content: Modal dialogs
+- .tabs, .tab: Tab navigation
+- .progress-bar, .progress-fill: Progress indicators
+- .stats-grid, .stat-card: Statistics display
+
+Mobile Responsive:
+- Mobile menu toggle
+- Collapsible navigation
+- Responsive grid layouts
+
+FEATURES TO IMPLEMENT
+---------------------
+
+1. Authentication System:
+   - Login/signup form
+   - JWT token storage
+   - Protected routes
+   - User avatar dropdown
+
+2. Course Management:
+   - Create courses from CSV upload
+   - Course settings (public/private, tags, description)
+   - Edit courses (add/remove words)
+   - Delete courses
+   - Course repository (browse public courses)
+
+3. Word Learning:
+   - Learn new words (type-in, multiple choice)
+   - Review words (SRS-based)
+   - Flashcards (Anki-style with keyboard shortcuts)
+   - Speed review (60-second challenge)
+   - Difficult words practice
+   - Learned words glossary
+   - Export to CSV
+
+4. Cloze Learning:
+   - Create cloze courses from Tatoeba CSV
+   - Cloze deletion practice
+   - Multiple modes (MC, Input, Listen)
+   - Progress tracking
+   - Statistics dashboard
+
+5. Character Learning (Glyphy):
+   - Create character courses from CSV
+   - Radical → Kanji → Vocabulary hierarchy
+   - Meaning and reading reviews
+   - Level-based progression (1-60)
+   - Mnemonic support
+   - Practice modes (Learn, Review, Quick Review)
+
+6. SRS System:
+   - Multiple SRS algorithms (staged, SM-2)
+   - Mastery level visualization (garden)
+   - Review queue management
+   - Automatic scheduling
+   - Progress tracking
+
+7. Progress Tracking:
+   - Course progress (words learned, mastered)
+   - Study activity heatmap
+   - Streak tracking
+   - Statistics dashboard
+   - Leaderboard
+
+8. Keyboard Shortcuts (Flashcards):
+   - Space: Flip card
+   - ← →: Navigate previous/next
+   - 1-4: Rate difficulty (Easy/Medium/Hard/Impossible)
+
+CSV FORMATS
+-----------
+
+Word Course CSV:
+- Columns: native, target (or custom names)
+- Example: hello,hola
+
+Cloze Course CSV (Tatoeba format):
+- Columns: native, target, language
+- Example: Hello world.,Hola mundo.,Spanish
+
+Character Course CSV:
+- Columns: character, meaning, pronunciation
+- Example: 日,sun,にち
+
+SETUP INSTRUCTIONS
+------------------
+
+Frontend Setup:
+1. npm install
+2. npm run dev (development)
+3. npm run build (production)
+
+Backend Setup:
+1. Create PostgreSQL database: createdb clozeblaster
+2. Run schema: psql clozeblaster < database/schema.sql
+3. Create .env file with:
+   - DB_HOST=localhost
+   - DB_PORT=5432
+   - DB_NAME=clozeblaster
+   - DB_USER=postgres
+   - DB_PASSWORD=postgres
+   - JWT_SECRET=your-secret-key
+   - PORT=3001
+4. npm install (in clozeblaster-backend/)
+5. npm run seed (optional: seed database)
+6. npm run dev (development)
+7. npm run build && npm start (production)
+
+KEYBOARD SHORTCUTS
+------------------
+
+Flashcards:
+- Space: Flip card
+- ← (Left Arrow): Previous card
+- → (Right Arrow): Next card
+- 1: Easy
+- 2: Medium
+- 3: Hard
+- 4: Impossible
+
+IMPORTANT IMPLEMENTATION NOTES
+-------------------------------
+
+1. Data Persistence:
+   - Frontend uses LocalStorage (src/storage.ts)
+   - Backend uses PostgreSQL
+   - Migration support for SRS stage name changes
+
+2. SRS Integration:
+   - Multiple SRS systems for different content types
+   - Separate meaning/reading tracking for characters
+   - Automatic review scheduling
+   - Garden visualization for progress
+
+3. Course Types:
+   - Word courses: Vocabulary pairs
+   - Cloze courses: Sentence-based
+   - Character courses: Kanji/Hanzi with radicals/vocabulary
+
+4. Authentication:
+   - Frontend: Local auth (no backend required for basic features)
+   - Backend: JWT-based for API features
+
+5. Routing:
+   - React Router for navigation
+   - Protected routes for authenticated features
+   - Course detail routes with edit modes
+
+6. CSV Processing:
+   - PapaParse for CSV parsing
+   - Auto-detection of column names
+   - Support for multiple formats
+
+7. UI/UX:
+   - GitHub-inspired clean design
+   - Mobile responsive
+   - Smooth animations
+   - Keyboard shortcuts for power users
+   - Progress visualization (garden, heatmap)
+
+8. Testing:
+   - Jest for backend unit tests
+   - Integration tests for API endpoints
+   - SRS algorithm tests
+
+FILES TO CREATE (Complete List)
+--------------------------------
+
+Frontend:
+- index.html
+- package.json
+- vite.config.ts
+- tsconfig.json
+- tsconfig.node.json
+- src/main.tsx
+- src/App.tsx
+- src/App.css
+- src/types.ts
+- src/storage.ts
+- src/components/*.tsx (all component files listed above)
+- src/utils/*.ts (all utility files listed above)
+
+Backend:
+- clozeblaster-backend/package.json
+- clozeblaster-backend/tsconfig.json
+- clozeblaster-backend/jest.config.js
+- clozeblaster-backend/src/index.ts
+- clozeblaster-backend/src/db/connection.ts
+- clozeblaster-backend/src/routes/*.ts (all route files)
+- clozeblaster-backend/src/utils/*.ts (all utility files)
+- clozeblaster-backend/src/scripts/seed.ts
+- clozeblaster-backend/src/tests/*.test.ts
+- clozeblaster-backend/database/schema.sql
+- clozeblaster-backend/README.md
+- clozeblaster-backend/PROJECT_STRUCTURE.md
+- clozeblaster-backend/IMPLEMENTATION_SUMMARY.md
+
+Documentation:
+- README.md
+- docs/WANIKANI_REDESIGN.md
+
+This prompt contains all information needed to recreate the entire Glossika language learning platform from scratch.
+

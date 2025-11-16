@@ -17,6 +17,9 @@ import UserSettings from './components/UserSettings';
 import UserProfile from './components/UserProfile';
 import Auth from './components/Auth';
 import UserAvatar from './components/UserAvatar';
+import EditWordCoursePage from './components/EditWordCoursePage';
+import EditClozeCoursePage from './components/EditClozeCoursePage';
+import EditCharacterCoursePage from './components/EditCharacterCoursePage';
 import './App.css';
 import './components/UserAvatar.css';
 
@@ -121,9 +124,12 @@ function App() {
           <Routes>
             <Route path="/" element={<Dashboard appState={appState} updateState={updateState} />} />
             <Route path="/course/:courseId" element={<CourseDetail appState={appState} updateState={updateState} />} />
+            <Route path="/course/:courseId/edit" element={<EditWordCoursePage appState={appState} updateState={updateState} />} />
             <Route path="/repository" element={<CourseRepository appState={appState} updateState={updateState} />} />
             <Route path="/cloze-course/:courseId" element={<ClozeCourseDetailWrapper appState={appState} updateState={updateState} />} />
+            <Route path="/cloze-course/:courseId/edit" element={<EditClozeCoursePage appState={appState} updateState={updateState} />} />
             <Route path="/character-course/:courseId" element={<CharacterCourseDetail appState={appState} updateState={updateState} />} />
+            <Route path="/character-course/:courseId/edit" element={<EditCharacterCoursePage appState={appState} updateState={updateState} />} />
             <Route path="/character-course/:courseId/practice" element={<CharacterCoursePractice appState={appState} updateState={updateState} />} />
             <Route path="/glyphy" element={<Glyphy appState={appState} updateState={updateState} />} />
             <Route path="/glossary" element={<Glossary appState={appState} updateState={updateState} />} />

@@ -15,9 +15,6 @@ export function parseCSV(
   delimiter?: string
 ): Promise<CSVRow[]> {
   return new Promise((resolve, reject) => {
-    const rows: CSVRow[] = [];
-    const fileSize = file.size || 0;
-    
     // Auto-detect delimiter based on file extension
     let fileDelimiter = delimiter;
     if (!fileDelimiter) {
@@ -39,19 +36,33 @@ export function parseCSV(
       quoteChar: '"',
       escapeChar: '"',
       transformHeader: (header) => header.trim().toLowerCase(),
-      // Use step mode for all files - it's the most reliable
-      step: (result) => {
-        if (result.data && typeof result.data === 'object') {
-          rows.push(result.data as CSVRow);
-        }
-      },
-      error: (error) => {
-        console.warn('CSV parsing warning:', error);
-      },
+      // Don't use step mode - use complete mode for better reliability
+      // Step mode can sometimes miss rows in large files
       complete: (results) => {
-        // Use rows collected from step callback, fallback to results.data if empty
-        const allRows = rows.length > 0 ? rows : (Array.isArray(results.data) ? results.data as CSVRow[] : []);
+        if (!results || !results.data) {
+          reject(new Error('CSV parsing failed: no data returned'));
+          return;
+        }
         
+        // Convert results.data to CSVRow array
+        let allRows: CSVRow[] = [];
+        
+        if (Array.isArray(results.data)) {
+          allRows = results.data
+            .filter((row: any) => {
+              // Filter out empty rows and invalid rows
+              if (!row || typeof row !== 'object') return false;
+              // Check if row has at least one non-empty value
+              const values = Object.values(row);
+              return values.some((v: any) => v !== null && v !== undefined && String(v).trim().length > 0);
+            })
+            .map((row: any) => row as CSVRow);
+        } else if (results.data && typeof results.data === 'object') {
+          // Single row case
+          allRows = [results.data as CSVRow];
+        }
+        
+        // Track progress if callback provided
         if (onProgress) {
           onProgress(100);
         }
@@ -63,6 +74,10 @@ export function parseCSV(
         } else {
           reject(new Error('CSV file appears to be empty or invalid'));
         }
+      },
+      error: (error) => {
+        console.error('CSV parsing error:', error);
+        reject(new Error(`CSV parsing failed: ${error.message || String(error)}`));
       },
     });
   });
@@ -95,14 +110,14 @@ export function createWordsFromCSV(
     
     const normalized = colName.toLowerCase().trim();
     
-    // Try exact match
+    // Try exact match first (PapaParse already normalizes headers to lowercase)
     if (row[normalized] !== undefined && row[normalized] !== null) {
       const value = String(row[normalized]).trim();
-      // Remove surrounding quotes if present
+      // Remove surrounding quotes if present (but preserve inner quotes)
       return value.replace(/^["']|["']$/g, '').trim();
     }
     
-    // Try finding matching key
+    // Try finding matching key (fallback for any edge cases)
     const key = Object.keys(row).find(k => k.toLowerCase().trim() === normalized);
     if (key && row[key] !== undefined && row[key] !== null) {
       const value = String(row[key]).trim();
@@ -140,11 +155,19 @@ export function createWordsFromCSV(
     let target = getValue(row, normalizedTargetCol);
 
     // Handle multi-value fields (e.g., "and, though" -> take first value)
+    // Only split if comma is not inside quotes
     if (native.includes(',')) {
-      native = native.split(',')[0].trim();
+      // Check if comma is in a quoted value (simple check)
+      const quotesMatch = native.match(/^["'].*["']$/);
+      if (!quotesMatch) {
+        native = native.split(',')[0].trim();
+      }
     }
     if (target.includes(',')) {
-      target = target.split(',')[0].trim();
+      const quotesMatch = target.match(/^["'].*["']$/);
+      if (!quotesMatch) {
+        target = target.split(',')[0].trim();
+      }
     }
 
     // Skip empty rows
