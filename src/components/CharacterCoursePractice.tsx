@@ -4,7 +4,8 @@ import { AppState, Kanji, Radical, Vocabulary, GlyphySRSStage } from '../types';
 import { storage } from '../storage';
 import { getUnlockableItems, getItemsByLevel } from '../utils/glyphySRS';
 import { createReviewQueue, updateSRSProgressForReview } from '../utils/waniKaniSRS';
-import { recordStudyActivity, getCourseStreak } from '../utils/activityTracking';
+import { recordStudyActivity } from '../utils/activityTracking';
+import StreakDisplay from './StreakDisplay';
 import './CharacterCoursePractice.css';
 
 interface CharacterCoursePracticeProps {
@@ -180,8 +181,6 @@ export default function CharacterCoursePractice({ appState, updateState }: Chara
     return sorted.map(([time, count]) => ({ time, count }));
   }, [radicals, characters, vocabulary]);
 
-  // Get streak for this course
-  const streak = getCourseStreak(courseId!);
 
   const handleStartLessons = () => {
     if (unlockableItems.length === 0) {
@@ -422,17 +421,9 @@ export default function CharacterCoursePractice({ appState, updateState }: Chara
         </div>
 
         {/* Streak Display */}
-        {streak && streak.currentStreak > 0 && (
-          <div style={{ 
-            marginBottom: '24px',
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: '8px',
-            fontSize: '20px',
-            fontWeight: 600,
-            color: '#24292f'
-          }}>
-            🔥 {streak.currentStreak}
+        {courseId && (
+          <div style={{ marginBottom: '24px' }}>
+            <StreakDisplay courseId={courseId} />
           </div>
         )}
 

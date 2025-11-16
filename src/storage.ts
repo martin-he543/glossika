@@ -96,6 +96,18 @@ export const storage = {
   addCourse(course: Course): void {
     const state = this.load();
     if (!state.courses) state.courses = [];
+    
+    // Check for duplicate course name across all course types
+    const existingNames = [
+      ...state.courses.map(c => c.name.toLowerCase().trim()),
+      ...(state.characterCourses || []).map(c => c.name.toLowerCase().trim()),
+      ...(state.clozeCourses || []).map(c => c.name.toLowerCase().trim())
+    ];
+    
+    if (existingNames.includes(course.name.toLowerCase().trim())) {
+      throw new Error(`A course with the name "${course.name}" already exists. Course names must be unique.`);
+    }
+    
     state.courses.push(course);
     this.save(state);
   },
@@ -105,6 +117,19 @@ export const storage = {
     if (!state.courses) state.courses = [];
     const index = state.courses.findIndex(c => c.id === courseId);
     if (index !== -1) {
+      // If updating name, check for duplicates
+      if (updates.name) {
+        const existingNames = [
+          ...state.courses.filter(c => c.id !== courseId).map(c => c.name.toLowerCase().trim()),
+          ...(state.characterCourses || []).map(c => c.name.toLowerCase().trim()),
+          ...(state.clozeCourses || []).map(c => c.name.toLowerCase().trim())
+        ];
+        
+        if (existingNames.includes(updates.name.toLowerCase().trim())) {
+          throw new Error(`A course with the name "${updates.name}" already exists. Course names must be unique.`);
+        }
+      }
+      
       state.courses[index] = { ...state.courses[index], ...updates };
       this.save(state);
     }
@@ -166,6 +191,18 @@ export const storage = {
   addClozeCourse(course: ClozeCourse): void {
     const state = this.load();
     if (!state.clozeCourses) state.clozeCourses = [];
+    
+    // Check for duplicate course name across all course types
+    const existingNames = [
+      ...(state.courses || []).map(c => c.name.toLowerCase().trim()),
+      ...state.clozeCourses.map(c => c.name.toLowerCase().trim()),
+      ...(state.characterCourses || []).map(c => c.name.toLowerCase().trim())
+    ];
+    
+    if (existingNames.includes(course.name.toLowerCase().trim())) {
+      throw new Error(`A course with the name "${course.name}" already exists. Course names must be unique.`);
+    }
+    
     state.clozeCourses.push(course);
     this.save(state);
   },
@@ -175,6 +212,19 @@ export const storage = {
     if (!state.clozeCourses) state.clozeCourses = [];
     const index = state.clozeCourses.findIndex(c => c.id === courseId);
     if (index !== -1) {
+      // If updating name, check for duplicates
+      if (updates.name) {
+        const existingNames = [
+          ...(state.courses || []).map(c => c.name.toLowerCase().trim()),
+          ...state.clozeCourses.filter(c => c.id !== courseId).map(c => c.name.toLowerCase().trim()),
+          ...(state.characterCourses || []).map(c => c.name.toLowerCase().trim())
+        ];
+        
+        if (existingNames.includes(updates.name.toLowerCase().trim())) {
+          throw new Error(`A course with the name "${updates.name}" already exists. Course names must be unique.`);
+        }
+      }
+      
       state.clozeCourses[index] = { ...state.clozeCourses[index], ...updates };
       this.save(state);
     }
@@ -326,6 +376,18 @@ export const storage = {
   addCharacterCourse(course: CharacterCourse): void {
     const state = this.load();
     if (!state.characterCourses) state.characterCourses = [];
+    
+    // Check for duplicate course name across all course types
+    const existingNames = [
+      ...(state.courses || []).map(c => c.name.toLowerCase().trim()),
+      ...(state.clozeCourses || []).map(c => c.name.toLowerCase().trim()),
+      ...state.characterCourses.map(c => c.name.toLowerCase().trim())
+    ];
+    
+    if (existingNames.includes(course.name.toLowerCase().trim())) {
+      throw new Error(`A course with the name "${course.name}" already exists. Course names must be unique.`);
+    }
+    
     state.characterCourses.push(course);
     this.save(state);
   },
@@ -335,6 +397,19 @@ export const storage = {
     if (!state.characterCourses) state.characterCourses = [];
     const index = state.characterCourses.findIndex(c => c.id === courseId);
     if (index !== -1) {
+      // If updating name, check for duplicates
+      if (updates.name) {
+        const existingNames = [
+          ...(state.courses || []).map(c => c.name.toLowerCase().trim()),
+          ...(state.clozeCourses || []).map(c => c.name.toLowerCase().trim()),
+          ...state.characterCourses.filter(c => c.id !== courseId).map(c => c.name.toLowerCase().trim())
+        ];
+        
+        if (existingNames.includes(updates.name.toLowerCase().trim())) {
+          throw new Error(`A course with the name "${updates.name}" already exists. Course names must be unique.`);
+        }
+      }
+      
       state.characterCourses[index] = { ...state.characterCourses[index], ...updates };
       this.save(state);
     }

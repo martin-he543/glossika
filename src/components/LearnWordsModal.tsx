@@ -87,6 +87,31 @@ export default function LearnWordsModal({
     };
   }, [currentWord]);
 
+  // Reset modal state when mode changes
+  useEffect(() => {
+    setShowQuestionSelector(true);
+    setShowSummary(false);
+    setCurrentWord(null);
+    setSelectedAnswer('');
+    setUserInput('');
+    setFeedback(null);
+    setQuestionsAnswered(0);
+    setCorrectCount(0);
+    setQuestionCount(0);
+    setIsActive(false);
+    setCountdown(3);
+    setTimeLeft(0);
+    setFlashcardWords([]);
+    setFlashcardIndex(0);
+    setIsFlipped(false);
+    setWordLearningProgress(new Map());
+    setNewWordsLearned(0);
+    setScore(0);
+    setTotal(0);
+    setStartTime(null);
+    setTimeMinutes(2); // Default to 2 minutes
+  }, [mode]);
+
   // Get words based on mode
   const getWordsForMode = useCallback(() => {
     switch (mode) {
@@ -392,9 +417,18 @@ export default function LearnWordsModal({
     const correctAnswer = direction === 'native-to-target' ? currentWord!.target : currentWord!.native;
     const isCorrect = answer.toLowerCase().trim() === correctAnswer.toLowerCase().trim();
 
+    let feedbackMessage = isCorrect ? 'Correct!' : `Incorrect. The answer is "${correctAnswer}"`;
+    if (!isCorrect && currentWord && direction === 'native-to-target') {
+      if (currentWord.partOfSpeech || currentWord.pronunciation) {
+        const extras = [];
+        if (currentWord.partOfSpeech) extras.push(currentWord.partOfSpeech);
+        if (currentWord.pronunciation) extras.push(currentWord.pronunciation);
+        feedbackMessage += ` (${extras.join(', ')})`;
+      }
+    }
     setFeedback({
       correct: isCorrect,
-      message: isCorrect ? 'Correct!' : `Incorrect. The answer is "${correctAnswer}"`,
+      message: feedbackMessage,
     });
 
     // Play audio only when correct answer and direction is native-to-target
@@ -416,9 +450,18 @@ export default function LearnWordsModal({
 
     const isCorrect = userInput.toLowerCase().trim() === correctAnswer.toLowerCase().trim();
     
+    let feedbackMessage = isCorrect ? 'Correct!' : `Incorrect. The answer is "${correctAnswer}"`;
+    if (!isCorrect && currentWord && direction === 'native-to-target') {
+      if (currentWord.partOfSpeech || currentWord.pronunciation) {
+        const extras = [];
+        if (currentWord.partOfSpeech) extras.push(currentWord.partOfSpeech);
+        if (currentWord.pronunciation) extras.push(currentWord.pronunciation);
+        feedbackMessage += ` (${extras.join(', ')})`;
+      }
+    }
     setFeedback({
       correct: isCorrect,
-      message: isCorrect ? 'Correct!' : `Incorrect. The answer is "${correctAnswer}"`,
+      message: feedbackMessage,
     });
 
     // Play audio only when correct answer and direction is native-to-target
@@ -585,6 +628,7 @@ export default function LearnWordsModal({
     setCurrentWord(null);
     setShowSummary(true);
   };
+
 
   const handleStart = (count: number) => {
     if (mode === 'speed') {
@@ -808,7 +852,7 @@ export default function LearnWordsModal({
                   type="number"
                   className="input"
                   value={timeMinutes}
-                  onChange={(e) => setTimeMinutes(Math.max(1, parseInt(e.target.value) || 5))}
+                  onChange={(e) => setTimeMinutes(Math.max(1, parseInt(e.target.value) || 2))}
                   min={1}
                   max={60}
                 />
@@ -1176,11 +1220,7 @@ export default function LearnWordsModal({
     return <div className="loading">Loading...</div>;
   }
 
-  if (mode === 'speed' && !isActive) {
-    return null; // Should show question selector
-  }
-
-  if (mode === 'speed' && !currentWord) {
+  if (mode === 'speed' && !currentWord && !isActive) {
     return <div className="loading">Loading...</div>;
   }
 
@@ -1203,6 +1243,11 @@ export default function LearnWordsModal({
 
           <div className="quiz-question">
             {direction === 'native-to-target' ? currentWord.native : currentWord.target}
+            {currentWord.partOfSpeech && (
+              <div style={{ fontSize: '14px', color: '#656d76', fontStyle: 'italic', marginTop: '8px' }}>
+                {currentWord.partOfSpeech}
+              </div>
+            )}
           </div>
 
           <div className="quiz-options">
@@ -1231,7 +1276,17 @@ export default function LearnWordsModal({
 
           {selectedAnswer && !isCorrect && (
             <div className="quiz-feedback incorrect" style={{ marginTop: '16px' }}>
-              Correct answer: {correctAnswer}
+              <div>Correct answer: {correctAnswer}</div>
+              {currentWord.partOfSpeech && direction === 'native-to-target' && (
+                <div style={{ fontSize: '14px', color: '#656d76', fontStyle: 'italic', marginTop: '4px' }}>
+                  {currentWord.partOfSpeech}
+                </div>
+              )}
+              {currentWord.pronunciation && direction === 'native-to-target' && (
+                <div style={{ fontSize: '14px', color: '#656d76', marginTop: '4px' }}>
+                  {currentWord.pronunciation}
+                </div>
+              )}
             </div>
           )}
 
@@ -1326,6 +1381,11 @@ export default function LearnWordsModal({
                    })()}
                    <div className="quiz-question">
                      {direction === 'native-to-target' ? currentWord.native : currentWord.target}
+                     {currentWord.partOfSpeech && (
+                       <div style={{ fontSize: '14px', color: '#656d76', fontStyle: 'italic', marginTop: '8px' }}>
+                         {currentWord.partOfSpeech}
+                       </div>
+                     )}
                    </div>
 
             {modeType === 'multiple' ? (

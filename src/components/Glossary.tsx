@@ -86,7 +86,7 @@ export default function Glossary({ appState, updateState }: GlossaryProps) {
   };
   
   const getWordSortIcon = (field: WordSortField) => {
-    if (wordSortField !== field) return '↕️';
+    if (wordSortField !== field) return '↕';
     return wordSortDirection === 'asc' ? '↑' : '↓';
   };
 
@@ -142,7 +142,7 @@ export default function Glossary({ appState, updateState }: GlossaryProps) {
   };
   
   const getSentenceSortIcon = (field: SentenceSortField) => {
-    if (sentenceSortField !== field) return '↕️';
+    if (sentenceSortField !== field) return '↕';
     return sentenceSortDirection === 'asc' ? '↑' : '↓';
   };
 
@@ -198,7 +198,7 @@ export default function Glossary({ appState, updateState }: GlossaryProps) {
   };
   
   const getCharacterSortIcon = (field: CharacterSortField) => {
-    if (characterSortField !== field) return '↕️';
+    if (characterSortField !== field) return '↕';
     return characterSortDirection === 'asc' ? '↑' : '↓';
   };
 
@@ -323,62 +323,62 @@ export default function Glossary({ appState, updateState }: GlossaryProps) {
             </div>
 
             <div className="card">
-              <div style={{ marginBottom: '16px' }}>
+              <div style={{ marginBottom: '16px', fontSize: '9pt' }}>
                 <strong>{filteredWords.length}</strong> learned words
               </div>
 
               {filteredWords.length === 0 ? (
-                <p style={{ textAlign: 'center', color: '#656d76', padding: '32px' }}>
+                <p style={{ textAlign: 'center', color: '#656d76', padding: '32px', fontSize: '9pt' }}>
                   No learned words found. Start learning to build your vocabulary!
                 </p>
               ) : (
                 <div style={{ overflowX: 'auto' }}>
-                  <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '9pt' }}>
                     <thead>
                       <tr style={{ borderBottom: '2px solid #d0d7de' }}>
                         <th 
-                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none' }}
+                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none', fontSize: '9pt', fontWeight: 600 }}
                           onClick={() => handleWordSort('native')}
                         >
                           Native {getWordSortIcon('native')}
                         </th>
                         <th 
-                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none' }}
+                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none', fontSize: '9pt', fontWeight: 600 }}
                           onClick={() => handleWordSort('target')}
                         >
                           Target {getWordSortIcon('target')}
                         </th>
                         <th 
-                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none' }}
+                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none', fontSize: '9pt', fontWeight: 600 }}
                           onClick={() => handleWordSort('course')}
                         >
                           Course {getWordSortIcon('course')}
                         </th>
                         <th 
-                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none' }}
+                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none', fontSize: '9pt', fontWeight: 600 }}
                           onClick={() => handleWordSort('mastery')}
                         >
                           Mastery {getWordSortIcon('mastery')}
                         </th>
                         <th 
-                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none' }}
+                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none', fontSize: '9pt', fontWeight: 600 }}
                           onClick={() => handleWordSort('srsLevel')}
                         >
                           SRS Level {getWordSortIcon('srsLevel')}
                         </th>
                         <th 
-                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none' }}
+                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none', fontSize: '9pt', fontWeight: 600 }}
                           onClick={() => handleWordSort('correct')}
                         >
                           Correct {getWordSortIcon('correct')}
                         </th>
                         <th 
-                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none' }}
+                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none', fontSize: '9pt', fontWeight: 600 }}
                           onClick={() => handleWordSort('wrong')}
                         >
                           Wrong {getWordSortIcon('wrong')}
                         </th>
-                        <th style={{ padding: '8px', textAlign: 'center' }}>Actions</th>
+                        <th style={{ padding: '8px', textAlign: 'center', fontSize: '9pt', fontWeight: 600 }}>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -386,23 +386,32 @@ export default function Glossary({ appState, updateState }: GlossaryProps) {
                         const course = courses.find(c => c.id === word.courseId);
                         return (
                           <tr key={word.id} style={{ borderBottom: '1px solid #d0d7de' }}>
-                            <td style={{ padding: '8px' }}>{word.native}</td>
-                            <td style={{ padding: '8px' }}>{word.target}</td>
-                            <td style={{ padding: '8px' }}>{course?.name || 'Unknown'}</td>
-                            <td style={{ padding: '8px' }}>
+                            <td style={{ padding: '8px', fontSize: '9pt' }}>
+                              <div>{word.native}</div>
+                              {word.partOfSpeech && (
+                                <div style={{ fontSize: '8pt', color: '#656d76', fontStyle: 'italic', marginTop: '2px' }}>
+                                  {word.partOfSpeech}
+                                </div>
+                              )}
+                            </td>
+                            <td style={{ padding: '8px', fontSize: '9pt' }}>{word.target}</td>
+                            <td style={{ padding: '8px', fontSize: '9pt' }}>{word.pronunciation || '-'}</td>
+                            <td style={{ padding: '8px', fontSize: '9pt' }}>{course?.name || 'Unknown'}</td>
+                            <td style={{ padding: '8px', fontSize: '9pt' }}>
                               <span className={`tag`} style={{
                                 backgroundColor: word.masteryLevel === 'tree' ? '#52be80' :
                                   word.masteryLevel === 'plant' ? '#76d7c4' :
                                   word.masteryLevel === 'seedling' ? '#85c1e2' :
-                                  word.masteryLevel === 'sprout' ? '#a9dfbf' : '#f9e79f'
+                                  word.masteryLevel === 'sprout' ? '#a9dfbf' : '#f9e79f',
+                                fontSize: '9pt'
                               }}>
                                 {word.masteryLevel}
                               </span>
                             </td>
-                            <td style={{ padding: '8px' }}>{word.srsLevel}</td>
-                            <td style={{ padding: '8px' }}>{word.correctCount}</td>
-                            <td style={{ padding: '8px' }}>{word.wrongCount}</td>
-                            <td style={{ padding: '8px', textAlign: 'center' }}>
+                            <td style={{ padding: '8px', fontSize: '9pt' }}>{word.srsLevel}</td>
+                            <td style={{ padding: '8px', fontSize: '9pt' }}>{word.correctCount}</td>
+                            <td style={{ padding: '8px', fontSize: '9pt' }}>{word.wrongCount}</td>
+                            <td style={{ padding: '8px', textAlign: 'center', fontSize: '9pt', width: '100px' }}>
                               <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', alignItems: 'center' }}>
                                 <button
                                   onClick={() => {
@@ -420,6 +429,7 @@ export default function Glossary({ appState, updateState }: GlossaryProps) {
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
+                                    padding: 0
                                   }}
                                   title={word.isDifficult ? 'Remove from difficult words' : 'Mark as difficult'}
                                 >
@@ -441,7 +451,12 @@ export default function Glossary({ appState, updateState }: GlossaryProps) {
                                     cursor: 'pointer',
                                     fontSize: '16px',
                                     color: '#da3633',
-                                    padding: '4px 8px',
+                                    width: '24px',
+                                    height: '24px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    padding: 0
                                   }}
                                   title="Delete word"
                                 >
@@ -491,84 +506,148 @@ export default function Glossary({ appState, updateState }: GlossaryProps) {
             </div>
 
             <div className="card">
-              <div style={{ marginBottom: '16px' }}>
+              <div style={{ marginBottom: '16px', fontSize: '9pt' }}>
                 <strong>{filteredSentences.length}</strong> sentences
               </div>
 
               {filteredSentences.length === 0 ? (
-                <p style={{ textAlign: 'center', color: '#656d76', padding: '32px' }}>
+                <p style={{ textAlign: 'center', color: '#656d76', padding: '32px', fontSize: '9pt' }}>
                   No sentences found. Import sentences from a Sentence Course!
                 </p>
               ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  {filteredSentences.map(sentence => {
-                    const course = clozeCourses.find(c => c.id === sentence.courseId);
-                    const isDifficult = sentence.wrongCount > sentence.correctCount;
-                    return (
-                      <div
-                        key={sentence.id}
-                        style={{
-                          padding: '16px',
-                          border: '1px solid #d0d7de',
-                          borderRadius: '4px',
-                          backgroundColor: '#ffffff',
-                          position: 'relative',
-                        }}
-                      >
-                        <div style={{ position: 'absolute', top: '16px', right: '16px', display: 'flex', gap: '8px', alignItems: 'center' }}>
+                <div style={{ overflowX: 'auto' }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '9pt' }}>
+                    <thead>
+                      <tr style={{ borderBottom: '2px solid #d0d7de', backgroundColor: '#f6f8fa' }}>
+                        <th style={{ padding: '8px', textAlign: 'left', fontWeight: 600, fontSize: '9pt' }}>
                           <button
-                            onClick={() => {
-                              // Mark sentence as difficult by updating wrongCount
-                              const newWrongCount = isDifficult ? sentence.correctCount : sentence.wrongCount + 100;
-                              storage.updateClozeSentence(sentence.id, { wrongCount: newWrongCount });
-                              updateState({ clozeSentences: storage.load().clozeSentences });
-                            }}
-                            style={{
-                              background: 'none',
-                              border: 'none',
-                              cursor: 'pointer',
-                              fontSize: '20px',
-                              color: isDifficult ? '#ffd700' : '#d0d7de',
-                            }}
-                            title={isDifficult ? 'Remove from difficult sentences' : 'Mark as difficult'}
+                            onClick={() => handleSentenceSort('native')}
+                            style={{ background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600, fontSize: '9pt' }}
                           >
-                            {isDifficult ? '⚡' : ''}
+                            Native {getSentenceSortIcon('native')}
                           </button>
+                        </th>
+                        <th style={{ padding: '8px', textAlign: 'left', fontWeight: 600, fontSize: '9pt' }}>
                           <button
-                            onClick={() => {
-                              if (confirm(`Are you sure you want to delete this sentence?`)) {
-                                storage.deleteClozeSentence(sentence.id);
-                                updateState({ clozeSentences: storage.load().clozeSentences });
-                              }
-                            }}
-                            style={{
-                              background: 'none',
-                              border: 'none',
-                              cursor: 'pointer',
-                              fontSize: '16px',
-                              color: '#da3633',
-                              padding: '4px 8px',
-                            }}
-                            title="Delete sentence"
+                            onClick={() => handleSentenceSort('target')}
+                            style={{ background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600, fontSize: '9pt' }}
                           >
-                            🗑️
+                            Target {getSentenceSortIcon('target')}
                           </button>
-                        </div>
-                        <div style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px' }}>
-                          {sentence.native}
-                        </div>
-                        <div style={{ fontSize: '16px', color: '#656d76', marginBottom: '8px' }}>
-                          {sentence.target}
-                        </div>
-                        <div style={{ display: 'flex', gap: '16px', fontSize: '12px', color: '#656d76' }}>
-                          <span>Course: {course?.name || 'Unknown'}</span>
-                          <span>Mastery: {typeof sentence.masteryLevel === 'string' ? sentence.masteryLevel : `${sentence.masteryLevel}/5`}</span>
-                          <span>Correct: {sentence.correctCount}</span>
-                          <span>Wrong: {sentence.wrongCount}</span>
-                        </div>
-                      </div>
-                    );
-                  })}
+                        </th>
+                        <th style={{ padding: '8px', textAlign: 'left', fontWeight: 600, fontSize: '9pt' }}>
+                          <button
+                            onClick={() => handleSentenceSort('course')}
+                            style={{ background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600, fontSize: '9pt' }}
+                          >
+                            Course {getSentenceSortIcon('course')}
+                          </button>
+                        </th>
+                        <th style={{ padding: '8px', textAlign: 'left', fontWeight: 600, fontSize: '9pt' }}>
+                          <button
+                            onClick={() => handleSentenceSort('mastery')}
+                            style={{ background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600, fontSize: '9pt' }}
+                          >
+                            Mastery {getSentenceSortIcon('mastery')}
+                          </button>
+                        </th>
+                        <th style={{ padding: '8px', textAlign: 'left', fontWeight: 600, fontSize: '9pt' }}>
+                          <button
+                            onClick={() => handleSentenceSort('correct')}
+                            style={{ background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600, fontSize: '9pt' }}
+                          >
+                            Correct {getSentenceSortIcon('correct')}
+                          </button>
+                        </th>
+                        <th style={{ padding: '8px', textAlign: 'left', fontWeight: 600, fontSize: '9pt' }}>
+                          <button
+                            onClick={() => handleSentenceSort('wrong')}
+                            style={{ background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600, fontSize: '9pt' }}
+                          >
+                            Wrong {getSentenceSortIcon('wrong')}
+                          </button>
+                        </th>
+                        <th style={{ padding: '8px', textAlign: 'center', fontWeight: 600, fontSize: '9pt' }}>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredSentences.map(sentence => {
+                        const course = clozeCourses.find(c => c.id === sentence.courseId);
+                        const isDifficult = sentence.isDifficult || false;
+                        return (
+                          <tr key={sentence.id} style={{ borderBottom: '1px solid #d0d7de' }}>
+                            <td style={{ padding: '8px', fontSize: '9pt' }}>{sentence.native}</td>
+                            <td style={{ padding: '8px', fontSize: '9pt' }}>{sentence.target}</td>
+                            <td style={{ padding: '8px', fontSize: '9pt' }}>{course?.name || 'Unknown'}</td>
+                            <td style={{ padding: '8px', fontSize: '9pt' }}>
+                              <span className={`tag`} style={{
+                                backgroundColor: sentence.masteryLevel === 'tree' ? '#52be80' :
+                                  sentence.masteryLevel === 'plant' ? '#76d7c4' :
+                                  sentence.masteryLevel === 'seedling' ? '#85c1e2' :
+                                  sentence.masteryLevel === 'sprout' ? '#a9dfbf' : '#f9e79f',
+                                fontSize: '9pt'
+                              }}>
+                                {typeof sentence.masteryLevel === 'string' ? sentence.masteryLevel : `${sentence.masteryLevel}/5`}
+                              </span>
+                            </td>
+                            <td style={{ padding: '8px', fontSize: '9pt' }}>{sentence.correctCount}</td>
+                            <td style={{ padding: '8px', fontSize: '9pt' }}>{sentence.wrongCount}</td>
+                            <td style={{ padding: '8px', textAlign: 'center', fontSize: '9pt', width: '100px' }}>
+                              <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', alignItems: 'center' }}>
+                                <button
+                                  onClick={() => {
+                                    storage.updateClozeSentence(sentence.id, { isDifficult: !isDifficult });
+                                    updateState({ clozeSentences: storage.load().clozeSentences });
+                                  }}
+                                  style={{
+                                    background: 'none',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    fontSize: '20px',
+                                    color: isDifficult ? '#ffd700' : '#d0d7de',
+                                    width: '24px',
+                                    height: '24px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    padding: 0
+                                  }}
+                                  title={isDifficult ? 'Remove from difficult sentences' : 'Mark as difficult'}
+                                >
+                                  {isDifficult ? '⚡' : ''}
+                                </button>
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    if (confirm(`Are you sure you want to delete this sentence?`)) {
+                                      storage.deleteClozeSentence(sentence.id);
+                                      updateState({ clozeSentences: storage.load().clozeSentences });
+                                    }
+                                  }}
+                                  style={{
+                                    background: 'none',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    fontSize: '16px',
+                                    color: '#da3633',
+                                    width: '24px',
+                                    height: '24px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    padding: 0
+                                  }}
+                                  title="Delete sentence"
+                                >
+                                  🗑️
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
                 </div>
               )}
             </div>
@@ -605,63 +684,63 @@ export default function Glossary({ appState, updateState }: GlossaryProps) {
             </div>
 
             <div className="card">
-              <div style={{ marginBottom: '16px' }}>
+              <div style={{ marginBottom: '16px', fontSize: '9pt' }}>
                 <strong>{filteredCharacters.length}</strong> characters
               </div>
 
               {filteredCharacters.length === 0 ? (
-                <p style={{ textAlign: 'center', color: '#656d76', padding: '32px' }}>
+                <p style={{ textAlign: 'center', color: '#656d76', padding: '32px', fontSize: '9pt' }}>
                   No characters found. Import characters from Glyphy!
                 </p>
               ) : (
                 <div style={{ overflowX: 'auto' }}>
-                  <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '9pt' }}>
                     <thead>
                       <tr style={{ borderBottom: '2px solid #d0d7de' }}>
                         <th 
-                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none' }}
+                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none', fontSize: '9pt', fontWeight: 600 }}
                           onClick={() => handleCharacterSort('character')}
                         >
                           Character {getCharacterSortIcon('character')}
                         </th>
                         <th 
-                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none' }}
+                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none', fontSize: '9pt', fontWeight: 600 }}
                           onClick={() => handleCharacterSort('meaning')}
                         >
                           Meaning {getCharacterSortIcon('meaning')}
                         </th>
                         <th 
-                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none' }}
+                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none', fontSize: '9pt', fontWeight: 600 }}
                           onClick={() => handleCharacterSort('pronunciation')}
                         >
                           Pronunciation {getCharacterSortIcon('pronunciation')}
                         </th>
                         <th 
-                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none' }}
+                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none', fontSize: '9pt', fontWeight: 600 }}
                           onClick={() => handleCharacterSort('language')}
                         >
                           Language {getCharacterSortIcon('language')}
                         </th>
                         <th 
-                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none' }}
+                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none', fontSize: '9pt', fontWeight: 600 }}
                           onClick={() => handleCharacterSort('srsLevel')}
                         >
                           SRS Level {getCharacterSortIcon('srsLevel')}
                         </th>
-                        <th style={{ padding: '8px', textAlign: 'left' }}>Mastery</th>
+                        <th style={{ padding: '8px', textAlign: 'left', fontSize: '9pt', fontWeight: 600 }}>Mastery</th>
                         <th 
-                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none' }}
+                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none', fontSize: '9pt', fontWeight: 600 }}
                           onClick={() => handleCharacterSort('correct')}
                         >
                           Correct {getCharacterSortIcon('correct')}
                         </th>
                         <th 
-                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none' }}
+                          style={{ padding: '8px', textAlign: 'left', cursor: 'pointer', userSelect: 'none', fontSize: '9pt', fontWeight: 600 }}
                           onClick={() => handleCharacterSort('wrong')}
                         >
                           Wrong {getCharacterSortIcon('wrong')}
                         </th>
-                        <th style={{ padding: '8px', textAlign: 'center' }}>Actions</th>
+                        <th style={{ padding: '8px', textAlign: 'center', fontSize: '9pt', fontWeight: 600 }}>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -669,14 +748,14 @@ export default function Glossary({ appState, updateState }: GlossaryProps) {
                         return (
                           <tr key={kanji.id} style={{ borderBottom: '1px solid #d0d7de' }}>
                             <td style={{ padding: '8px', fontSize: '24px', fontFamily: 'serif' }}>{kanji.character}</td>
-                            <td style={{ padding: '8px' }}>{kanji.meaning}</td>
-                            <td style={{ padding: '8px' }}>{kanji.pronunciation}</td>
-                            <td style={{ padding: '8px' }}>{kanji.language === 'japanese' ? 'Japanese' : 'Chinese'}</td>
-                            <td style={{ padding: '8px' }}>{kanji.srsStage}</td>
-                            <td style={{ padding: '8px' }}>N/A</td>
-                            <td style={{ padding: '8px' }}>{kanji.correctCount}</td>
-                            <td style={{ padding: '8px' }}>{kanji.wrongCount}</td>
-                            <td style={{ padding: '8px', textAlign: 'center' }}>
+                            <td style={{ padding: '8px', fontSize: '9pt' }}>{kanji.meaning}</td>
+                            <td style={{ padding: '8px', fontSize: '9pt' }}>{kanji.pronunciation}</td>
+                            <td style={{ padding: '8px', fontSize: '9pt' }}>{kanji.language === 'japanese' ? 'Japanese' : 'Chinese'}</td>
+                            <td style={{ padding: '8px', fontSize: '9pt' }}>{kanji.srsStage}</td>
+                            <td style={{ padding: '8px', fontSize: '9pt' }}>N/A</td>
+                            <td style={{ padding: '8px', fontSize: '9pt' }}>{kanji.correctCount}</td>
+                            <td style={{ padding: '8px', fontSize: '9pt' }}>{kanji.wrongCount}</td>
+                            <td style={{ padding: '8px', textAlign: 'center', fontSize: '9pt' }}>
                               <button
                                 onClick={(e) => {
                                   e.stopPropagation();

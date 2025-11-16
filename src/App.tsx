@@ -49,6 +49,7 @@ function ClozeCourseDetailWrapper({ appState, updateState }: { appState: AppStat
 function Navigation({ onLogout }: { onLogout: () => void }) {
   const location = useLocation();
   const currentUser = auth.getCurrentUser();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   return (
     <nav className="navbar">
@@ -56,10 +57,25 @@ function Navigation({ onLogout }: { onLogout: () => void }) {
         <div className="nav-left">
           <Link to="/" className="nav-logo">Glossika</Link>
         </div>
-        <div className="nav-right">
-          <Link to="/" className={location.pathname === '/' ? 'active' : ''}>Courses</Link>
-          <Link to="/repository" className={location.pathname === '/repository' ? 'active' : ''}>Repository</Link>
-          <Link to="/glossary" className={location.pathname === '/glossary' ? 'active' : ''}>Glossary</Link>
+        <button 
+          className="mobile-menu-toggle"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle menu"
+          style={{
+            display: 'none',
+            background: 'none',
+            border: 'none',
+            fontSize: '24px',
+            cursor: 'pointer',
+            color: '#ffffff',
+            padding: '8px',
+          }}
+        >
+          ☰
+        </button>
+        <div className={`nav-right ${mobileMenuOpen ? 'mobile-menu-open' : ''}`}>
+          <Link to="/" className={location.pathname === '/' ? 'active' : ''} onClick={() => setMobileMenuOpen(false)}>Courses</Link>
+          <Link to="/repository" className={location.pathname === '/repository' ? 'active' : ''} onClick={() => setMobileMenuOpen(false)}>Repository</Link>
           {currentUser && <UserAvatar onLogout={onLogout} />}
         </div>
       </div>

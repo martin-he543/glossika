@@ -176,6 +176,8 @@ export default function CourseSettings({ course, onClose, onUpdate }: CourseSett
                   onClick={() => {
                     if (deleteConfirmText === course.name) {
                       storage.deleteCourse(course.id);
+                      onUpdate();
+                      onClose();
                       navigate('/');
                     }
                   }}

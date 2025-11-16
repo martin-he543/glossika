@@ -374,6 +374,11 @@ export default function ReviewWords({ courseId, words, course, onUpdate }: Revie
 
         <div className="quiz-question">
           {direction === 'native-to-target' ? currentWord.native : currentWord.target}
+          {currentWord.partOfSpeech && (
+            <div style={{ fontSize: '14px', color: '#656d76', fontStyle: 'italic', marginTop: '8px' }}>
+              {currentWord.partOfSpeech}
+            </div>
+          )}
         </div>
 
         {mode === 'multiple' ? (

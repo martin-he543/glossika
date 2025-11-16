@@ -50,6 +50,7 @@ export default function CreateCourseModal({ onClose, onSuccess }: CreateCourseMo
         }
       }
 
+      // Parse CSV
       const rows = await parseCSV(selectedFile, (progress) => {
         setProgress(Math.min(90, progress));
       }, fileDelimiter);
@@ -57,51 +58,94 @@ export default function CreateCourseModal({ onClose, onSuccess }: CreateCourseMo
       setProgress(100);
 
       if (rows.length === 0) {
-        throw new Error('CSV file is empty');
+        throw new Error('CSV file is empty or could not be parsed');
       }
 
-      // Auto-detect columns
-      const headers = Object.keys(rows[0]);
+      // Get headers
+      const headers = Object.keys(rows[0] || {});
+      
       if (headers.length < 2) {
-        throw new Error('CSV must have at least 2 columns');
+        const fileName = selectedFile.name.toLowerCase();
+        const isTSV = fileName.endsWith('.tsv');
+        throw new Error(
+          `CSV/TSV file must have at least 2 columns, but only found ${headers.length} column(s). ` +
+          (isTSV ? 'Please ensure the file uses tab characters as delimiters.' : 'Please check your delimiter settings.')
+        );
       }
 
-      // Try to find common column names
-      const nativeCols = headers.filter(h => {
-        const lower = h.toLowerCase();
-        return lower.includes('native') || 
-               lower.includes('english') ||
-               lower.includes('source') ||
-               lower === 'definition' ||
-               lower.includes('definition');
-      });
-      const targetCols = headers.filter(h => {
-        const lower = h.toLowerCase();
-        return lower.includes('target') || 
-               lower.includes('translation') ||
-               lower.includes('foreign') ||
-               lower === 'label' ||
-               lower.includes('label') ||
-               lower.includes('word') ||
-               lower.includes('term');
-      });
-      const levelCols = headers.filter(h => {
-        const lower = h.toLowerCase();
-        return lower.includes('level') || 
-               lower === 'lvl';
-      });
+      // Simple, robust column detection
+      // 1. Try exact matches first
+      // 2. Try language names
+      // 3. Fall back to positional (first = native, second = target)
+      
+      const normalizedHeaders = headers.map(h => h.toLowerCase().trim());
+      
+      // Find native column
+      const nativePatterns = ['native', 'english', 'en', 'source', 'definition'];
+      const targetPatterns = ['target', 'translation', 'trans', 'foreign', 'label'];
+      const levelPatterns = ['level', 'lvl'];
+      
+      // Language names
+      const commonLanguages = ['english', 'french', 'spanish', 'german', 'italian', 'portuguese', 
+                               'russian', 'chinese', 'japanese', 'korean', 'arabic', 'hindi'];
+      
+      let detectedNative: string | undefined;
+      let detectedTarget: string | undefined;
+      let detectedLevel: string | undefined;
+      
+      // Look for exact pattern matches
+      for (const header of headers) {
+        const lower = header.toLowerCase().trim();
+        if (!detectedNative && nativePatterns.some(p => lower === p || lower.includes(p))) {
+          detectedNative = header;
+        }
+        if (!detectedTarget && targetPatterns.some(p => lower === p || lower.includes(p))) {
+          detectedTarget = header;
+        }
+        if (!detectedLevel && levelPatterns.some(p => lower === p)) {
+          detectedLevel = header;
+        }
+      }
+      
+      // Look for language names
+      for (const header of headers) {
+        const lower = header.toLowerCase().trim();
+        for (const lang of commonLanguages) {
+          if (lower === lang || lower.includes(lang)) {
+            if (lang === 'english' && !detectedNative) {
+              detectedNative = header;
+            } else if (!detectedTarget && lang !== 'english') {
+              detectedTarget = header;
+            }
+          }
+        }
+      }
+      
+      // Fallback to positional
+      if (!detectedNative) {
+        detectedNative = headers[0];
+      }
+      if (!detectedTarget) {
+        // Find first column that's not native and not level
+        const available = headers.find(h => 
+          h.toLowerCase().trim() !== detectedNative?.toLowerCase().trim() &&
+          !levelPatterns.includes(h.toLowerCase().trim())
+        );
+        detectedTarget = available || headers[1] || headers[0];
+      }
+      
+      // Normalize to lowercase (headers are already lowercase from PapaParse)
+      const finalNative = detectedNative.toLowerCase().trim();
+      const finalTarget = detectedTarget.toLowerCase().trim();
+      const finalLevel = detectedLevel?.toLowerCase().trim() || '';
+      
+      setNativeCol(finalNative);
+      setTargetCol(finalTarget);
+      setLevelCol(finalLevel);
 
-      setNativeCol(nativeCols[0] || headers[0]);
-      setTargetCol(targetCols[0] || headers[1]);
-      setLevelCol(levelCols[0] || '');
-
-      // Find additional columns (not native, target, or level)
-      const usedCols = [
-        nativeCols[0] || headers[0],
-        targetCols[0] || headers[1],
-        levelCols[0] || ''
-      ].filter(Boolean);
-      const otherCols = headers.filter(h => !usedCols.includes(h));
+      // Additional columns (for part of speech, pronunciation, etc.)
+      const usedCols = [finalNative, finalTarget, finalLevel].filter(Boolean);
+      const otherCols = headers.filter(h => !usedCols.includes(h.toLowerCase().trim()));
       setAdditionalColumns(otherCols);
 
       setLoading(false);
@@ -121,6 +165,19 @@ export default function CreateCourseModal({ onClose, onSuccess }: CreateCourseMo
 
     if (!nativeCol || !targetCol) {
       setError('Please specify column names');
+      return;
+    }
+
+    // Check for duplicate course name across all course types
+    const allCourses = storage.load();
+    const existingNames = [
+      ...(allCourses.courses || []).map(c => c.name.toLowerCase().trim()),
+      ...(allCourses.characterCourses || []).map(c => c.name.toLowerCase().trim()),
+      ...(allCourses.clozeCourses || []).map(c => c.name.toLowerCase().trim())
+    ];
+    
+    if (existingNames.includes(name.toLowerCase().trim())) {
+      setError(`A course with the name "${name}" already exists. Course names must be unique.`);
       return;
     }
 
@@ -162,33 +219,21 @@ export default function CreateCourseModal({ onClose, onSuccess }: CreateCourseMo
         wordCount: 0,
       };
 
-      // Process words in batches for large files
-      const BATCH_SIZE = 1000;
-      const totalBatches = Math.ceil(rows.length / BATCH_SIZE);
-      const allWords: any[] = [];
+      // Process all rows at once (createWordsFromCSV handles it efficiently)
+      const allWords = createWordsFromCSV(rows, course.id, nativeCol, targetCol, levelCol || undefined);
       
-      for (let i = 0; i < totalBatches; i++) {
-        const start = i * BATCH_SIZE;
-        const end = Math.min(start + BATCH_SIZE, rows.length);
-        const batch = rows.slice(start, end);
-        
-        const batchWords = createWordsFromCSV(batch, course.id, nativeCol, targetCol, levelCol || undefined);
-      
-      // Debug: log first batch to verify words are being created
-      if (i === 0 && batchWords.length > 0) {
-        console.log('Sample words from first batch:', batchWords.slice(0, 3));
-        console.log('Columns used:', { nativeCol, targetCol, levelCol });
-      }
-      
-      allWords.push(...batchWords);
-        
-        // Update progress: 50-90% for processing
-        const progressPercent = 50 + Math.floor(((i + 1) / totalBatches) * 40);
-        setProgress(progressPercent);
-      }
+      setProgress(90);
       
       if (allWords.length === 0) {
-        throw new Error('No valid words found in CSV. Please check column names.');
+        const sampleRow = rows[0];
+        const availableHeaders = Object.keys(sampleRow || {});
+        throw new Error(
+          `No valid words found in CSV. ` +
+          `Processed ${rows.length} rows but created 0 words. ` +
+          `Available columns: ${availableHeaders.join(', ')}. ` +
+          `Using columns: Native="${nativeCol}", Target="${targetCol}". ` +
+          `Please check that the column names match the CSV headers.`
+        );
       }
 
       course.wordCount = allWords.length;
@@ -197,7 +242,7 @@ export default function CreateCourseModal({ onClose, onSuccess }: CreateCourseMo
       const uniqueLevels = Array.from(new Set(allWords.map(w => w.level || 1))).sort((a, b) => a - b);
       course.levels = uniqueLevels.length > 0 ? uniqueLevels : [1];
 
-      // Save in batches to avoid localStorage issues
+      // Save words in batches to avoid localStorage issues
       setProgress(90);
       const SAVE_BATCH_SIZE = 500;
       for (let i = 0; i < allWords.length; i += SAVE_BATCH_SIZE) {

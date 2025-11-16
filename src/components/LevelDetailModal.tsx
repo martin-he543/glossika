@@ -71,7 +71,7 @@ export default function LevelDetailModal({ level, words, course, onClose }: Leve
   };
   
   const getSortIcon = (field: SortField) => {
-    if (sortField !== field) return '↕️';
+    if (sortField !== field) return '↕';
     return sortDirection === 'asc' ? '↑' : '↓';
   };
 

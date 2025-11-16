@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { AppState, ClozeCourse, ClozeSentence } from '../types';
 import { storage } from '../storage';
 import { leaderboard } from '../utils/leaderboard';
@@ -8,6 +9,7 @@ import KeyboardShortcuts from './KeyboardShortcuts';
 import QuestionCountSelector from './QuestionCountSelector';
 import LessonSummary from './LessonSummary';
 import ClozeCourseSettings from './ClozeCourseSettings';
+import StreakDisplay from './StreakDisplay';
 
 interface ClozeCourseDetailProps {
   course: ClozeCourse;
@@ -228,9 +230,22 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
             {course.nativeLanguage} → {course.targetLanguage}
           </div>
         </div>
-        <button className="btn" onClick={() => setShowSettings(true)}>
-          Settings
-        </button>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <Link to={`/leaderboard/course/${course.id}`} className="btn">
+            Leaderboard
+          </Link>
+          <Link to="/glossary" className="btn">
+            Glossary
+          </Link>
+          <button className="btn" onClick={() => setShowSettings(true)}>
+            Settings
+          </button>
+        </div>
+      </div>
+
+      {/* Streak Display */}
+      <div style={{ marginBottom: '24px' }}>
+        <StreakDisplay courseId={course.id} />
       </div>
 
       <div className="tabs">
@@ -258,32 +273,32 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
         {activeTab === 'practice' && (
           <div>
             {!showQuestionSelector && !showSummary && activeMode !== 'speed' && activeMode !== 'flashcards' && activeMode !== 'difficult' && (
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px', marginBottom: '24px' }}>
+              <div style={{ display: 'flex', gap: '12px', marginBottom: '24px', flexWrap: 'nowrap', overflowX: 'auto' }}>
                 <button
                   className={`btn ${activeMode === null || activeMode === 'continue' ? 'btn-primary' : ''}`}
                   onClick={() => handleModeSelect('continue')}
-                  style={{ padding: '16px', fontSize: '16px', fontWeight: 600 }}
+                  style={{ padding: '16px', fontSize: '16px', fontWeight: 600, whiteSpace: 'nowrap', flexShrink: 0 }}
                 >
                   Continue
                 </button>
                 <button
                   className={`btn ${activeMode === 'learn' ? 'btn-primary' : ''}`}
                   onClick={() => handleModeSelect('learn')}
-                  style={{ padding: '16px', fontSize: '16px', fontWeight: 600 }}
+                  style={{ padding: '16px', fontSize: '16px', fontWeight: 600, whiteSpace: 'nowrap', flexShrink: 0 }}
                 >
                   Learn Sentences
                 </button>
                 <button
                   className={`btn ${activeMode === 'review' ? 'btn-review' : ''}`}
                   onClick={() => handleModeSelect('review')}
-                  style={{ padding: '16px', fontSize: '16px', fontWeight: 600 }}
+                  style={{ padding: '16px', fontSize: '16px', fontWeight: 600, whiteSpace: 'nowrap', flexShrink: 0 }}
                 >
                   Review Sentences
                 </button>
                 <button
                   className={`btn ${(activeMode as string) === 'speed' ? 'btn-quick-review' : ''}`}
                   onClick={() => handleModeSelect('speed')}
-                  style={{ padding: '16px', fontSize: '16px', fontWeight: 600 }}
+                  style={{ padding: '16px', fontSize: '16px', fontWeight: 600, whiteSpace: 'nowrap', flexShrink: 0 }}
                 >
                   Speed Review
                 </button>
@@ -296,7 +311,9 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
                     fontWeight: 600,
                     backgroundColor: (activeMode as string) === 'flashcards' ? '#9370db' : undefined,
                     color: (activeMode as string) === 'flashcards' ? '#ffffff' : undefined,
-                    borderColor: (activeMode as string) === 'flashcards' ? '#9370db' : undefined
+                    borderColor: (activeMode as string) === 'flashcards' ? '#9370db' : undefined,
+                    whiteSpace: 'nowrap',
+                    flexShrink: 0
                   }}
                 >
                   Flashcards
@@ -310,7 +327,9 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
                     fontWeight: 600,
                     backgroundColor: (activeMode as string) === 'difficult' ? '#ffd700' : undefined,
                     color: (activeMode as string) === 'difficult' ? '#24292f' : undefined,
-                    borderColor: (activeMode as string) === 'difficult' ? '#ffd700' : undefined
+                    borderColor: (activeMode as string) === 'difficult' ? '#ffd700' : undefined,
+                    whiteSpace: 'nowrap',
+                    flexShrink: 0
                   }}
                 >
                   Difficult Sentences

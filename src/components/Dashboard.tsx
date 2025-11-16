@@ -4,7 +4,7 @@ import { AppState, Course } from '../types';
 import { storage } from '../storage';
 import { LANGUAGES } from '../utils/languages';
 import { parseCSV, createWordsFromCSV } from '../utils/csv';
-import { getCourseStreak } from '../utils/activityTracking';
+import StreakDisplay from './StreakDisplay';
 import CreateCourseModal from './CreateCourseModal';
 import CreateClozeCourseModal from './CreateClozeCourseModal';
 import CreateCharacterCourseModal from './CreateCharacterCourseModal';
@@ -19,6 +19,7 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showCreateClozeModal, setShowCreateClozeModal] = useState(false);
   const [showCreateCharacterModal, setShowCreateCharacterModal] = useState(false);
+  const [showCreateDropdown, setShowCreateDropdown] = useState(false);
   const [courseTypeFilter, setCourseTypeFilter] = useState<'all' | 'words' | 'sentences' | 'characters'>('all');
 
   const handleCourseClick = (courseId: string, type: 'words' | 'sentences' | 'characters') => {
@@ -48,16 +49,112 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
     <div>
       <div className="card-header">
         <h1 className="card-title">My Courses</h1>
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <button className="btn btn-primary" onClick={() => setShowCreateModal(true)}>
-            Create Word Course
+        <div style={{ position: 'relative', display: 'inline-block' }}>
+          <button 
+            className="btn btn-primary" 
+            onClick={() => setShowCreateDropdown(!showCreateDropdown)}
+            style={{ 
+              position: 'relative',
+              padding: '12px 24px',
+              fontSize: '16px',
+              fontWeight: 600
+            }}
+          >
+            Create
           </button>
-          <button className="btn btn-primary" onClick={() => setShowCreateClozeModal(true)}>
-            Create Sentence Course
-          </button>
-          <button className="btn btn-primary" onClick={() => setShowCreateCharacterModal(true)}>
-            Create Character Course
-          </button>
+          {showCreateDropdown && (
+            <>
+              <div 
+                style={{
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  zIndex: 998
+                }}
+                onClick={() => setShowCreateDropdown(false)}
+              />
+              <div 
+                style={{
+                  position: 'absolute',
+                  top: '100%',
+                  right: 0,
+                  marginTop: '4px',
+                  backgroundColor: '#ffffff',
+                  border: '1px solid #d0d7de',
+                  borderRadius: '6px',
+                  boxShadow: '0 8px 24px rgba(140, 149, 159, 0.2)',
+                  minWidth: '200px',
+                  zIndex: 999,
+                  animation: 'dropdownFadeIn 0.15s ease-out',
+                  transformOrigin: 'top right'
+                }}
+              >
+                <button
+                  className="btn"
+                  style={{
+                    width: '100%',
+                    textAlign: 'left',
+                    border: 'none',
+                    borderRadius: '6px 6px 0 0',
+                    padding: '8px 16px',
+                    backgroundColor: 'transparent',
+                    cursor: 'pointer'
+                  }}
+                  onClick={() => {
+                    setShowCreateModal(true);
+                    setShowCreateDropdown(false);
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f6f8fa'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                >
+                  Word Course
+                </button>
+                <button
+                  className="btn"
+                  style={{
+                    width: '100%',
+                    textAlign: 'left',
+                    border: 'none',
+                    borderTop: '1px solid #d0d7de',
+                    padding: '8px 16px',
+                    backgroundColor: 'transparent',
+                    cursor: 'pointer'
+                  }}
+                  onClick={() => {
+                    setShowCreateClozeModal(true);
+                    setShowCreateDropdown(false);
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f6f8fa'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                >
+                  Sentence Course
+                </button>
+                <button
+                  className="btn"
+                  style={{
+                    width: '100%',
+                    textAlign: 'left',
+                    border: 'none',
+                    borderTop: '1px solid #d0d7de',
+                    borderRadius: '0 0 6px 6px',
+                    padding: '8px 16px',
+                    backgroundColor: 'transparent',
+                    cursor: 'pointer'
+                  }}
+                  onClick={() => {
+                    setShowCreateCharacterModal(true);
+                    setShowCreateDropdown(false);
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f6f8fa'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                >
+                  Character Course
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
 
@@ -103,7 +200,6 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
             const learned = words.filter(w => w.srsLevel > 0).length;
             const total = words.length;
             const progressPercent = total > 0 ? (learned / total) * 100 : 0;
-            const streak = getCourseStreak(course.id);
             
             // Word counts by type
             const wordsToLearn = words.filter(w => w.srsLevel === 0).length;
@@ -188,13 +284,15 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
                   <span style={{ color: '#656d76' }}>💧 {wordsToReview}</span>
                   <span style={{ color: '#656d76' }}>⚡ {difficultWords}</span>
                 </div>
-                <div style={{ marginTop: '8px', display: 'flex', gap: '8px', flexWrap: 'wrap', fontSize: '12px' }}>
+                <div style={{ marginTop: '8px', display: 'flex', gap: '8px', flexWrap: 'wrap', fontSize: '12px', alignItems: 'center' }}>
                   {srsCounts.seed > 0 && <span style={{ color: '#656d76' }}>🌱 {srsCounts.seed}</span>}
                   {srsCounts.sprout > 0 && <span style={{ color: '#656d76' }}>🌿 {srsCounts.sprout}</span>}
                   {srsCounts.seedling > 0 && <span style={{ color: '#656d76' }}>🌾 {srsCounts.seedling}</span>}
                   {srsCounts.plant > 0 && <span style={{ color: '#656d76' }}>🌳 {srsCounts.plant}</span>}
                   {srsCounts.tree > 0 && <span style={{ color: '#656d76' }}>🌲 {srsCounts.tree}</span>}
-                  <span style={{ color: '#656d76' }} title={`${streak?.currentStreak || 0} day streak`}>🔥 {streak?.currentStreak || 0}</span>
+                </div>
+                <div style={{ marginTop: '8px' }}>
+                  <StreakDisplay courseId={course.id} compact={true} />
                 </div>
               </div>
             );
@@ -206,7 +304,6 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
             const learned = sentences.filter(s => s.masteryLevel !== 'seed' && s.masteryLevel !== 'tree').length;
             const total = sentences.length;
             const progressPercent = total > 0 ? (learned / total) * 100 : 0;
-            const streak = getCourseStreak(course.id);
             
             // Sentence counts by type
             const sentencesToLearn = sentences.filter(s => s.srsLevel === 0).length;
@@ -290,13 +387,15 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
                   <span style={{ color: '#656d76' }}>💧 {sentencesToReview}</span>
                   <span style={{ color: '#656d76' }}>⚡ {difficultSentences}</span>
                 </div>
-                <div style={{ marginTop: '8px', display: 'flex', gap: '8px', flexWrap: 'wrap', fontSize: '12px' }}>
+                <div style={{ marginTop: '8px', display: 'flex', gap: '8px', flexWrap: 'wrap', fontSize: '12px', alignItems: 'center' }}>
                   {srsCounts.seed > 0 && <span style={{ color: '#656d76' }}>🌱 {srsCounts.seed}</span>}
                   {srsCounts.sprout > 0 && <span style={{ color: '#656d76' }}>🌿 {srsCounts.sprout}</span>}
                   {srsCounts.seedling > 0 && <span style={{ color: '#656d76' }}>🌾 {srsCounts.seedling}</span>}
                   {srsCounts.plant > 0 && <span style={{ color: '#656d76' }}>🌳 {srsCounts.plant}</span>}
                   {srsCounts.tree > 0 && <span style={{ color: '#656d76' }}>🌲 {srsCounts.tree}</span>}
-                  <span style={{ color: '#656d76' }} title={`${streak?.currentStreak || 0} day streak`}>🔥 {streak?.currentStreak || 0}</span>
+                </div>
+                <div style={{ marginTop: '8px' }}>
+                  <StreakDisplay courseId={course.id} compact={true} />
                 </div>
               </div>
             );
@@ -308,7 +407,6 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
             const learned = kanji.filter(k => k.srsStage !== 'locked' && k.srsStage !== 'tree').length;
             const total = kanji.length;
             const progressPercent = total > 0 ? (learned / total) * 100 : 0;
-            const streak = getCourseStreak(course.id);
             
             // Character counts by type
             const charactersToLearn = kanji.filter(k => k.srsStage === 'locked').length;
@@ -378,6 +476,13 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
                   {course.language === 'japanese' ? 'Japanese' : 'Chinese'} Characters
                 </div>
                 <div className="tag" style={{ marginTop: '8px' }}>Character Course</div>
+                {course.tags && course.tags.length > 0 && (
+                  <div style={{ marginTop: '8px' }}>
+                    {course.tags.map(tag => (
+                      <span key={tag} className="tag">{tag}</span>
+                    ))}
+                  </div>
+                )}
                 <div className="progress-bar" style={{ marginTop: '12px' }}>
                   <div className="progress-fill" style={{ width: `${progressPercent}%` }} />
                 </div>
@@ -386,14 +491,16 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
                   <span style={{ color: '#656d76' }}>💧 {charactersToReview}</span>
                   <span style={{ color: '#656d76' }}>⚡ {difficultCharacters}</span>
                 </div>
-                <div style={{ marginTop: '8px', display: 'flex', gap: '8px', flexWrap: 'wrap', fontSize: '12px' }}>
+                <div style={{ marginTop: '8px', display: 'flex', gap: '8px', flexWrap: 'wrap', fontSize: '12px', alignItems: 'center' }}>
                   {srsCounts.locked > 0 && <span style={{ color: '#656d76' }}>🔒 {srsCounts.locked}</span>}
                   {srsCounts.seed > 0 && <span style={{ color: '#656d76' }}>🌱 {srsCounts.seed}</span>}
                   {srsCounts.sprout > 0 && <span style={{ color: '#656d76' }}>🌿 {srsCounts.sprout}</span>}
                   {srsCounts.seedling > 0 && <span style={{ color: '#656d76' }}>🌾 {srsCounts.seedling}</span>}
                   {srsCounts.plant > 0 && <span style={{ color: '#656d76' }}>🌳 {srsCounts.plant}</span>}
                   {srsCounts.tree > 0 && <span style={{ color: '#656d76' }}>🌲 {srsCounts.tree}</span>}
-                  <span style={{ color: '#656d76' }} title={`${streak?.currentStreak || 0} day streak`}>🔥 {streak?.currentStreak || 0}</span>
+                </div>
+                <div style={{ marginTop: '8px' }}>
+                  <StreakDisplay courseId={course.id} compact={true} />
                 </div>
               </div>
             );

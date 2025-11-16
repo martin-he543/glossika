@@ -12,6 +12,7 @@ import DifficultWords from './DifficultWords';
 import CourseSettings from './CourseSettings';
 import LearnWordsModal from './LearnWordsModal';
 import LevelDetailModal from './LevelDetailModal';
+import StreakDisplay from './StreakDisplay';
 
 interface CourseDetailProps {
   appState: AppState;
@@ -85,10 +86,18 @@ export default function CourseDetail({ appState, updateState }: CourseDetailProp
           <Link to={`/leaderboard/course/${course.id}`} className="btn">
             Leaderboard
           </Link>
+          <Link to="/glossary" className="btn">
+            Glossary
+          </Link>
           <button className="btn" onClick={() => setShowSettings(true)}>
             Settings
           </button>
         </div>
+      </div>
+
+      {/* Streak Display */}
+      <div style={{ marginBottom: '24px' }}>
+        <StreakDisplay courseId={course.id} />
       </div>
 
       {/* Course Statistics */}
@@ -194,6 +203,19 @@ export default function CourseDetail({ appState, updateState }: CourseDetailProp
             setActiveTab('learn');
             setShowLearnModal(true);
           }}
+          onMouseEnter={(e) => {
+            if (!(showLearnModal && learnModalMode === 'learn')) {
+              e.currentTarget.style.backgroundColor = '#2da44e';
+              e.currentTarget.style.color = '#ffffff';
+              e.currentTarget.style.borderColor = '#2da44e';
+            }
+          }}
+          onMouseLeave={(e) => {
+            const isActive = showLearnModal && learnModalMode === 'learn';
+            e.currentTarget.style.backgroundColor = isActive ? '#2da44e' : '';
+            e.currentTarget.style.color = isActive ? '#ffffff' : '';
+            e.currentTarget.style.borderColor = isActive ? '#2da44e' : '';
+          }}
           style={{ 
             padding: '16px', 
             fontSize: '16px', 
@@ -211,6 +233,19 @@ export default function CourseDetail({ appState, updateState }: CourseDetailProp
             setLearnModalMode('review');
             setActiveTab('review');
             setShowLearnModal(true);
+          }}
+          onMouseEnter={(e) => {
+            if (!(showLearnModal && learnModalMode === 'review')) {
+              e.currentTarget.style.backgroundColor = '#87ceeb';
+              e.currentTarget.style.color = '#ffffff';
+              e.currentTarget.style.borderColor = '#87ceeb';
+            }
+          }}
+          onMouseLeave={(e) => {
+            const isActive = showLearnModal && learnModalMode === 'review';
+            e.currentTarget.style.backgroundColor = isActive ? '#87ceeb' : '';
+            e.currentTarget.style.color = isActive ? '#ffffff' : '';
+            e.currentTarget.style.borderColor = isActive ? '#87ceeb' : '';
           }}
           style={{ 
             padding: '16px', 
@@ -230,6 +265,19 @@ export default function CourseDetail({ appState, updateState }: CourseDetailProp
             setActiveTab('speed');
             setShowLearnModal(true);
           }}
+          onMouseEnter={(e) => {
+            if (!(showLearnModal && learnModalMode === 'speed')) {
+              e.currentTarget.style.backgroundColor = '#ff4444';
+              e.currentTarget.style.color = '#ffffff';
+              e.currentTarget.style.borderColor = '#ff4444';
+            }
+          }}
+          onMouseLeave={(e) => {
+            const isActive = showLearnModal && learnModalMode === 'speed';
+            e.currentTarget.style.backgroundColor = isActive ? '#ff4444' : '';
+            e.currentTarget.style.color = isActive ? '#ffffff' : '';
+            e.currentTarget.style.borderColor = isActive ? '#ff4444' : '';
+          }}
           style={{ 
             padding: '16px', 
             fontSize: '16px', 
@@ -248,6 +296,19 @@ export default function CourseDetail({ appState, updateState }: CourseDetailProp
             setActiveTab('flashcards');
             setShowLearnModal(true);
           }}
+          onMouseEnter={(e) => {
+            if (!(showLearnModal && learnModalMode === 'flashcards')) {
+              e.currentTarget.style.backgroundColor = '#9370db';
+              e.currentTarget.style.color = '#ffffff';
+              e.currentTarget.style.borderColor = '#9370db';
+            }
+          }}
+          onMouseLeave={(e) => {
+            const isActive = showLearnModal && learnModalMode === 'flashcards';
+            e.currentTarget.style.backgroundColor = isActive ? '#9370db' : '';
+            e.currentTarget.style.color = isActive ? '#ffffff' : '';
+            e.currentTarget.style.borderColor = isActive ? '#9370db' : '';
+          }}
           style={{ 
             padding: '16px', 
             fontSize: '16px', 
@@ -265,6 +326,19 @@ export default function CourseDetail({ appState, updateState }: CourseDetailProp
             setLearnModalMode('difficult');
             setActiveTab('difficult');
             setShowLearnModal(true);
+          }}
+          onMouseEnter={(e) => {
+            if (!(showLearnModal && learnModalMode === 'difficult')) {
+              e.currentTarget.style.backgroundColor = '#ffd700';
+              e.currentTarget.style.color = '#24292f';
+              e.currentTarget.style.borderColor = '#ffd700';
+            }
+          }}
+          onMouseLeave={(e) => {
+            const isActive = showLearnModal && learnModalMode === 'difficult';
+            e.currentTarget.style.backgroundColor = isActive ? '#ffd700' : '';
+            e.currentTarget.style.color = isActive ? '#24292f' : '';
+            e.currentTarget.style.borderColor = isActive ? '#ffd700' : '';
           }}
           style={{ 
             padding: '16px', 

@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { AppState } from '../types';
 import { storage } from '../storage';
 import CharacterCourseSettings from './CharacterCourseSettings';
@@ -76,6 +76,12 @@ export default function CharacterCourseDetail({ appState, updateState }: Charact
           <button className="btn btn-primary" onClick={() => navigate(`/character-course/${courseId}/practice`)}>
             Practice
           </button>
+          <Link to={`/leaderboard/course/${courseId}`} className="btn">
+            Leaderboard
+          </Link>
+          <Link to="/glossary" className="btn">
+            Glossary
+          </Link>
           <button className="btn" onClick={() => setShowSettings(true)}>
             Settings
           </button>

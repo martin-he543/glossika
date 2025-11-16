@@ -23,14 +23,17 @@ export default function SpeedReview({ courseId, words, course, onUpdate }: Speed
   const [score, setScore] = useState(0);
   const [total, setTotal] = useState(0);
   const [reviewWords, setReviewWords] = useState<Word[]>([]);
-  const [timeMinutes, setTimeMinutes] = useState(5);
+  const [timeMinutes, setTimeMinutes] = useState(2);
   const [direction, setDirection] = useState<'native-to-target' | 'target-to-native'>('native-to-target');
+  const [mode, setMode] = useState<'Classic' | 'Three Strikes'>('Classic');
+  const [hearts, setHearts] = useState(3);
+  const [questionTimeLeft, setQuestionTimeLeft] = useState(5);
 
   useEffect(() => {
     if (isActive && countdown > 0) {
       const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
       return () => clearTimeout(timer);
-    } else if (isActive && countdown === 0 && timeLeft > 0) {
+    } else if (isActive && countdown === 0 && mode === 'Classic' && timeLeft > 0) {
       const timer = setTimeout(() => {
         setTimeLeft(timeLeft - 1);
         if (timeLeft === 1) {
@@ -38,8 +41,18 @@ export default function SpeedReview({ courseId, words, course, onUpdate }: Speed
         }
       }, 1000);
       return () => clearTimeout(timer);
+    } else if (isActive && countdown === 0 && mode === 'Three Strikes' && currentWord && !selectedAnswer && questionTimeLeft > 0) {
+      const timer = setTimeout(() => {
+        const newTimeLeft = questionTimeLeft - 1;
+        setQuestionTimeLeft(newTimeLeft);
+        if (newTimeLeft <= 0) {
+          // Time's up - count as wrong answer
+          handleTimeUp();
+        }
+      }, 1000);
+      return () => clearTimeout(timer);
     }
-  }, [isActive, countdown, timeLeft]);
+  }, [isActive, countdown, timeLeft, mode, currentWord, questionTimeLeft, selectedAnswer, handleTimeUp]);
 
   const startSession = () => {
     const wordsToReview = words
@@ -56,6 +69,8 @@ export default function SpeedReview({ courseId, words, course, onUpdate }: Speed
     setTimeLeft(timeMinutes * 60); // Convert minutes to seconds
     setScore(0);
     setTotal(0);
+    setHearts(3);
+    setQuestionTimeLeft(5);
     setIsActive(true);
   };
 
@@ -74,6 +89,7 @@ export default function SpeedReview({ courseId, words, course, onUpdate }: Speed
     const randomWord = reviewWords[Math.floor(Math.random() * reviewWords.length)];
     setCurrentWord(randomWord);
     setSelectedAnswer('');
+    setQuestionTimeLeft(5); // Reset question timer for Three Strikes mode
     generateOptions(randomWord);
   };
 
@@ -109,6 +125,21 @@ export default function SpeedReview({ courseId, words, course, onUpdate }: Speed
       }, 300);
     } else {
       updateWordProgress(false);
+      
+      // In Three Strikes mode, lose a heart
+      if (mode === 'Three Strikes') {
+        const newHearts = hearts - 1;
+        setHearts(newHearts);
+        
+        if (newHearts <= 0) {
+          // No hearts left, end session
+          setTimeout(() => {
+            endSession();
+          }, 1000);
+          return;
+        }
+      }
+      
       // Show feedback briefly, then move on
       setTimeout(() => {
         loadNextWord();
@@ -145,6 +176,30 @@ export default function SpeedReview({ courseId, words, course, onUpdate }: Speed
     setCurrentWord(null);
   };
 
+  const handleTimeUp = useCallback(() => {
+    if (!currentWord || selectedAnswer) return;
+    
+    // Mark as wrong answer and lose a heart
+    setSelectedAnswer('TIMEOUT');
+    setTotal(prev => prev + 1);
+    updateWordProgress(false);
+    setHearts(prev => {
+      const newHearts = prev - 1;
+      if (newHearts <= 0) {
+        // No hearts left, end session
+        setTimeout(() => {
+          endSession();
+        }, 1000);
+      } else {
+        // Move to next question
+        setTimeout(() => {
+          loadNextWord();
+        }, 1000);
+      }
+      return newHearts;
+    });
+  }, [currentWord, selectedAnswer, updateWordProgress, endSession, loadNextWord]);
+
   // Keyboard shortcuts for speed review
   useEffect(() => {
     if (!isActive || countdown > 0 || !currentWord) return;
@@ -173,20 +228,22 @@ export default function SpeedReview({ courseId, words, course, onUpdate }: Speed
             Test your vocabulary with a timed challenge!
           </p>
 
-          <div className="form-group">
-            <label className="form-label">Time (minutes)</label>
-            <input
-              type="number"
-              className="input"
-              value={timeMinutes}
-              onChange={(e) => setTimeMinutes(Math.max(1, parseInt(e.target.value) || 5))}
-              min={1}
-              max={60}
-            />
-            <div style={{ fontSize: '12px', color: '#656d76', marginTop: '4px' }}>
-              How long do you want to review? (1-60 minutes)
+          {mode === 'Classic' && (
+            <div className="form-group">
+              <label className="form-label">Time (minutes)</label>
+              <input
+                type="number"
+                className="input"
+                value={timeMinutes}
+                onChange={(e) => setTimeMinutes(Math.max(1, parseInt(e.target.value) || 2))}
+                min={1}
+                max={60}
+              />
+              <div style={{ fontSize: '12px', color: '#656d76', marginTop: '4px' }}>
+                How long do you want to review? (1-60 minutes)
+              </div>
             </div>
-          </div>
+          )}
 
           <div style={{ marginBottom: '16px' }}>
             <label className="form-label">Direction</label>
@@ -204,6 +261,29 @@ export default function SpeedReview({ courseId, words, course, onUpdate }: Speed
                 {course ? `${course.targetLanguage} → ${course.nativeLanguage}` : 'Target → Native'}
               </button>
             </div>
+          </div>
+
+          <div style={{ marginBottom: '16px' }}>
+            <label className="form-label">Mode</label>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <button
+                className={`btn ${mode === 'Classic' ? 'btn-primary' : ''}`}
+                onClick={() => setMode('Classic')}
+              >
+                Classic
+              </button>
+              <button
+                className={`btn ${mode === 'Three Strikes' ? 'btn-primary' : ''}`}
+                onClick={() => setMode('Three Strikes')}
+              >
+                Three Strikes
+              </button>
+            </div>
+            {mode === 'Three Strikes' && (
+              <div style={{ fontSize: '12px', color: '#656d76', marginTop: '4px' }}>
+                You have 3 hearts. Each wrong answer loses a heart. 5 seconds per question.
+              </div>
+            )}
           </div>
 
           {total > 0 && (
@@ -247,7 +327,36 @@ export default function SpeedReview({ courseId, words, course, onUpdate }: Speed
 
   return (
     <div className="quiz-container">
-      <div className="speed-review-timer">{timeLeft}s</div>
+      {/* Timer display - different for each mode */}
+      {mode === 'Classic' ? (
+        <div className="speed-review-timer">{timeLeft}s</div>
+      ) : (
+        <div className="speed-review-timer">{questionTimeLeft}s</div>
+      )}
+      
+      {/* Hearts display for Three Strikes mode */}
+      {mode === 'Three Strikes' && (
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          gap: '8px', 
+          marginBottom: '16px',
+          fontSize: '24px'
+        }}>
+          {[1, 2, 3].map((heart) => (
+            <span 
+              key={heart} 
+              style={{ 
+                opacity: heart <= hearts ? 1 : 0.3,
+                transition: 'opacity 0.3s'
+              }}
+            >
+              ❤️
+            </span>
+          ))}
+        </div>
+      )}
+      
       <div style={{ textAlign: 'center', marginBottom: '16px' }}>
         <span style={{ fontSize: '18px', fontWeight: 600 }}>Score: {score} / {total}</span>
       </div>

@@ -75,6 +75,11 @@ export default function UserAvatar({ onLogout }: UserAvatarProps) {
     navigate('/leaderboard');
   };
 
+  const handleGlossary = () => {
+    setShowDropdown(false);
+    navigate('/glossary');
+  };
+
   const handleSignOut = () => {
     setShowDropdown(false);
     onLogout();
@@ -118,6 +123,9 @@ export default function UserAvatar({ onLogout }: UserAvatarProps) {
           </button>
           <button className="user-avatar-dropdown-item" onClick={handleLeaderboard}>
             Leaderboard
+          </button>
+          <button className="user-avatar-dropdown-item" onClick={handleGlossary}>
+            Glossary
           </button>
           <div className="user-avatar-dropdown-divider" />
           <button className="user-avatar-dropdown-item" onClick={handleSignOut}>

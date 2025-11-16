@@ -85,6 +85,19 @@ export default function CreateClozeCourseModal({ onClose, onSuccess }: CreateClo
       return;
     }
 
+    // Check for duplicate course name across all course types
+    const allCourses = storage.load();
+    const existingNames = [
+      ...(allCourses.courses || []).map(c => c.name.toLowerCase().trim()),
+      ...(allCourses.characterCourses || []).map(c => c.name.toLowerCase().trim()),
+      ...(allCourses.clozeCourses || []).map(c => c.name.toLowerCase().trim())
+    ];
+    
+    if (existingNames.includes(name.toLowerCase().trim())) {
+      setError(`A course with the name "${name}" already exists. Course names must be unique.`);
+      return;
+    }
+
     setLoading(true);
     setError(null);
     setProgress(0);
