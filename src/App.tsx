@@ -7,8 +7,6 @@ import Dashboard from './components/Dashboard';
 import CourseDetail from './components/CourseDetail';
 import CourseRepository from './components/CourseRepository';
 import ClozeCourseDetail from './components/ClozeCourseDetail';
-import CharacterCourseDetail from './components/CharacterCourseDetail';
-import CharacterCoursePractice from './components/CharacterCoursePractice';
 import Glyphy from './components/Glyphy';
 import GlyphyNew from './components/GlyphyNew';
 import Glossary from './components/Glossary';
@@ -19,7 +17,6 @@ import Auth from './components/Auth';
 import UserAvatar from './components/UserAvatar';
 import EditWordCoursePage from './components/EditWordCoursePage';
 import EditClozeCoursePage from './components/EditClozeCoursePage';
-import EditCharacterCoursePage from './components/EditCharacterCoursePage';
 import './App.css';
 import './components/UserAvatar.css';
 
@@ -128,9 +125,6 @@ function App() {
             <Route path="/repository" element={<CourseRepository appState={appState} updateState={updateState} />} />
             <Route path="/cloze-course/:courseId" element={<ClozeCourseDetailWrapper appState={appState} updateState={updateState} />} />
             <Route path="/cloze-course/:courseId/edit" element={<EditClozeCoursePage appState={appState} updateState={updateState} />} />
-            <Route path="/character-course/:courseId" element={<CharacterCourseDetail appState={appState} updateState={updateState} />} />
-            <Route path="/character-course/:courseId/edit" element={<EditCharacterCoursePage appState={appState} updateState={updateState} />} />
-            <Route path="/character-course/:courseId/practice" element={<CharacterCoursePractice appState={appState} updateState={updateState} />} />
             <Route path="/glyphy" element={<Glyphy appState={appState} updateState={updateState} />} />
             <Route path="/glossary" element={<Glossary appState={appState} updateState={updateState} />} />
             <Route path="/leaderboard" element={<Leaderboard appState={appState} />} />

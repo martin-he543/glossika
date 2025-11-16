@@ -7,7 +7,6 @@ import { parseCSV, createWordsFromCSV } from '../utils/csv';
 import StreakDisplay from './StreakDisplay';
 import CreateCourseModal from './CreateCourseModal';
 import CreateClozeCourseModal from './CreateClozeCourseModal';
-import CreateCharacterCourseModal from './CreateCharacterCourseModal';
 
 interface DashboardProps {
   appState: AppState;
@@ -18,32 +17,27 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
   const navigate = useNavigate();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showCreateClozeModal, setShowCreateClozeModal] = useState(false);
-  const [showCreateCharacterModal, setShowCreateCharacterModal] = useState(false);
   const [showCreateDropdown, setShowCreateDropdown] = useState(false);
-  const [courseTypeFilter, setCourseTypeFilter] = useState<'all' | 'words' | 'sentences' | 'characters'>('all');
+  const [courseTypeFilter, setCourseTypeFilter] = useState<'all' | 'words' | 'sentences'>('all');
 
-  const handleCourseClick = (courseId: string, type: 'words' | 'sentences' | 'characters') => {
+  const handleCourseClick = (courseId: string, type: 'words' | 'sentences') => {
     if (type === 'words') {
       navigate(`/course/${courseId}`);
     } else if (type === 'sentences') {
       navigate(`/cloze-course/${courseId}`);
-    } else if (type === 'characters') {
-      navigate(`/character-course/${courseId}`);
     }
   };
 
 
   const wordCourses = appState.courses || [];
   const sentenceCourses = appState.clozeCourses || [];
-  const characterCourses = appState.characterCourses || [];
 
   const filteredCourses = {
     words: wordCourses,
     sentences: sentenceCourses,
-    characters: characterCourses,
   };
 
-  const allCoursesCount = wordCourses.length + sentenceCourses.length + characterCourses.length;
+  const allCoursesCount = wordCourses.length + sentenceCourses.length;
 
   return (
     <div>
@@ -131,27 +125,6 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
                 >
                   Sentence Course
                 </button>
-                <button
-                  className="btn"
-                  style={{
-                    width: '100%',
-                    textAlign: 'left',
-                    border: 'none',
-                    borderTop: '1px solid #d0d7de',
-                    borderRadius: '0 0 6px 6px',
-                    padding: '8px 16px',
-                    backgroundColor: 'transparent',
-                    cursor: 'pointer'
-                  }}
-                  onClick={() => {
-                    setShowCreateCharacterModal(true);
-                    setShowCreateDropdown(false);
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f6f8fa'}
-                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                >
-                  Character Course
-                </button>
               </div>
             </>
           )}
@@ -176,12 +149,6 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
           onClick={() => setCourseTypeFilter('sentences')}
         >
           My Sentence Courses ({sentenceCourses.length})
-        </button>
-        <button
-          className={`tab ${courseTypeFilter === 'characters' ? 'active' : ''}`}
-          onClick={() => setCourseTypeFilter('characters')}
-        >
-          My Character Courses ({characterCourses.length})
         </button>
       </div>
 
@@ -401,110 +368,6 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
             );
           })}
 
-          {/* Character Courses */}
-          {(courseTypeFilter === 'all' || courseTypeFilter === 'characters') && characterCourses.map(course => {
-            const kanji = appState.kanji.filter(k => k.language === course.language);
-            const learned = kanji.filter(k => k.srsStage !== 'locked' && k.srsStage !== 'tree').length;
-            const total = kanji.length;
-            const progressPercent = total > 0 ? (learned / total) * 100 : 0;
-            
-            // Character counts by type
-            const charactersToLearn = kanji.filter(k => k.srsStage === 'locked').length;
-            const charactersToReview = kanji.filter(k => k.srsStage !== 'locked' && k.srsStage !== 'tree').length;
-            const difficultCharacters = kanji.filter(k => k.wrongCount > k.correctCount).length;
-            
-            // SRS stage counts
-            const srsCounts = {
-              locked: kanji.filter(k => k.srsStage === 'locked').length,
-              seed: kanji.filter(k => k.srsStage === 'seed').length,
-              sprout: kanji.filter(k => k.srsStage === 'sprout').length,
-              seedling: kanji.filter(k => k.srsStage === 'seedling').length,
-              plant: kanji.filter(k => k.srsStage === 'plant').length,
-              tree: kanji.filter(k => k.srsStage === 'tree').length,
-            };
-
-            return (
-              <div
-                key={course.id}
-                className="course-card"
-                onClick={() => handleCourseClick(course.id, 'characters')}
-                style={{ position: 'relative' }}
-              >
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (confirm(`Are you sure you want to delete "${course.name}"? This will permanently delete the course and all its characters. This action cannot be undone.`)) {
-                      storage.deleteCharacterCourse(course.id);
-                      updateState({
-                        characterCourses: storage.load().characterCourses,
-                        kanji: storage.load().kanji,
-                      });
-                    }
-                  }}
-                  style={{
-                    position: 'absolute',
-                    top: '8px',
-                    right: '8px',
-                    background: 'none',
-                    border: 'none',
-                    fontSize: '20px',
-                    color: '#da3633',
-                    cursor: 'pointer',
-                    padding: '4px',
-                    borderRadius: '4px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: '24px',
-                    height: '24px',
-                    transition: 'background-color 0.2s',
-                    zIndex: 10,
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = '#ffebe9';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'transparent';
-                  }}
-                  title="Delete course"
-                  aria-label="Delete course"
-                >
-                  ×
-                </button>
-                <div className="course-card-title">{course.name}</div>
-                <div className="course-card-meta">
-                  {course.language === 'japanese' ? 'Japanese' : 'Chinese'} Characters
-                </div>
-                <div className="tag" style={{ marginTop: '8px' }}>Character Course</div>
-                {course.tags && course.tags.length > 0 && (
-                  <div style={{ marginTop: '8px' }}>
-                    {course.tags.map(tag => (
-                      <span key={tag} className="tag">{tag}</span>
-                    ))}
-                  </div>
-                )}
-                <div className="progress-bar" style={{ marginTop: '12px' }}>
-                  <div className="progress-fill" style={{ width: `${progressPercent}%` }} />
-                </div>
-                <div style={{ marginTop: '12px', display: 'flex', gap: '12px', flexWrap: 'wrap', fontSize: '14px' }}>
-                  <span style={{ color: '#656d76' }}>🌱 {charactersToLearn}</span>
-                  <span style={{ color: '#656d76' }}>💧 {charactersToReview}</span>
-                  <span style={{ color: '#656d76' }}>⚡ {difficultCharacters}</span>
-                </div>
-                <div style={{ marginTop: '8px', display: 'flex', gap: '8px', flexWrap: 'wrap', fontSize: '12px', alignItems: 'center' }}>
-                  {srsCounts.locked > 0 && <span style={{ color: '#656d76' }}>🔒 {srsCounts.locked}</span>}
-                  {srsCounts.seed > 0 && <span style={{ color: '#656d76' }}>🌱 {srsCounts.seed}</span>}
-                  {srsCounts.sprout > 0 && <span style={{ color: '#656d76' }}>🌿 {srsCounts.sprout}</span>}
-                  {srsCounts.seedling > 0 && <span style={{ color: '#656d76' }}>🌾 {srsCounts.seedling}</span>}
-                  {srsCounts.plant > 0 && <span style={{ color: '#656d76' }}>🌳 {srsCounts.plant}</span>}
-                  {srsCounts.tree > 0 && <span style={{ color: '#656d76' }}>🌲 {srsCounts.tree}</span>}
-                </div>
-                <div style={{ marginTop: '8px' }}>
-                  <StreakDisplay courseId={course.id} compact={true} />
-                </div>
-              </div>
-            );
-          })}
         </div>
       )}
 
@@ -536,19 +399,6 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
         />
       )}
 
-      {showCreateCharacterModal && (
-        <CreateCharacterCourseModal
-          onClose={() => setShowCreateCharacterModal(false)}
-          onSuccess={(course) => {
-            updateState({
-              characterCourses: storage.load().characterCourses,
-              kanji: storage.load().kanji,
-            });
-            setShowCreateCharacterModal(false);
-            navigate(`/character-course/${course.id}`);
-          }}
-        />
-      )}
     </div>
   );
 }

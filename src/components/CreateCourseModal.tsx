@@ -170,7 +170,6 @@ export default function CreateCourseModal({ onClose, onSuccess }: CreateCourseMo
     const allCourses = storage.load();
     const existingNames = [
       ...(allCourses.courses || []).map(c => c.name.toLowerCase().trim()),
-      ...(allCourses.characterCourses || []).map(c => c.name.toLowerCase().trim()),
       ...(allCourses.clozeCourses || []).map(c => c.name.toLowerCase().trim())
     ];
     
@@ -196,9 +195,15 @@ export default function CreateCourseModal({ onClose, onSuccess }: CreateCourseMo
       }
 
       // Parse CSV with progress tracking
+      // Progress tracking is approximate since PapaParse doesn't provide real-time progress
       const rows = await parseCSV(file, (progress) => {
-        setProgress(Math.min(40, progress * 0.4)); // 40% for parsing
+        // Only update progress after parsing is complete
+        if (progress >= 100) {
+          setProgress(50);
+        }
       }, fileDelimiter);
+      
+      console.log(`Parsed ${rows.length} rows from CSV file`);
 
       if (rows.length === 0) {
         throw new Error('CSV file is empty');

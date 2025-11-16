@@ -52,19 +52,6 @@ export interface ClozeCourse {
   author?: string;
 }
 
-export interface CharacterCourse {
-  id: string;
-  name: string;
-  language: 'japanese' | 'chinese';
-  createdAt: number;
-  isPublic: boolean;
-  tags: string[];
-  description?: string;
-  characterCount: number;
-  author?: string;
-  levels?: number[]; // Array of level numbers that exist in this course (e.g. [1, 2, 3])
-}
-
 export interface ClozeSentence {
   id: string;
   native: string;
@@ -211,7 +198,6 @@ export interface AppState {
   courseProgress: CourseProgress[];
   clozeSentences: ClozeSentence[];
   clozeCourses: ClozeCourse[];
-  characterCourses: CharacterCourse[];
   kanji: Kanji[];
   radicals: Radical[];
   vocabulary: Vocabulary[];

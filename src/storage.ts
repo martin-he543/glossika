@@ -1,4 +1,4 @@
-import { AppState, Course, Word, CourseProgress, ClozeSentence, ClozeCourse, CharacterCourse, Kanji, Radical, Vocabulary, StudyActivity, CourseStreak } from './types';
+import { AppState, Course, Word, CourseProgress, ClozeSentence, ClozeCourse, Kanji, Radical, Vocabulary, StudyActivity, CourseStreak } from './types';
 import { migrateRadical, migrateKanji, migrateVocabulary, migrateSRSStage } from './utils/srsStageMigration';
 
 const STORAGE_KEY = 'glossika_app_state';
@@ -11,7 +11,6 @@ export const storage = {
       courseProgress: [],
       clozeSentences: [],
       clozeCourses: [],
-      characterCourses: [],
       kanji: [],
       radicals: [],
       vocabulary: [],
@@ -64,7 +63,6 @@ export const storage = {
           courseProgress: parsed.courseProgress || [],
           clozeSentences: parsed.clozeSentences || [],
           clozeCourses: parsed.clozeCourses || [],
-          characterCourses: parsed.characterCourses || [],
           kanji: migratedKanji,
           radicals: migratedRadicals,
           vocabulary: migratedVocabulary,
@@ -100,7 +98,6 @@ export const storage = {
     // Check for duplicate course name across all course types
     const existingNames = [
       ...state.courses.map(c => c.name.toLowerCase().trim()),
-      ...(state.characterCourses || []).map(c => c.name.toLowerCase().trim()),
       ...(state.clozeCourses || []).map(c => c.name.toLowerCase().trim())
     ];
     
@@ -121,7 +118,6 @@ export const storage = {
       if (updates.name) {
         const existingNames = [
           ...state.courses.filter(c => c.id !== courseId).map(c => c.name.toLowerCase().trim()),
-          ...(state.characterCourses || []).map(c => c.name.toLowerCase().trim()),
           ...(state.clozeCourses || []).map(c => c.name.toLowerCase().trim())
         ];
         
@@ -195,8 +191,7 @@ export const storage = {
     // Check for duplicate course name across all course types
     const existingNames = [
       ...(state.courses || []).map(c => c.name.toLowerCase().trim()),
-      ...state.clozeCourses.map(c => c.name.toLowerCase().trim()),
-      ...(state.characterCourses || []).map(c => c.name.toLowerCase().trim())
+      ...state.clozeCourses.map(c => c.name.toLowerCase().trim())
     ];
     
     if (existingNames.includes(course.name.toLowerCase().trim())) {
@@ -216,8 +211,7 @@ export const storage = {
       if (updates.name) {
         const existingNames = [
           ...(state.courses || []).map(c => c.name.toLowerCase().trim()),
-          ...state.clozeCourses.filter(c => c.id !== courseId).map(c => c.name.toLowerCase().trim()),
-          ...(state.characterCourses || []).map(c => c.name.toLowerCase().trim())
+          ...state.clozeCourses.filter(c => c.id !== courseId).map(c => c.name.toLowerCase().trim())
         ];
         
         if (existingNames.includes(updates.name.toLowerCase().trim())) {
@@ -372,60 +366,5 @@ export const storage = {
     this.save(state);
   },
 
-  // CharacterCourse operations
-  addCharacterCourse(course: CharacterCourse): void {
-    const state = this.load();
-    if (!state.characterCourses) state.characterCourses = [];
-    
-    // Check for duplicate course name across all course types
-    const existingNames = [
-      ...(state.courses || []).map(c => c.name.toLowerCase().trim()),
-      ...(state.clozeCourses || []).map(c => c.name.toLowerCase().trim()),
-      ...state.characterCourses.map(c => c.name.toLowerCase().trim())
-    ];
-    
-    if (existingNames.includes(course.name.toLowerCase().trim())) {
-      throw new Error(`A course with the name "${course.name}" already exists. Course names must be unique.`);
-    }
-    
-    state.characterCourses.push(course);
-    this.save(state);
-  },
-
-  updateCharacterCourse(courseId: string, updates: Partial<CharacterCourse>): void {
-    const state = this.load();
-    if (!state.characterCourses) state.characterCourses = [];
-    const index = state.characterCourses.findIndex(c => c.id === courseId);
-    if (index !== -1) {
-      // If updating name, check for duplicates
-      if (updates.name) {
-        const existingNames = [
-          ...(state.courses || []).map(c => c.name.toLowerCase().trim()),
-          ...(state.clozeCourses || []).map(c => c.name.toLowerCase().trim()),
-          ...state.characterCourses.filter(c => c.id !== courseId).map(c => c.name.toLowerCase().trim())
-        ];
-        
-        if (existingNames.includes(updates.name.toLowerCase().trim())) {
-          throw new Error(`A course with the name "${updates.name}" already exists. Course names must be unique.`);
-        }
-      }
-      
-      state.characterCourses[index] = { ...state.characterCourses[index], ...updates };
-      this.save(state);
-    }
-  },
-
-  deleteCharacterCourse(courseId: string): void {
-    const state = this.load();
-    if (!state.characterCourses) state.characterCourses = [];
-    if (!state.kanji) state.kanji = [];
-    // Delete all kanji associated with this course (by language)
-    const course = state.characterCourses.find(c => c.id === courseId);
-    if (course) {
-      state.kanji = state.kanji.filter(k => k.language !== course.language);
-    }
-    state.characterCourses = state.characterCourses.filter(c => c.id !== courseId);
-    this.save(state);
-  },
 };
 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AppState, Course, ClozeCourse, CharacterCourse } from '../types';
+import { AppState, Course, ClozeCourse } from '../types';
 import { storage } from '../storage';
 
 interface CourseRepositoryProps {
@@ -13,35 +13,24 @@ export default function CourseRepository({ appState, updateState }: CourseReposi
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedLanguage, setSelectedLanguage] = useState<string>('all');
   const [selectedTag, setSelectedTag] = useState<string>('all');
-  const [courseType, setCourseType] = useState<'words' | 'sentences' | 'characters'>('words');
+  const [courseType, setCourseType] = useState<'words' | 'sentences'>('words');
 
   const publicCourses = courseType === 'words' 
     ? appState.courses.filter(c => c.isPublic)
-    : courseType === 'sentences'
-    ? (appState.clozeCourses || []).filter(c => c.isPublic)
-    : (appState.characterCourses || []).filter(c => c.isPublic);
+    : (appState.clozeCourses || []).filter(c => c.isPublic);
   
   // Get unique languages and tags
-  const languages = courseType === 'characters'
-    ? Array.from(new Set((publicCourses as CharacterCourse[]).map(c => c.language === 'japanese' ? 'Japanese' : 'Chinese')))
-    : Array.from(new Set((publicCourses as (Course | ClozeCourse)[]).flatMap(c => [c.nativeLanguage, c.targetLanguage])));
-  const tags = Array.from(new Set((publicCourses as (Course | ClozeCourse | CharacterCourse)[]).flatMap(c => c.tags || [])));
+  const languages = Array.from(new Set((publicCourses as (Course | ClozeCourse)[]).flatMap(c => [c.nativeLanguage, c.targetLanguage])));
+  const tags = Array.from(new Set((publicCourses as (Course | ClozeCourse)[]).flatMap(c => c.tags || [])));
 
   const filteredCourses = publicCourses.filter(course => {
     const matchesSearch = course.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (course.description || '').toLowerCase().includes(searchQuery.toLowerCase());
     
-    let matchesLanguage = true;
-    if (courseType === 'characters') {
-      const charCourse = course as CharacterCourse;
-      const courseLang = charCourse.language === 'japanese' ? 'Japanese' : 'Chinese';
-      matchesLanguage = selectedLanguage === 'all' || courseLang === selectedLanguage;
-    } else {
-      const wordOrSentenceCourse = course as Course | ClozeCourse;
-      matchesLanguage = selectedLanguage === 'all' ||
-        wordOrSentenceCourse.nativeLanguage === selectedLanguage ||
-        wordOrSentenceCourse.targetLanguage === selectedLanguage;
-    }
+    const wordOrSentenceCourse = course as Course | ClozeCourse;
+    const matchesLanguage = selectedLanguage === 'all' ||
+      wordOrSentenceCourse.nativeLanguage === selectedLanguage ||
+      wordOrSentenceCourse.targetLanguage === selectedLanguage;
     
     const matchesTag = selectedTag === 'all' ||
       (course.tags || []).includes(selectedTag);
@@ -49,79 +38,8 @@ export default function CourseRepository({ appState, updateState }: CourseReposi
     return matchesSearch && matchesLanguage && matchesTag;
   });
 
-  const handleImportCourse = (course: Course | ClozeCourse | CharacterCourse) => {
-    if (courseType === 'characters') {
-      const charCourse = course as CharacterCourse;
-      // Copy character course and associated items to user's collection
-      const newCourse: CharacterCourse = {
-        ...charCourse,
-        id: `character-course-${Date.now()}`,
-        isPublic: false,
-        createdAt: Date.now(),
-      };
-
-      // Copy radicals, kanji, and vocabulary associated with this course
-      const courseRadicals = appState.radicals
-        .filter(r => r.language === charCourse.language)
-        .map(r => ({
-          ...r,
-          id: `radical-${Date.now()}-${r.id}`,
-          srsStage: 'locked' as const,
-          correctCount: 0,
-          wrongCount: 0,
-          meaningCorrect: 0,
-          meaningWrong: 0,
-          readingCorrect: 0,
-          readingWrong: 0,
-        }));
-
-      const courseKanji = appState.kanji
-        .filter(k => k.language === charCourse.language)
-        .map(k => ({
-          ...k,
-          id: `kanji-${Date.now()}-${k.id}`,
-          srsStage: 'locked' as const,
-          correctCount: 0,
-          wrongCount: 0,
-          meaningCorrect: 0,
-          meaningWrong: 0,
-          readingCorrect: 0,
-          readingWrong: 0,
-        }));
-
-      const courseVocabulary = appState.vocabulary
-        .filter(v => v.language === charCourse.language)
-        .map(v => ({
-          ...v,
-          id: `vocab-${Date.now()}-${v.id}`,
-          srsStage: 'locked' as const,
-          correctCount: 0,
-          wrongCount: 0,
-          meaningCorrect: 0,
-          meaningWrong: 0,
-          readingCorrect: 0,
-          readingWrong: 0,
-        }));
-
-      storage.addCharacterCourse(newCourse);
-      for (const radical of courseRadicals) {
-        storage.addRadical(radical);
-      }
-      for (const kanji of courseKanji) {
-        storage.addKanji(kanji);
-      }
-      for (const vocab of courseVocabulary) {
-        storage.addVocabulary(vocab);
-      }
-      updateState({
-        characterCourses: storage.load().characterCourses,
-        radicals: storage.load().radicals,
-        kanji: storage.load().kanji,
-        vocabulary: storage.load().vocabulary,
-      });
-
-      navigate(`/character-course/${newCourse.id}`);
-    } else if (courseType === 'words') {
+  const handleImportCourse = (course: Course | ClozeCourse) => {
+    if (courseType === 'words') {
       const wordCourse = course as Course;
       // Copy course and words to user's collection
       const newCourse: Course = {
@@ -211,12 +129,6 @@ export default function CourseRepository({ appState, updateState }: CourseReposi
             >
               Sentence Courses
             </button>
-            <button
-              className={`btn ${courseType === 'characters' ? 'btn-primary' : ''}`}
-              onClick={() => setCourseType('characters')}
-            >
-              Character Courses
-            </button>
           </div>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 200px 200px', gap: '16px' }}>
@@ -270,48 +182,7 @@ export default function CourseRepository({ appState, updateState }: CourseReposi
       ) : (
         <div className="grid">
           {filteredCourses.map(course => {
-            if (courseType === 'characters') {
-              const charCourse = course as CharacterCourse;
-              const kanji = appState.kanji.filter(k => k.language === charCourse.language);
-              const radicals = appState.radicals.filter(r => r.language === charCourse.language);
-              const vocabulary = appState.vocabulary.filter(v => v.language === charCourse.language);
-              const totalItems = kanji.length + radicals.length + vocabulary.length;
-              
-              return (
-                <div key={course.id} className="course-card">
-                  <div className="course-card-title">{course.name}</div>
-                  {course.description && (
-                    <p style={{ color: '#656d76', marginTop: '8px', fontSize: '14px' }}>
-                      {course.description}
-                    </p>
-                  )}
-                  <div className="course-card-meta">
-                    {charCourse.language === 'japanese' ? 'Japanese' : 'Chinese'} Characters
-                  </div>
-                  {course.author && (
-                    <div className="course-card-meta">By {course.author}</div>
-                  )}
-                  {(course.tags || []).length > 0 && (
-                    <div style={{ marginTop: '8px' }}>
-                      {course.tags.map(tag => (
-                        <span key={tag} className="tag">{tag}</span>
-                      ))}
-                    </div>
-                  )}
-                  <div className="course-card-meta" style={{ marginTop: '8px' }}>
-                    {totalItems} items ({radicals.length} radicals, {kanji.length} kanji, {vocabulary.length} vocab)
-                  </div>
-                  <button
-                    className="btn btn-primary"
-                    style={{ marginTop: '12px', width: '100%' }}
-                    onClick={() => handleImportCourse(course)}
-                  >
-                    Import Course
-                  </button>
-                </div>
-              );
-            } else {
-              return (
+            return (
                 <div key={course.id} className="course-card">
                   <div className="course-card-title">{course.name}</div>
                   {course.description && (
@@ -343,8 +214,7 @@ export default function CourseRepository({ appState, updateState }: CourseReposi
                     Import Course
                   </button>
                 </div>
-              );
-            }
+            );
           })}
         </div>
       )}

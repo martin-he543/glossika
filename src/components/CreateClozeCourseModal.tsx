@@ -89,7 +89,6 @@ export default function CreateClozeCourseModal({ onClose, onSuccess }: CreateClo
     const allCourses = storage.load();
     const existingNames = [
       ...(allCourses.courses || []).map(c => c.name.toLowerCase().trim()),
-      ...(allCourses.characterCourses || []).map(c => c.name.toLowerCase().trim()),
       ...(allCourses.clozeCourses || []).map(c => c.name.toLowerCase().trim())
     ];
     

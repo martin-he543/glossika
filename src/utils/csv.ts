@@ -1,13 +1,24 @@
 import Papa from 'papaparse';
-import { Word, Course, ClozeSentence, ClozeCourse, Kanji } from '../types';
+import { Word, ClozeSentence, Kanji } from '../types';
 
 export interface CSVRow {
   [key: string]: string;
 }
 
 /**
+ * Remove UTF-8 BOM from text if present
+ */
+function removeBOM(text: string): string {
+  if (text.charCodeAt(0) === 0xFEFF) {
+    return text.slice(1);
+  }
+  return text;
+}
+
+/**
  * Parse a CSV/TSV file into an array of row objects
- * Handles any size file, any delimiter, quoted values, etc.
+ * Handles any size file, any delimiter, quoted values, UTF-8, BOM, etc.
+ * Fully standards-compliant CSV parsing
  */
 export function parseCSV(
   file: File, 
@@ -22,45 +33,107 @@ export function parseCSV(
       if (fileName.endsWith('.tsv')) {
         fileDelimiter = '\t';
       } else {
-        fileDelimiter = ','; // Default to comma
+        fileDelimiter = ','; // Default to comma for CSV
+      }
+    } else {
+      // Convert string delimiter to actual delimiter character
+      if (fileDelimiter === 'semicolon') {
+        fileDelimiter = ';';
+      } else if (fileDelimiter === 'tab') {
+        fileDelimiter = '\t';
+      } else if (fileDelimiter === 'comma') {
+        fileDelimiter = ',';
       }
     }
     
     // Force tab for TSV files
     const finalDelimiter = file.name.toLowerCase().endsWith('.tsv') ? '\t' : fileDelimiter;
 
+    // Configure PapaParse for robust CSV parsing
     Papa.parse(file, {
       header: true,
-      skipEmptyLines: true,
+      skipEmptyLines: 'greedy', // Only skip truly empty lines (whitespace-only), not lines with empty fields
       delimiter: finalDelimiter,
       quoteChar: '"',
       escapeChar: '"',
-      transformHeader: (header) => header.trim().toLowerCase(),
-      // Don't use step mode - use complete mode for better reliability
-      // Step mode can sometimes miss rows in large files
+      // Transform headers: normalize to lowercase and trim whitespace
+      transformHeader: (header: string) => {
+        // Remove BOM if present
+        const cleaned = removeBOM(header);
+        return cleaned.trim().toLowerCase();
+      },
+      // Properly handle encoding
+      encoding: 'UTF-8',
+      // Use complete mode for reliability - this ensures all rows are parsed
       complete: (results) => {
-        if (!results || !results.data) {
+        if (!results) {
+          reject(new Error('CSV parsing failed: no results returned'));
+          return;
+        }
+
+        // Log parsing results for debugging
+        console.log(`CSV parsing: ${results.data?.length || 0} rows parsed, ${results.errors?.length || 0} errors`);
+
+        // Check for critical parsing errors (but allow warnings)
+        const criticalErrors = results.errors?.filter(e => 
+          e.type === 'Quotes' || e.type === 'Delimiter' || e.type === 'FieldMismatch'
+        ) || [];
+        
+        if (criticalErrors.length > 0) {
+          console.error('Critical CSV parsing errors:', criticalErrors);
+          reject(new Error(
+            `CSV parsing errors: ${criticalErrors.map((e: any) => 
+              `Row ${e.row}: ${e.message || String(e)}`
+            ).join(', ')}`
+          ));
+          return;
+        }
+
+        if (!results.data) {
           reject(new Error('CSV parsing failed: no data returned'));
           return;
         }
         
         // Convert results.data to CSVRow array
+        // Don't filter out rows - let createWordsFromCSV decide what to skip
         let allRows: CSVRow[] = [];
         
         if (Array.isArray(results.data)) {
-          allRows = results.data
-            .filter((row: any) => {
-              // Filter out empty rows and invalid rows
-              if (!row || typeof row !== 'object') return false;
-              // Check if row has at least one non-empty value
-              const values = Object.values(row);
-              return values.some((v: any) => v !== null && v !== undefined && String(v).trim().length > 0);
-            })
-            .map((row: any) => row as CSVRow);
+          // Process ALL rows - don't filter here, just clean them
+          allRows = results.data.map((row: any) => {
+            // Handle invalid rows
+            if (!row || typeof row !== 'object') {
+              // Return empty row object instead of filtering
+              return {} as CSVRow;
+            }
+            
+            // Ensure all values are strings and properly cleaned
+            const cleanedRow: CSVRow = {};
+            for (const [key, value] of Object.entries(row)) {
+              if (value === null || value === undefined) {
+                cleanedRow[key] = '';
+              } else {
+                // PapaParse already handles quotes, so we just need to trim
+                // Don't manually remove quotes - PapaParse does this correctly
+                const trimmed = String(value).trim();
+                cleanedRow[key] = trimmed;
+              }
+            }
+            return cleanedRow;
+          }).filter((row: CSVRow) => {
+            // Only filter out completely empty row objects (no keys at all)
+            return Object.keys(row).length > 0;
+          });
         } else if (results.data && typeof results.data === 'object') {
           // Single row case
-          allRows = [results.data as CSVRow];
+          const cleanedRow: CSVRow = {};
+          for (const [key, value] of Object.entries(results.data)) {
+            cleanedRow[key] = value === null || value === undefined ? '' : String(value).trim();
+          }
+          allRows = [cleanedRow];
         }
+        
+        console.log(`CSV parsing complete: ${allRows.length} rows after cleaning`);
         
         // Track progress if callback provided
         if (onProgress) {
@@ -69,10 +142,11 @@ export function parseCSV(
         
         if (allRows.length > 0) {
           resolve(allRows);
-        } else if (results.errors && results.errors.length > 0) {
-          reject(new Error(`CSV parsing errors: ${results.errors.map((e: any) => e.message || String(e)).join(', ')}`));
         } else {
-          reject(new Error('CSV file appears to be empty or invalid'));
+          reject(new Error(
+            'CSV file appears to be empty or invalid. ' +
+            `Parsed ${results.data?.length || 0} rows but all were empty.`
+          ));
         }
       },
       error: (error) => {
@@ -84,8 +158,75 @@ export function parseCSV(
 }
 
 /**
+ * Get value from row with proper column matching
+ * This is case-insensitive and handles whitespace differences
+ */
+function getValueFromRow(row: CSVRow, columnName: string): string {
+  if (!columnName || !row) return '';
+  
+  const normalizedColumnName = columnName.toLowerCase().trim();
+  
+  // Try exact match first (headers are already normalized to lowercase by PapaParse)
+  if (normalizedColumnName in row && row[normalizedColumnName] !== undefined && row[normalizedColumnName] !== null) {
+    return String(row[normalizedColumnName]).trim();
+  }
+  
+  // Try finding matching key with fuzzy matching
+  const matchingKey = Object.keys(row).find(key => {
+    const normalizedKey = key.toLowerCase().trim();
+    return normalizedKey === normalizedColumnName;
+  });
+  
+  if (matchingKey && row[matchingKey] !== undefined && row[matchingKey] !== null) {
+    return String(row[matchingKey]).trim();
+  }
+  
+  return '';
+}
+
+/**
+ * Validate that required columns exist in the CSV
+ */
+function validateColumns(
+  rows: CSVRow[],
+  nativeCol: string,
+  targetCol: string,
+  levelCol?: string
+): { valid: boolean; missing: string[]; available: string[] } {
+  if (rows.length === 0) {
+    return { valid: false, missing: [nativeCol, targetCol], available: [] };
+  }
+
+  const headers = Object.keys(rows[0] || {});
+  const available = headers.map(h => h.toLowerCase().trim());
+  
+  const normalizedNativeCol = nativeCol.toLowerCase().trim();
+  const normalizedTargetCol = targetCol.toLowerCase().trim();
+  const normalizedLevelCol = levelCol ? levelCol.toLowerCase().trim() : undefined;
+  
+  const missing: string[] = [];
+  
+  if (!available.includes(normalizedNativeCol)) {
+    missing.push(nativeCol);
+  }
+  if (!available.includes(normalizedTargetCol)) {
+    missing.push(targetCol);
+  }
+  if (normalizedLevelCol && !available.includes(normalizedLevelCol)) {
+    missing.push(levelCol!);
+  }
+  
+  return {
+    valid: missing.length === 0,
+    missing,
+    available: headers
+  };
+}
+
+/**
  * Create Word objects from CSV rows
  * Handles any CSV format with flexible column detection
+ * Preserves quoted fields and handles commas correctly
  */
 export function createWordsFromCSV(
   rows: CSVRow[],
@@ -101,84 +242,69 @@ export function createWordsFromCSV(
     return words;
   }
 
+  // Validate columns exist
+  const validation = validateColumns(rows, nativeCol, targetCol, levelCol);
+  if (!validation.valid) {
+    throw new Error(
+      `Missing required columns: ${validation.missing.join(', ')}. ` +
+      `Available columns: ${validation.available.join(', ')}`
+    );
+  }
+
   // Get headers from first row
   const headers = Object.keys(rows[0] || {});
   
-  // Helper to get value from row (case-insensitive, handles whitespace)
-  const getValue = (row: CSVRow, colName: string): string => {
-    if (!colName || !row) return '';
-    
-    const normalized = colName.toLowerCase().trim();
-    
-    // Try exact match first (PapaParse already normalizes headers to lowercase)
-    if (row[normalized] !== undefined && row[normalized] !== null) {
-      const value = String(row[normalized]).trim();
-      // Remove surrounding quotes if present (but preserve inner quotes)
-      return value.replace(/^["']|["']$/g, '').trim();
-    }
-    
-    // Try finding matching key (fallback for any edge cases)
-    const key = Object.keys(row).find(k => k.toLowerCase().trim() === normalized);
-    if (key && row[key] !== undefined && row[key] !== null) {
-      const value = String(row[key]).trim();
-      return value.replace(/^["']|["']$/g, '').trim();
-    }
-    
-    return '';
-  };
-
   // Auto-detect part of speech and pronunciation columns
   const partOfSpeechCol = headers.find(h => {
-    const lower = h.toLowerCase();
-    return lower.includes('part') && (lower.includes('speech') || lower.includes('pos')) ||
-           lower === 'pos' || lower === 'type';
+    const lower = h.toLowerCase().trim();
+    return (lower.includes('part') && (lower.includes('speech') || lower.includes('pos'))) ||
+           lower === 'pos' || 
+           lower === 'type' ||
+           lower === 'part of speech';
   });
   
   const pronunciationCol = headers.find(h => {
-    const lower = h.toLowerCase();
-    return lower.includes('pronunciation') || lower.includes('phonetic') || 
-           lower.includes('ipa') || lower.includes('reading');
+    const lower = h.toLowerCase().trim();
+    return lower.includes('pronunciation') || 
+           lower.includes('phonetic') || 
+           lower.includes('ipa') || 
+           lower.includes('reading') ||
+           lower === 'pronunciation';
   });
 
-  // Normalize column names
+  // Normalize column names for matching
   const normalizedNativeCol = nativeCol.toLowerCase().trim();
   const normalizedTargetCol = targetCol.toLowerCase().trim();
   const normalizedLevelCol = levelCol ? levelCol.toLowerCase().trim() : undefined;
 
   // Process each row
+  let skippedCount = 0;
   for (let i = 0; i < rows.length; i++) {
     const row = rows[i];
-    if (!row || typeof row !== 'object') continue;
-
-    // Get native and target values
-    let native = getValue(row, normalizedNativeCol);
-    let target = getValue(row, normalizedTargetCol);
-
-    // Handle multi-value fields (e.g., "and, though" -> take first value)
-    // Only split if comma is not inside quotes
-    if (native.includes(',')) {
-      // Check if comma is in a quoted value (simple check)
-      const quotesMatch = native.match(/^["'].*["']$/);
-      if (!quotesMatch) {
-        native = native.split(',')[0].trim();
-      }
-    }
-    if (target.includes(',')) {
-      const quotesMatch = target.match(/^["'].*["']$/);
-      if (!quotesMatch) {
-        target = target.split(',')[0].trim();
-      }
+    if (!row || typeof row !== 'object') {
+      skippedCount++;
+      continue;
     }
 
-    // Skip empty rows
-    if (!native || !target || native.length === 0 || target.length === 0) {
+    // Get native and target values using safe column matching
+    // PapaParse already handles quotes and commas correctly, so we don't need to split
+    let native = getValueFromRow(row, normalizedNativeCol);
+    let target = getValueFromRow(row, normalizedTargetCol);
+
+    // Skip rows with empty required fields
+    // Log first few skipped rows for debugging
+    if (!native || native.length === 0 || !target || target.length === 0) {
+      skippedCount++;
+      if (skippedCount <= 5) {
+        console.warn(`Skipping row ${i}: native="${native}", target="${target}", row keys:`, Object.keys(row));
+      }
       continue;
     }
 
     // Parse level
     let level = 1;
     if (normalizedLevelCol) {
-      const levelValue = getValue(row, normalizedLevelCol);
+      const levelValue = getValueFromRow(row, normalizedLevelCol);
       if (levelValue) {
         const parsed = parseInt(levelValue, 10);
         if (!isNaN(parsed) && parsed > 0) {
@@ -187,20 +313,27 @@ export function createWordsFromCSV(
       }
     }
 
-    // Get part of speech (take first value if multiple)
+    // Get part of speech - preserve the full value (PapaParse already handled quotes)
+    // Only split on comma if it's clearly a multi-value field (like "conjunction, pronoun")
+    // But preserve single values with commas (like "Part of Speech: noun, verb")
     let partOfSpeech: string | undefined = undefined;
     if (partOfSpeechCol) {
-      const posValue = getValue(row, partOfSpeechCol);
+      const posValue = getValueFromRow(row, partOfSpeechCol);
       if (posValue) {
-        // Handle multi-value part of speech (e.g., "conjunction, pronoun" -> "conjunction")
-        partOfSpeech = posValue.split(',')[0].trim();
+        // For part of speech, we might want to take just the first if it's comma-separated
+        // But only if it looks like a list (no quotes, multiple words)
+        // For now, preserve the full value
+        partOfSpeech = posValue;
       }
     }
 
-    // Get pronunciation
+    // Get pronunciation - preserve full value
     let pronunciation: string | undefined = undefined;
     if (pronunciationCol) {
-      pronunciation = getValue(row, pronunciationCol) || undefined;
+      const pronValue = getValueFromRow(row, pronunciationCol);
+      if (pronValue) {
+        pronunciation = pronValue;
+      }
     }
 
     words.push({
@@ -219,6 +352,8 @@ export function createWordsFromCSV(
     });
   }
 
+  console.log(`createWordsFromCSV: Processed ${rows.length} rows, created ${words.length} words, skipped ${skippedCount}`);
+  
   return words;
 }
 
@@ -233,20 +368,22 @@ export function createClozeFromTatoeba(rows: CSVRow[], courseId: string): ClozeS
 
   const headers = Object.keys(rows[0] || {});
   
-  // Find columns
-  const nativeCol = headers.find(h => 
-    ['native', 'english', 'en', 'sentence1'].includes(h.toLowerCase())
-  ) || headers[0];
+  // Find columns with flexible matching
+  const nativeCol = headers.find(h => {
+    const lower = h.toLowerCase().trim();
+    return ['native', 'english', 'en', 'sentence1'].includes(lower);
+  }) || headers[0];
   
-  const targetCol = headers.find(h => 
-    ['target', 'translation', 'trans', 'sentence2'].includes(h.toLowerCase())
-  ) || headers[1] || headers[0];
+  const targetCol = headers.find(h => {
+    const lower = h.toLowerCase().trim();
+    return ['target', 'translation', 'trans', 'sentence2'].includes(lower);
+  }) || headers[1] || headers[0];
 
   for (const row of rows) {
-    if (!row) continue;
+    if (!row || typeof row !== 'object') continue;
 
-    const native = (row[nativeCol] || '').trim();
-    const target = (row[targetCol] || '').trim();
+    const native = getValueFromRow(row, nativeCol);
+    const target = getValueFromRow(row, targetCol);
 
     if (!native || !target) continue;
 
@@ -297,39 +434,45 @@ export function createKanjiFromCSV(
   const headers = Object.keys(rows[0] || {});
 
   // Auto-detect columns if not provided
-  const normalizedCharCol = (characterCol || headers.find(h => 
-    ['character', 'kanji', 'hanzi'].includes(h.toLowerCase())
-  ) || headers[0]).toLowerCase();
+  const normalizedCharCol = (characterCol || headers.find(h => {
+    const lower = h.toLowerCase().trim();
+    return ['character', 'kanji', 'hanzi'].includes(lower);
+  }) || headers[0]).toLowerCase().trim();
 
-  const normalizedMeaningCol = (meaningCol || headers.find(h => 
-    ['meaning', 'meanings'].includes(h.toLowerCase())
-  ) || headers[1] || headers[0]).toLowerCase();
+  const normalizedMeaningCol = (meaningCol || headers.find(h => {
+    const lower = h.toLowerCase().trim();
+    return ['meaning', 'meanings'].includes(lower);
+  }) || headers[1] || headers[0]).toLowerCase().trim();
 
-  const normalizedPronunciationCol = (pronunciationCol || headers.find(h => 
-    ['pronunciation', 'reading', 'pinyin'].includes(h.toLowerCase())
-  ) || '').toLowerCase();
+  const normalizedPronunciationCol = (pronunciationCol || headers.find(h => {
+    const lower = h.toLowerCase().trim();
+    return ['pronunciation', 'reading', 'pinyin'].includes(lower);
+  }) || '').toLowerCase().trim();
 
-  const normalizedLevelCol = (levelCol || headers.find(h => 
-    ['level', 'lvl'].includes(h.toLowerCase())
-  ) || '').toLowerCase();
+  const normalizedLevelCol = (levelCol || headers.find(h => {
+    const lower = h.toLowerCase().trim();
+    return ['level', 'lvl'].includes(lower);
+  }) || '').toLowerCase().trim();
 
   for (let i = 0; i < rows.length; i++) {
     const row = rows[i];
-    if (!row) continue;
+    if (!row || typeof row !== 'object') continue;
 
-    const character = (row[normalizedCharCol] || '').trim();
-    const meaning = (row[normalizedMeaningCol] || '').trim();
+    const character = getValueFromRow(row, normalizedCharCol);
+    const meaning = getValueFromRow(row, normalizedMeaningCol);
 
     if (!character || !meaning) continue;
 
-    const pronunciation = normalizedPronunciationCol ? (row[normalizedPronunciationCol] || '').trim() : '';
+    const pronunciation = normalizedPronunciationCol ? getValueFromRow(row, normalizedPronunciationCol) : '';
 
     let level = 1;
     if (normalizedLevelCol) {
-      const levelValue = (row[normalizedLevelCol] || '').trim();
-      const parsed = parseInt(levelValue, 10);
-      if (!isNaN(parsed) && parsed > 0) {
-        level = Math.min(60, Math.max(1, parsed));
+      const levelValue = getValueFromRow(row, normalizedLevelCol);
+      if (levelValue) {
+        const parsed = parseInt(levelValue, 10);
+        if (!isNaN(parsed) && parsed > 0) {
+          level = Math.min(60, Math.max(1, parsed));
+        }
       }
     }
 
