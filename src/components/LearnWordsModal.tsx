@@ -1367,9 +1367,18 @@ export default function LearnWordsModal({
           <div className="quiz-question">
             {direction === 'native-to-target' ? currentWord.native : currentWord.target}
             {currentWord.partOfSpeech && (
-              <div style={{ fontSize: '14px', color: '#656d76', fontStyle: 'italic', marginTop: '8px' }}>
+              <span style={{
+                display: 'inline-block',
+                marginLeft: '12px',
+                padding: '4px 8px',
+                backgroundColor: '#0969da',
+                color: '#ffffff',
+                borderRadius: '12px',
+                fontSize: '12px',
+                fontWeight: 500
+              }}>
                 {currentWord.partOfSpeech}
-              </div>
+              </span>
             )}
           </div>
 
@@ -1401,12 +1410,21 @@ export default function LearnWordsModal({
             <div className="quiz-feedback incorrect" style={{ marginTop: '16px' }}>
               <div>Correct answer: {correctAnswer}</div>
               {currentWord.partOfSpeech && direction === 'native-to-target' && (
-                <div style={{ fontSize: '14px', color: '#656d76', fontStyle: 'italic', marginTop: '4px' }}>
+                <span style={{
+                  display: 'inline-block',
+                  marginLeft: '12px',
+                  padding: '4px 8px',
+                  backgroundColor: '#0969da',
+                  color: '#ffffff',
+                  borderRadius: '12px',
+                  fontSize: '12px',
+                  fontWeight: 500
+                }}>
                   {currentWord.partOfSpeech}
-                </div>
+                </span>
               )}
               {currentWord.pronunciation && direction === 'native-to-target' && (
-                <div style={{ fontSize: '14px', color: '#656d76', marginTop: '4px' }}>
+                <div style={{ fontSize: '14px', color: '#656d76', marginTop: '4px', fontStyle: 'italic' }}>
                   {currentWord.pronunciation}
                 </div>
               )}
@@ -1563,7 +1581,12 @@ export default function LearnWordsModal({
 
             {feedback && (
               <div className={`quiz-feedback ${feedback.correct ? 'correct' : 'incorrect'}`}>
-                {feedback.message}
+                <div>{feedback.message}</div>
+                {currentWord.pronunciation && direction === 'native-to-target' && (
+                  <div style={{ fontSize: '14px', color: '#656d76', marginTop: '4px', fontStyle: 'italic' }}>
+                    {currentWord.pronunciation}
+                  </div>
+                )}
               </div>
             )}
 

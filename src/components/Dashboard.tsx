@@ -4,6 +4,8 @@ import { AppState, Course } from '../types';
 import { storage } from '../storage';
 import { LANGUAGES } from '../utils/languages';
 import { parseCSV, createWordsFromCSV } from '../utils/csv';
+import { auth } from '../utils/auth';
+import { userProfile } from '../utils/userProfile';
 import StreakDisplay from './StreakDisplay';
 import CreateCourseModal from './CreateCourseModal';
 import CreateClozeCourseModal from './CreateClozeCourseModal';
@@ -232,7 +234,17 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
                   ×
                 </button>
                 <div className="course-card-title">{course.name}</div>
-                <div className="course-card-meta">
+                {course.author && (
+                  <div style={{ fontSize: '12px', color: '#656d76', marginTop: '4px' }}>
+                    By {course.author}
+                  </div>
+                )}
+                {course.description && (
+                  <p style={{ color: '#656d76', marginTop: '8px', fontSize: '14px', lineHeight: '1.4' }}>
+                    {course.description}
+                  </p>
+                )}
+                <div className="course-card-meta" style={{ marginTop: course.description ? '8px' : '8px' }}>
                   {course.nativeLanguage} → {course.targetLanguage}
                 </div>
                 <div className="tag" style={{ marginTop: '8px' }}>Word Course</div>
@@ -335,7 +347,17 @@ export default function Dashboard({ appState, updateState }: DashboardProps) {
                   ×
                 </button>
                 <div className="course-card-title">{course.name}</div>
-                <div className="course-card-meta">
+                {course.author && (
+                  <div style={{ fontSize: '12px', color: '#656d76', marginTop: '4px' }}>
+                    By {course.author}
+                  </div>
+                )}
+                {course.description && (
+                  <p style={{ color: '#656d76', marginTop: '8px', fontSize: '14px', lineHeight: '1.4' }}>
+                    {course.description}
+                  </p>
+                )}
+                <div className="course-card-meta" style={{ marginTop: course.description ? '8px' : '8px' }}>
                   {course.nativeLanguage} → {course.targetLanguage}
                 </div>
                 <div className="tag" style={{ marginTop: '8px' }}>Sentence Course</div>

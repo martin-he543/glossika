@@ -363,6 +363,20 @@ export default function SpeedReview({ courseId, words, course, onUpdate }: Speed
 
       <div className="quiz-question">
         {direction === 'native-to-target' ? currentWord.native : currentWord.target}
+        {currentWord.partOfSpeech && (
+          <span style={{
+            display: 'inline-block',
+            marginLeft: '12px',
+            padding: '4px 8px',
+            backgroundColor: '#0969da',
+            color: '#ffffff',
+            borderRadius: '12px',
+            fontSize: '12px',
+            fontWeight: 500
+          }}>
+            {currentWord.partOfSpeech}
+          </span>
+        )}
       </div>
 
       <div className="quiz-options">
@@ -391,7 +405,17 @@ export default function SpeedReview({ courseId, words, course, onUpdate }: Speed
 
       {selectedAnswer && !isCorrect && (
         <div className="quiz-feedback incorrect" style={{ marginTop: '16px' }}>
-          Correct answer: {correctAnswer}
+          <div>Correct answer: {correctAnswer}</div>
+          {currentWord.pronunciation && direction === 'native-to-target' && (
+            <div style={{ fontSize: '14px', color: '#656d76', marginTop: '4px', fontStyle: 'italic' }}>
+              {currentWord.pronunciation}
+            </div>
+          )}
+        </div>
+      )}
+      {selectedAnswer && isCorrect && currentWord.pronunciation && direction === 'native-to-target' && (
+        <div style={{ fontSize: '14px', color: '#656d76', marginTop: '16px', fontStyle: 'italic', textAlign: 'center' }}>
+          {currentWord.pronunciation}
         </div>
       )}
 

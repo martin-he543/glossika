@@ -233,7 +233,9 @@ export function createWordsFromCSV(
   courseId: string,
   nativeCol: string,
   targetCol: string,
-  levelCol?: string
+  levelCol?: string,
+  partOfSpeechCol?: string,
+  pronunciationCol?: string
 ): Word[] {
   const words: Word[] = [];
   const now = Date.now();
@@ -254,23 +256,30 @@ export function createWordsFromCSV(
   // Get headers from first row
   const headers = Object.keys(rows[0] || {});
   
-  // Auto-detect part of speech and pronunciation columns
-  const partOfSpeechCol = headers.find(h => {
-    const lower = h.toLowerCase().trim();
-    return (lower.includes('part') && (lower.includes('speech') || lower.includes('pos'))) ||
-           lower === 'pos' || 
-           lower === 'type' ||
-           lower === 'part of speech';
-  });
+  // Use provided partOfSpeechCol or auto-detect
+  let finalPartOfSpeechCol = partOfSpeechCol;
+  if (!finalPartOfSpeechCol) {
+    finalPartOfSpeechCol = headers.find(h => {
+      const lower = h.toLowerCase().trim();
+      return (lower.includes('part') && (lower.includes('speech') || lower.includes('pos'))) ||
+             lower === 'pos' || 
+             lower === 'type' ||
+             lower === 'part of speech';
+    });
+  }
   
-  const pronunciationCol = headers.find(h => {
-    const lower = h.toLowerCase().trim();
-    return lower.includes('pronunciation') || 
-           lower.includes('phonetic') || 
-           lower.includes('ipa') || 
-           lower.includes('reading') ||
-           lower === 'pronunciation';
-  });
+  // Use provided pronunciationCol or auto-detect
+  let finalPronunciationCol = pronunciationCol;
+  if (!finalPronunciationCol) {
+    finalPronunciationCol = headers.find(h => {
+      const lower = h.toLowerCase().trim();
+      return lower.includes('pronunciation') || 
+             lower.includes('phonetic') || 
+             lower.includes('ipa') || 
+             lower.includes('reading') ||
+             lower === 'pronunciation';
+    });
+  }
 
   // Normalize column names for matching
   const normalizedNativeCol = nativeCol.toLowerCase().trim();
@@ -317,8 +326,8 @@ export function createWordsFromCSV(
     // Only split on comma if it's clearly a multi-value field (like "conjunction, pronoun")
     // But preserve single values with commas (like "Part of Speech: noun, verb")
     let partOfSpeech: string | undefined = undefined;
-    if (partOfSpeechCol) {
-      const posValue = getValueFromRow(row, partOfSpeechCol);
+    if (finalPartOfSpeechCol) {
+      const posValue = getValueFromRow(row, finalPartOfSpeechCol);
       if (posValue) {
         // For part of speech, we might want to take just the first if it's comma-separated
         // But only if it looks like a list (no quotes, multiple words)
@@ -329,8 +338,8 @@ export function createWordsFromCSV(
 
     // Get pronunciation - preserve full value
     let pronunciation: string | undefined = undefined;
-    if (pronunciationCol) {
-      const pronValue = getValueFromRow(row, pronunciationCol);
+    if (finalPronunciationCol) {
+      const pronValue = getValueFromRow(row, finalPronunciationCol);
       if (pronValue) {
         pronunciation = pronValue;
       }
@@ -353,7 +362,7 @@ export function createWordsFromCSV(
   }
 
   console.log(`createWordsFromCSV: Processed ${rows.length} rows, created ${words.length} words, skipped ${skippedCount}`);
-  
+
   return words;
 }
 
@@ -388,27 +397,27 @@ export function createClozeFromTatoeba(rows: CSVRow[], courseId: string): ClozeS
     if (!native || !target) continue;
 
     const words = target.split(/\s+/).filter(w => w.length > 0);
-    if (words.length === 0) continue;
-
-    const randomIndex = Math.floor(Math.random() * words.length);
+      if (words.length === 0) continue;
+      
+        const randomIndex = Math.floor(Math.random() * words.length);
     const answer = words[randomIndex];
-    words[randomIndex] = '_____';
+        words[randomIndex] = '_____';
     const clozeText = words.join(' ');
 
-    sentences.push({
-      id: `cloze-${now}-${sentences.length}`,
+      sentences.push({
+        id: `cloze-${now}-${sentences.length}`,
       native,
       target,
-      clozeText,
-      answer,
+        clozeText,
+        answer,
       language: 'unknown',
-      courseId,
-      createdAt: now,
-      masteryLevel: 'seed',
-      srsLevel: 0,
-      correctCount: 0,
-      wrongCount: 0,
-    });
+        courseId,
+        createdAt: now,
+        masteryLevel: 'seed',
+        srsLevel: 0,
+        correctCount: 0,
+        wrongCount: 0,
+      });
   }
 
   return sentences;

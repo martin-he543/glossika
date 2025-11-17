@@ -33,7 +33,10 @@ export default function EditWordCourse({ course, words, onClose, onUpdate }: Edi
   const [nativeCol, setNativeCol] = useState('');
   const [targetCol, setTargetCol] = useState('');
   const [levelCol, setLevelCol] = useState('');
+  const [partOfSpeechCol, setPartOfSpeechCol] = useState('');
+  const [pronunciationCol, setPronunciationCol] = useState('');
   const [delimiter, setDelimiter] = useState<string>('auto');
+  const [availableColumns, setAvailableColumns] = useState<string[]>([]);
 
   const filteredWords = useMemo(() => {
     if (!searchQuery) return words;
@@ -198,6 +201,34 @@ export default function EditWordCourse({ course, words, onClose, onUpdate }: Edi
       setNativeCol(finalNative);
       setTargetCol(finalTarget);
       setLevelCol(finalLevel);
+      
+      // Store all available columns for dropdowns
+      setAvailableColumns(headers);
+      
+      // Auto-detect part of speech column
+      const detectedPartOfSpeech = headers.find(h => {
+        const lower = h.toLowerCase().trim();
+        return (lower.includes('part') && (lower.includes('speech') || lower.includes('pos'))) ||
+               lower === 'pos' || 
+               lower === 'type' ||
+               lower === 'part of speech';
+      });
+      if (detectedPartOfSpeech) {
+        setPartOfSpeechCol(detectedPartOfSpeech.toLowerCase().trim());
+      }
+      
+      // Auto-detect pronunciation column
+      const detectedPronunciation = headers.find(h => {
+        const lower = h.toLowerCase().trim();
+        return lower.includes('pronunciation') || 
+               lower.includes('phonetic') || 
+               lower.includes('ipa') || 
+               lower.includes('reading') ||
+               lower === 'pronunciation';
+      });
+      if (detectedPronunciation) {
+        setPronunciationCol(detectedPronunciation.toLowerCase().trim());
+      }
 
       setLoading(false);
     } catch (err) {
@@ -231,7 +262,15 @@ export default function EditWordCourse({ course, words, onClose, onUpdate }: Edi
         setProgress(Math.min(90, progress));
       }, fileDelimiter);
 
-      const newWords = createWordsFromCSV(rows, course.id, nativeCol, targetCol, levelCol || undefined);
+      const newWords = createWordsFromCSV(
+        rows, 
+        course.id, 
+        nativeCol, 
+        targetCol, 
+        levelCol || undefined,
+        partOfSpeechCol || undefined,
+        pronunciationCol || undefined
+      );
       
       setProgress(90);
 
@@ -560,45 +599,94 @@ export default function EditWordCourse({ course, words, onClose, onUpdate }: Edi
                     </div>
                   )}
 
-                  {file && !loading && (
+                  {file && !loading && availableColumns.length > 0 && (
                     <div>
                       <div style={{ marginBottom: '12px', fontSize: '14px' }}>
-                        <strong>Detected Columns:</strong>
+                        <strong>Column Mapping:</strong>
                       </div>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '16px' }}>
                         <div>
-                          <label style={{ display: 'block', marginBottom: '4px', fontSize: '12px' }}>
+                          <label style={{ display: 'block', marginBottom: '4px', fontSize: '12px', fontWeight: 600 }}>
                             Native Column ({course.nativeLanguage})
                           </label>
-                          <input
-                            type="text"
+                          <select
                             value={nativeCol}
                             onChange={(e) => setNativeCol(e.target.value)}
                             style={{ width: '100%', padding: '6px', fontSize: '14px' }}
-                          />
+                            required
+                          >
+                            <option value="">Select column...</option>
+                            {availableColumns.map(col => (
+                              <option key={col} value={col.toLowerCase().trim()}>{col}</option>
+                            ))}
+                          </select>
                         </div>
                         <div>
-                          <label style={{ display: 'block', marginBottom: '4px', fontSize: '12px' }}>
+                          <label style={{ display: 'block', marginBottom: '4px', fontSize: '12px', fontWeight: 600 }}>
                             Target Column ({course.targetLanguage})
                           </label>
-                          <input
-                            type="text"
+                          <select
                             value={targetCol}
                             onChange={(e) => setTargetCol(e.target.value)}
                             style={{ width: '100%', padding: '6px', fontSize: '14px' }}
-                          />
+                            required
+                          >
+                            <option value="">Select column...</option>
+                            {availableColumns.map(col => (
+                              <option key={col} value={col.toLowerCase().trim()}>{col}</option>
+                            ))}
+                          </select>
                         </div>
                         <div>
-                          <label style={{ display: 'block', marginBottom: '4px', fontSize: '12px' }}>
+                          <label style={{ display: 'block', marginBottom: '4px', fontSize: '12px', fontWeight: 600 }}>
                             Level Column (optional)
                           </label>
-                          <input
-                            type="text"
+                          <select
                             value={levelCol}
                             onChange={(e) => setLevelCol(e.target.value)}
                             style={{ width: '100%', padding: '6px', fontSize: '14px' }}
-                            placeholder="Leave empty if no level column"
-                          />
+                          >
+                            <option value="">None</option>
+                            {availableColumns.map(col => (
+                              <option key={col} value={col.toLowerCase().trim()}>{col}</option>
+                            ))}
+                          </select>
+                        </div>
+                        <div>
+                          <label style={{ display: 'block', marginBottom: '4px', fontSize: '12px', fontWeight: 600 }}>
+                            Part of Speech Column (optional)
+                          </label>
+                          <select
+                            value={partOfSpeechCol}
+                            onChange={(e) => setPartOfSpeechCol(e.target.value)}
+                            style={{ width: '100%', padding: '6px', fontSize: '14px' }}
+                          >
+                            <option value="">None</option>
+                            {availableColumns.map(col => (
+                              <option key={col} value={col.toLowerCase().trim()}>{col}</option>
+                            ))}
+                          </select>
+                          <div style={{ fontSize: '11px', color: '#656d76', marginTop: '4px' }}>
+                            If specified, part of speech will be imported and displayed as a tag during practice.
+                          </div>
+                        </div>
+                        <div>
+                          <label style={{ display: 'block', marginBottom: '4px', fontSize: '12px', fontWeight: 600 }}>
+                            Pronunciation Column (optional)
+                          </label>
+                          <select
+                            value={pronunciationCol}
+                            onChange={(e) => setPronunciationCol(e.target.value)}
+                            style={{ width: '100%', padding: '6px', fontSize: '14px' }}
+                          >
+                            <option value="">None</option>
+                            {availableColumns.map(col => (
+                              <option key={col} value={col.toLowerCase().trim()}>{col}</option>
+                            ))}
+                          </select>
+                          <div style={{ fontSize: '11px', color: '#656d76', marginTop: '4px' }}>
+                            If specified, pronunciation will be imported and displayed in italics after answering.
+                          </div>
                         </div>
                       </div>
                       <button className="btn btn-primary" onClick={handleImportWords}>

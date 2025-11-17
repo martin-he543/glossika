@@ -378,9 +378,18 @@ export default function ReviewWords({ courseId, words, course, onUpdate }: Revie
         <div className="quiz-question">
           {direction === 'native-to-target' ? currentWord.native : currentWord.target}
           {currentWord.partOfSpeech && (
-            <div style={{ fontSize: '14px', color: '#656d76', fontStyle: 'italic', marginTop: '8px' }}>
+            <span style={{
+              display: 'inline-block',
+              marginLeft: '12px',
+              padding: '4px 8px',
+              backgroundColor: '#0969da',
+              color: '#ffffff',
+              borderRadius: '12px',
+              fontSize: '12px',
+              fontWeight: 500
+            }}>
               {currentWord.partOfSpeech}
-            </div>
+            </span>
           )}
         </div>
 
@@ -438,7 +447,12 @@ export default function ReviewWords({ courseId, words, course, onUpdate }: Revie
         {feedback && (
           <div>
             <div className={`quiz-feedback ${feedback.correct ? 'correct' : 'incorrect'}`}>
-              {feedback.message}
+              <div>{feedback.message}</div>
+              {currentWord.pronunciation && direction === 'native-to-target' && (
+                <div style={{ fontSize: '14px', color: '#656d76', marginTop: '4px', fontStyle: 'italic' }}>
+                  {currentWord.pronunciation}
+                </div>
+              )}
             </div>
             <button className="btn btn-primary" onClick={handleNext} style={{ width: '100%' }}>
               {currentIndex < reviewWords.length - 1 ? 'Next Word' : 'Finish Review'}

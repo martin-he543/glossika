@@ -3,6 +3,8 @@ import { ClozeCourse, ClozeSentence } from '../types';
 import { storage } from '../storage';
 import { LANGUAGES } from '../utils/languages';
 import { parseCSV, createClozeFromTatoeba } from '../utils/csv';
+import { auth } from '../utils/auth';
+import { userProfile } from '../utils/userProfile';
 import Papa from 'papaparse';
 
 interface CreateClozeCourseModalProps {
@@ -122,6 +124,18 @@ export default function CreateClozeCourseModal({ onClose, onSuccess }: CreateClo
 
       setProgress(50);
 
+      // Get current user's username or email for author
+      const currentUser = auth.getCurrentUser();
+      let finalAuthor: string | undefined = undefined;
+      if (author && author.trim()) {
+        // Use manually entered author if provided
+        finalAuthor = author.trim();
+      } else if (currentUser) {
+        // Otherwise use current user's username or email
+        const profile = userProfile.getCurrentProfile();
+        finalAuthor = profile?.username || currentUser.email;
+      }
+
       const course: ClozeCourse = {
         id: `cloze-course-${Date.now()}`,
         name,
@@ -132,7 +146,7 @@ export default function CreateClozeCourseModal({ onClose, onSuccess }: CreateClo
         tags: tags.split(',').map(t => t.trim()).filter(t => t.length > 0),
         description,
         sentenceCount: 0,
-        author: author || undefined,
+        author: finalAuthor,
       };
 
       // Process in batches with progress updates

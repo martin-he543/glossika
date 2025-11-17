@@ -101,9 +101,19 @@ export default function CourseDetail({ appState, updateState }: CourseDetailProp
       <div className="card-header">
         <div>
           <h1 className="card-title">{course.name}</h1>
+          {course.author && (
+            <div style={{ fontSize: '14px', color: '#656d76', marginTop: '4px' }}>
+              By {course.author}
+            </div>
+          )}
           <div style={{ fontSize: '14px', color: '#656d76', marginTop: '4px' }}>
             {course.nativeLanguage} → {course.targetLanguage}
           </div>
+          {course.description && (
+            <p style={{ color: '#656d76', marginTop: '12px', fontSize: '14px', lineHeight: '1.5', maxWidth: '800px' }}>
+              {course.description}
+            </p>
+          )}
         </div>
         <div style={{ display: 'flex', gap: '8px' }}>
           <Link to={`/leaderboard/course/${course.id}`} className="btn">

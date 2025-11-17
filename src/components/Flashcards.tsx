@@ -182,10 +182,33 @@ export default function Flashcards({ courseId, words, course, onUpdate }: Flashc
       <div className="flashcard" onClick={handleFlip}>
         <div className={`flashcard-inner ${isFlipped ? 'flipped' : ''}`}>
           <div className="flashcard-front">
-            <div className="flashcard-content">{frontText}</div>
+            <div className="flashcard-content">
+              {frontText}
+              {currentWord.partOfSpeech && (
+                <span style={{
+                  display: 'inline-block',
+                  marginLeft: '12px',
+                  padding: '4px 8px',
+                  backgroundColor: '#0969da',
+                  color: '#ffffff',
+                  borderRadius: '12px',
+                  fontSize: '12px',
+                  fontWeight: 500
+                }}>
+                  {currentWord.partOfSpeech}
+                </span>
+              )}
+            </div>
           </div>
           <div className="flashcard-back">
-            <div className="flashcard-content">{backText}</div>
+            <div className="flashcard-content">
+              {backText}
+              {currentWord.pronunciation && direction === 'native-to-target' && (
+                <div style={{ fontSize: '14px', color: '#656d76', marginTop: '12px', fontStyle: 'italic' }}>
+                  {currentWord.pronunciation}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

@@ -3,6 +3,8 @@ import { Course } from '../types';
 import { storage } from '../storage';
 import { LANGUAGES } from '../utils/languages';
 import { parseCSV, createWordsFromCSV } from '../utils/csv';
+import { auth } from '../utils/auth';
+import { userProfile } from '../utils/userProfile';
 
 interface CreateCourseModalProps {
   onClose: () => void;
@@ -22,8 +24,10 @@ export default function CreateCourseModal({ onClose, onSuccess }: CreateCourseMo
   const [nativeCol, setNativeCol] = useState('');
   const [targetCol, setTargetCol] = useState('');
   const [levelCol, setLevelCol] = useState('');
+  const [partOfSpeechCol, setPartOfSpeechCol] = useState('');
+  const [pronunciationCol, setPronunciationCol] = useState('');
   const [delimiter, setDelimiter] = useState<string>('auto');
-  const [additionalColumns, setAdditionalColumns] = useState<string[]>([]);
+  const [availableColumns, setAvailableColumns] = useState<string[]>([]);
 
   const finalNativeLanguage = nativeLanguage === 'Other' ? customNative : nativeLanguage;
   const finalTargetLanguage = targetLanguage === 'Other' ? customTarget : targetLanguage;
@@ -141,10 +145,33 @@ export default function CreateCourseModal({ onClose, onSuccess }: CreateCourseMo
       setTargetCol(finalTarget);
       setLevelCol(finalLevel);
 
-      // Additional columns (for part of speech, pronunciation, etc.)
-      const usedCols = [finalNative, finalTarget, finalLevel].filter(Boolean);
-      const otherCols = headers.filter(h => !usedCols.includes(h.toLowerCase().trim()));
-      setAdditionalColumns(otherCols);
+      // Store all available columns for dropdowns
+      setAvailableColumns(headers);
+      
+      // Auto-detect part of speech column
+      const detectedPartOfSpeech = headers.find(h => {
+        const lower = h.toLowerCase().trim();
+        return (lower.includes('part') && (lower.includes('speech') || lower.includes('pos'))) ||
+               lower === 'pos' || 
+               lower === 'type' ||
+               lower === 'part of speech';
+      });
+      if (detectedPartOfSpeech) {
+        setPartOfSpeechCol(detectedPartOfSpeech.toLowerCase().trim());
+      }
+      
+      // Auto-detect pronunciation column
+      const detectedPronunciation = headers.find(h => {
+        const lower = h.toLowerCase().trim();
+        return lower.includes('pronunciation') || 
+               lower.includes('phonetic') || 
+               lower.includes('ipa') || 
+               lower.includes('reading') ||
+               lower === 'pronunciation';
+      });
+      if (detectedPronunciation) {
+        setPronunciationCol(detectedPronunciation.toLowerCase().trim());
+      }
 
       setLoading(false);
     } catch (err) {
@@ -211,6 +238,14 @@ export default function CreateCourseModal({ onClose, onSuccess }: CreateCourseMo
 
       setProgress(50);
 
+      // Get current user's username or email for author
+      const currentUser = auth.getCurrentUser();
+      let author: string | undefined = undefined;
+      if (currentUser) {
+        const profile = userProfile.getCurrentProfile();
+        author = profile?.username || currentUser.email;
+      }
+
       const course: Course = {
         id: `course-${Date.now()}`,
         name,
@@ -220,10 +255,19 @@ export default function CreateCourseModal({ onClose, onSuccess }: CreateCourseMo
         isPublic: false,
         tags: [],
         wordCount: 0,
+        author,
       };
 
       // Process all rows at once (createWordsFromCSV handles it efficiently)
-      const allWords = createWordsFromCSV(rows, course.id, nativeCol, targetCol, levelCol || undefined);
+      const allWords = createWordsFromCSV(
+        rows, 
+        course.id, 
+        nativeCol, 
+        targetCol, 
+        levelCol || undefined,
+        partOfSpeechCol || undefined,
+        pronunciationCol || undefined
+      );
       
       setProgress(90);
       
@@ -380,61 +424,88 @@ export default function CreateCourseModal({ onClose, onSuccess }: CreateCourseMo
             </div>
           )}
 
-          {file && !loading && (
+          {file && !loading && availableColumns.length > 0 && (
             <>
               <div className="form-group">
                 <label className="form-label">Native Language Column</label>
-                <input
-                  type="text"
-                  className="input"
+                <select
+                  className="select"
                   value={nativeCol}
                   onChange={(e) => setNativeCol(e.target.value)}
                   required
-                />
+                >
+                  <option value="">Select column...</option>
+                  {availableColumns.map(col => (
+                    <option key={col} value={col.toLowerCase().trim()}>{col}</option>
+                  ))}
+                </select>
               </div>
 
             <div className="form-group">
               <label className="form-label">Target Language Column</label>
-              <input
-                type="text"
-                className="input"
+              <select
+                className="select"
                 value={targetCol}
                 onChange={(e) => setTargetCol(e.target.value)}
                 required
-              />
+              >
+                <option value="">Select column...</option>
+                {availableColumns.map(col => (
+                  <option key={col} value={col.toLowerCase().trim()}>{col}</option>
+                ))}
+              </select>
             </div>
 
             <div className="form-group">
               <label className="form-label">Level Column (optional, like Memrise)</label>
-              <input
-                type="text"
-                className="input"
+              <select
+                className="select"
                 value={levelCol}
                 onChange={(e) => setLevelCol(e.target.value)}
-                placeholder="Leave empty if no level column"
-              />
+              >
+                <option value="">None</option>
+                {availableColumns.map(col => (
+                  <option key={col} value={col.toLowerCase().trim()}>{col}</option>
+                ))}
+              </select>
               <div style={{ fontSize: '12px', color: '#656d76', marginTop: '4px' }}>
                 If specified, words will be assigned to levels. Otherwise, all words default to level 1.
               </div>
             </div>
 
-            {additionalColumns.length > 0 && (
-              <div className="form-group">
-                <label className="form-label">Additional Columns (optional)</label>
-                <div style={{ fontSize: '12px', color: '#656d76', marginBottom: '8px' }}>
-                  These columns will be preserved but are not required for word creation.
-                  Examples: notes, phonetic guide, part of speech, etc.
-                </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                  {additionalColumns.map(col => (
-                    <label key={col} style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '14px' }}>
-                      <input type="checkbox" defaultChecked />
-                      {col}
-                    </label>
-                  ))}
-                </div>
+            <div className="form-group">
+              <label className="form-label">Part of Speech Column (optional)</label>
+              <select
+                className="select"
+                value={partOfSpeechCol}
+                onChange={(e) => setPartOfSpeechCol(e.target.value)}
+              >
+                <option value="">None</option>
+                {availableColumns.map(col => (
+                  <option key={col} value={col.toLowerCase().trim()}>{col}</option>
+                ))}
+              </select>
+              <div style={{ fontSize: '12px', color: '#656d76', marginTop: '4px' }}>
+                If specified, part of speech will be imported and displayed as a tag during practice.
               </div>
-            )}
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Pronunciation Column (optional)</label>
+              <select
+                className="select"
+                value={pronunciationCol}
+                onChange={(e) => setPronunciationCol(e.target.value)}
+              >
+                <option value="">None</option>
+                {availableColumns.map(col => (
+                  <option key={col} value={col.toLowerCase().trim()}>{col}</option>
+                ))}
+              </select>
+              <div style={{ fontSize: '12px', color: '#656d76', marginTop: '4px' }}>
+                If specified, pronunciation will be imported and displayed in italics after answering.
+              </div>
+            </div>
           </>
         )}
 
