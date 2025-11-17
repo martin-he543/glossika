@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { AppState, ClozeCourse, ClozeSentence } from '../types';
 import { storage } from '../storage';
@@ -30,12 +30,14 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
   const [questionsAnswered, setQuestionsAnswered] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
   const [startTime, setStartTime] = useState<number | null>(null);
+  const [endTime, setEndTime] = useState<number | null>(null); // Capture end time when session finishes
   const [newSentencesLearned, setNewSentencesLearned] = useState(0);
   const [showSummary, setShowSummary] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [practiceSentences, setPracticeSentences] = useState<ClozeSentence[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [streakKey, setStreakKey] = useState(0); // Force StreakDisplay to refresh
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const sentences = appState.clozeSentences.filter(s => s.courseId === course.id);
   const availableSentences = sentences.filter(s => s.masteryLevel !== 'tree');
@@ -108,6 +110,12 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
       setCurrentSentence(practiceSentences[currentIndex]);
       setUserAnswer('');
       setFeedback(null);
+      // Focus input when loading a new sentence
+      setTimeout(() => {
+        if (inputRef.current) {
+          inputRef.current.focus();
+        }
+      }, 100);
     }
   }, [currentIndex, practiceSentences]);
 
@@ -134,12 +142,16 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
     }
 
     // Record study activity - this is critical for streak tracking
+    // This ensures any activity (answering a question) contributes to the streak
     recordStudyActivity(course.id, 1);
     setCorrectCount(prev => prev + (isCorrect ? 1 : 0));
     setQuestionsAnswered(prev => prev + 1);
     
-    // Force StreakDisplay to refresh by updating key
-    setStreakKey(prev => prev + 1);
+    // Force StreakDisplay to refresh by updating key after activity is recorded
+    // Use setTimeout to ensure activity is saved before refreshing
+    setTimeout(() => {
+      setStreakKey(prev => prev + 1);
+    }, 0);
 
     updateState({ clozeSentences: storage.load().clozeSentences });
   }, [currentSentence, userAnswer, feedback, course.id, updateState]);
@@ -154,6 +166,7 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
     // Don't increment questionsAnswered here - it's already incremented in handleAnswer
     
     if (nextIndex >= questionCount || nextIndex >= practiceSentences.length) {
+      setEndTime(Date.now()); // Capture end time before showing summary
       setShowSummary(true);
     } else {
       // Load next sentence after state updates
@@ -162,6 +175,12 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
           setCurrentSentence(practiceSentences[nextIndex]);
           setUserAnswer('');
           setFeedback(null);
+          // Refocus input after loading next question
+          setTimeout(() => {
+            if (inputRef.current) {
+              inputRef.current.focus();
+            }
+          }, 50);
         }
       }, 100);
     }
@@ -395,7 +414,7 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
               <LessonSummary
                 correct={correctCount}
                 total={questionsAnswered}
-                timeElapsed={startTime ? Math.floor((Date.now() - startTime) / 1000) : 0}
+                timeElapsed={startTime && endTime ? Math.floor((endTime - startTime) / 1000) : (startTime ? Math.floor((Date.now() - startTime) / 1000) : 0)}
                 newWordsLearned={newSentencesLearned}
                 onClose={handleSummaryClose}
               />
@@ -423,6 +442,7 @@ export default function ClozeCourseDetail({ course, appState, updateState, onBac
                 </div>
 
                 <input
+                  ref={inputRef}
                   type="text"
                   className="quiz-input"
                   value={userAnswer}

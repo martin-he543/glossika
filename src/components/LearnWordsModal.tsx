@@ -29,6 +29,7 @@ export default function LearnWordsModal({
   const [showIntroduction, setShowIntroduction] = useState(false);
   const [introductionWord, setIntroductionWord] = useState<Word | null>(null);
   const [modeType, setModeType] = useState<'multiple' | 'type'>('multiple');
+  const [numOptions, setNumOptions] = useState<4 | 6>(4); // Number of multiple choice options
   const [currentWord, setCurrentWord] = useState<Word | null>(null);
   const [options, setOptions] = useState<string[]>([]);
   const [selectedAnswer, setSelectedAnswer] = useState<string>('');
@@ -40,6 +41,7 @@ export default function LearnWordsModal({
   const [questionsAnswered, setQuestionsAnswered] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
   const [startTime, setStartTime] = useState<number | null>(null);
+  const [endTime, setEndTime] = useState<number | null>(null); // Capture end time when session finishes
   const [newWordsLearned, setNewWordsLearned] = useState(0);
   const [showSummary, setShowSummary] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -109,6 +111,7 @@ export default function LearnWordsModal({
     setScore(0);
     setTotal(0);
     setStartTime(null);
+    setEndTime(null);
     setTimeMinutes(2); // Default to 2 minutes
   }, [mode]);
 
@@ -201,6 +204,7 @@ export default function LearnWordsModal({
           });
           
           onUpdate();
+          setEndTime(Date.now()); // Capture end time before showing summary
           setShowSummary(true);
           return;
         }
@@ -226,7 +230,8 @@ export default function LearnWordsModal({
             });
             
             onUpdate();
-            setShowSummary(true);
+            setEndTime(Date.now()); // Capture end time before showing summary
+          setShowSummary(true);
             return;
           }
           
@@ -300,6 +305,7 @@ export default function LearnWordsModal({
           });
           
           onUpdate();
+          setEndTime(Date.now()); // Capture end time before showing summary
           setShowSummary(true);
           return;
         }
@@ -376,15 +382,105 @@ export default function LearnWordsModal({
     }
   };
 
+  // Generate harder distractors by finding similar words
   const generateOptions = (word: Word) => {
     const correctAnswer = direction === 'native-to-target' ? word.target : word.native;
+    const correctAnswerLower = correctAnswer.toLowerCase().trim();
+    
+    // Get all other words (excluding current word and duplicates)
     const otherWords = availableWords
       .filter(w => w.id !== word.id)
-      .map(w => direction === 'native-to-target' ? w.target : w.native)
-      .filter((val, idx, arr) => arr.indexOf(val) === idx)
-      .slice(0, 3);
+      .map(w => ({
+        id: w.id,
+        text: direction === 'native-to-target' ? w.target : w.native,
+        native: w.native,
+        target: w.target
+      }))
+      .filter((val, idx, arr) => 
+        arr.findIndex(v => v.text.toLowerCase() === val.text.toLowerCase()) === idx
+      )
+      .filter(w => w.text.toLowerCase() !== correctAnswerLower);
 
-    const allOptions = [correctAnswer, ...otherWords].sort(() => Math.random() - 0.5);
+    if (otherWords.length === 0) {
+      // Fallback if no other words available
+      setOptions([correctAnswer]);
+      return;
+    }
+
+    // Score words by similarity to make distractors harder
+    const scoredWords = otherWords.map(w => {
+      const text = w.text.toLowerCase().trim();
+      let score = 0;
+      
+      // Similar length (closer = higher score)
+      const lengthDiff = Math.abs(text.length - correctAnswerLower.length);
+      score += 10 / (1 + lengthDiff);
+      
+      // Similar starting characters
+      const minStartLen = Math.min(text.length, correctAnswerLower.length, 3);
+      let startMatch = 0;
+      for (let i = 0; i < minStartLen; i++) {
+        if (text[i] === correctAnswerLower[i]) startMatch++;
+      }
+      score += startMatch * 3;
+      
+      // Similar ending characters
+      const minEndLen = Math.min(text.length, correctAnswerLower.length, 3);
+      let endMatch = 0;
+      for (let i = 1; i <= minEndLen; i++) {
+        if (text[text.length - i] === correctAnswerLower[correctAnswerLower.length - i]) endMatch++;
+      }
+      score += endMatch * 3;
+      
+      // Shared characters (case-insensitive)
+      const correctChars = new Set(correctAnswerLower);
+      const textChars = new Set(text);
+      let sharedChars = 0;
+      correctChars.forEach(char => {
+        if (textChars.has(char)) sharedChars++;
+      });
+      score += sharedChars * 2;
+      
+      // Prefer words that have been wrong before (they're confusing)
+      const wordObj = words.find(wo => wo.id === w.id);
+      if (wordObj && wordObj.wrongCount > wordObj.correctCount) {
+        score += 5;
+      }
+      
+      return { ...w, score };
+    });
+
+    // Sort by score (higher = more similar/confusing)
+    scoredWords.sort((a, b) => b.score - a.score);
+    
+    // Take top distractors (need numOptions - 1 wrong answers)
+    const numWrongAnswers = numOptions - 1;
+    let selectedDistractors: typeof scoredWords = [];
+    
+    if (scoredWords.length <= numWrongAnswers) {
+      // Not enough words, use all available
+      selectedDistractors = [...scoredWords];
+    } else {
+      // Take top 60% of similar words, then randomly fill rest
+      const topSimilar = scoredWords.slice(0, Math.ceil(scoredWords.length * 0.6));
+      const remaining = scoredWords.slice(Math.ceil(scoredWords.length * 0.6));
+      
+      // Shuffle both arrays
+      const shuffledTop = [...topSimilar].sort(() => Math.random() - 0.5);
+      const shuffledRemaining = [...remaining].sort(() => Math.random() - 0.5);
+      
+      // Take from top similar first, then fill with remaining
+      selectedDistractors = [
+        ...shuffledTop.slice(0, Math.min(numWrongAnswers, shuffledTop.length)),
+        ...shuffledRemaining.slice(0, numWrongAnswers - Math.min(numWrongAnswers, shuffledTop.length))
+      ].slice(0, numWrongAnswers);
+    }
+
+    // Get the text values
+    const wrongAnswers = selectedDistractors.map(w => w.text);
+    
+    // Combine with correct answer and shuffle
+    const allOptions = [correctAnswer, ...wrongAnswers].sort(() => Math.random() - 0.5);
     setOptions(allOptions);
   };
 
@@ -798,7 +894,8 @@ export default function LearnWordsModal({
           handleNext();
         }
       } else if (modeType === 'multiple') {
-        if (e.key >= '1' && e.key <= '4') {
+        // Support up to 6 options (1-6 keys)
+        if (e.key >= '1' && e.key <= '6') {
           e.preventDefault();
           const index = parseInt(e.key) - 1;
           if (options[index]) {
@@ -923,12 +1020,38 @@ export default function LearnWordsModal({
               </button>
             </div>
           ) : (
-            <QuestionCountSelector
-              maxQuestions={availableWords.length}
-              defaultCount={Math.min(20, availableWords.length)}
-              onStart={handleStart}
-              onCancel={onClose}
-            />
+            <div className="card">
+              {modeType === 'multiple' && (mode === 'learn' || mode === 'difficult') && (
+                <div className="form-group" style={{ marginBottom: '24px' }}>
+                  <label className="form-label">Number of Multiple Choice Options</label>
+                  <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
+                    <button
+                      className={`btn ${numOptions === 4 ? 'btn-primary' : ''}`}
+                      onClick={() => setNumOptions(4)}
+                      style={{ flex: 1 }}
+                    >
+                      4 Options
+                    </button>
+                    <button
+                      className={`btn ${numOptions === 6 ? 'btn-primary' : ''}`}
+                      onClick={() => setNumOptions(6)}
+                      style={{ flex: 1 }}
+                    >
+                      6 Options
+                    </button>
+                  </div>
+                  <div style={{ fontSize: '12px', color: '#656d76', marginTop: '4px' }}>
+                    Choose how many options you want in multiple choice questions. More options = harder challenge.
+                  </div>
+                </div>
+              )}
+              <QuestionCountSelector
+                maxQuestions={availableWords.length}
+                defaultCount={Math.min(20, availableWords.length)}
+                onStart={handleStart}
+                onCancel={onClose}
+              />
+            </div>
           )}
         </div>
       </div>
@@ -938,7 +1061,7 @@ export default function LearnWordsModal({
   if (showSummary) {
     const timeElapsed = mode === 'speed' 
       ? (timeMinutes * 60) - timeLeft 
-      : (startTime ? Math.floor((Date.now() - startTime) / 1000) : 0);
+      : (startTime && endTime ? Math.floor((endTime - startTime) / 1000) : (startTime ? Math.floor((Date.now() - startTime) / 1000) : 0));
     const correct = mode === 'speed' ? score : correctCount;
     const totalQuestions = mode === 'speed' ? total : questionsAnswered;
     

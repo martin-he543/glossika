@@ -45,10 +45,20 @@ export default function CourseDetail({ appState, updateState }: CourseDetailProp
   }, [location.pathname, courseId, updateState]);
 
   useEffect(() => {
-    if (!course) {
-      navigate('/');
+    if (!course && courseId) {
+      // Try loading from storage if course not found in appState
+      const state = storage.load();
+      const foundCourse = state.courses.find(c => c.id === courseId);
+      if (foundCourse) {
+        updateState({ 
+          courses: state.courses,
+          words: state.words 
+        });
+      } else {
+        navigate('/');
+      }
     }
-  }, [course, navigate]);
+  }, [course, courseId, navigate, updateState]);
 
   if (!course) {
     return <div className="loading">Course not found</div>;

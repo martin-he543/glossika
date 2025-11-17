@@ -24,10 +24,11 @@ export function recordStudyActivity(courseId: string, itemCount: number = 1): vo
     });
   }
   
-  // Update streak for this course
-  updateStreak(courseId);
-  
+  // Save state first so streak calculation sees the updated activity
   storage.save(state);
+  
+  // Update streak for this course (after saving so it sees the new activity)
+  updateStreak(courseId);
 }
 
 /**
@@ -95,8 +96,18 @@ function calculateCurrentStreak(activityDates: string[]): number {
 function updateStreak(courseId: string): void {
   const state = storage.load();
   if (!state.courseStreaks) state.courseStreaks = [];
+  if (!state.studyActivity) state.studyActivity = [];
   
-  const activityDates = getActivityDates(courseId);
+  // Get activity dates directly from current state (not from storage again)
+  const activities = state.studyActivity.filter(a => a.courseId === courseId && a.count > 0);
+  const dateSet = new Set<string>();
+  activities.forEach(a => {
+    if (a.count > 0) {
+      dateSet.add(a.date);
+    }
+  });
+  const activityDates = Array.from(dateSet).sort((a, b) => b.localeCompare(a));
+  
   const currentStreak = calculateCurrentStreak(activityDates);
   
   const today = new Date();

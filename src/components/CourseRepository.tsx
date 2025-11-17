@@ -49,7 +49,9 @@ export default function CourseRepository({ appState, updateState }: CourseReposi
         createdAt: Date.now(),
       };
 
-      const words = appState.words
+      // Load words from storage instead of appState (public courses may not be loaded in appState)
+      const allWords = storage.load().words;
+      const words = allWords
         .filter(w => w.courseId === wordCourse.id)
         .map(w => ({
           ...w,
@@ -79,7 +81,9 @@ export default function CourseRepository({ appState, updateState }: CourseReposi
         createdAt: Date.now(),
       };
 
-      const sentences = appState.clozeSentences
+      // Load sentences from storage instead of appState (public courses may not be loaded in appState)
+      const allSentences = storage.load().clozeSentences;
+      const sentences = allSentences
         .filter(s => s.courseId === clozeCourse.id)
         .map(s => ({
           ...s,

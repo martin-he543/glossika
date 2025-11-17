@@ -30,6 +30,7 @@ export default function ReviewWords({ courseId, words, course, onUpdate }: Revie
   const [questionsAnswered, setQuestionsAnswered] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
   const [startTime, setStartTime] = useState<number | null>(null);
+  const [endTime, setEndTime] = useState<number | null>(null); // Capture end time when session finishes
   const [newWordsLearned, setNewWordsLearned] = useState(0);
   const [showSummary, setShowSummary] = useState(false);
 
@@ -171,6 +172,7 @@ export default function ReviewWords({ courseId, words, course, onUpdate }: Revie
     if (feedback) {
       if (questionsAnswered >= questionCount) {
         // Show summary
+        setEndTime(Date.now()); // Capture end time before showing summary
         setShowSummary(true);
       } else if (currentIndex < reviewWords.length - 1) {
         setCurrentIndex(currentIndex + 1);
@@ -182,6 +184,7 @@ export default function ReviewWords({ courseId, words, course, onUpdate }: Revie
         }, 100);
       } else {
         // Finished review session
+        setEndTime(Date.now()); // Capture end time before showing summary
         setShowSummary(true);
       }
     }
@@ -302,7 +305,7 @@ export default function ReviewWords({ courseId, words, course, onUpdate }: Revie
   }
 
   if (showSummary) {
-    const timeElapsed = startTime ? Math.floor((Date.now() - startTime) / 1000) : 0;
+    const timeElapsed = startTime && endTime ? Math.floor((endTime - startTime) / 1000) : (startTime ? Math.floor((Date.now() - startTime) / 1000) : 0);
     return (
       <div>
         <LessonSummary

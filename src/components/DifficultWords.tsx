@@ -12,6 +12,7 @@ interface DifficultWordsProps {
 
 export default function DifficultWords({ courseId, words, course, onUpdate }: DifficultWordsProps) {
   const [mode, setMode] = useState<'multiple' | 'type'>('multiple');
+  const [numOptions, setNumOptions] = useState<4 | 6>(4); // Number of multiple choice options
   const [currentIndex, setCurrentIndex] = useState(0);
   const [options, setOptions] = useState<string[]>([]);
   const [selectedAnswer, setSelectedAnswer] = useState<string>('');
@@ -27,22 +28,115 @@ export default function DifficultWords({ courseId, words, course, onUpdate }: Di
 
   const currentWord = difficultWords[currentIndex];
 
+  // Generate harder distractors by finding similar words
   const generateOptions = (word: Word) => {
     const correctAnswer = direction === 'native-to-target' ? word.target : word.native;
+    const correctAnswerLower = correctAnswer.toLowerCase().trim();
+    
+    // Get all other words (excluding current word and duplicates)
     const otherWords = words
       .filter(w => w.id !== word.id)
-      .map(w => direction === 'native-to-target' ? w.target : w.native)
-      .filter((val, idx, arr) => arr.indexOf(val) === idx);
+      .map(w => ({
+        id: w.id,
+        text: direction === 'native-to-target' ? w.target : w.native,
+        native: w.native,
+        target: w.target
+      }))
+      .filter((val, idx, arr) => 
+        arr.findIndex(v => v.text.toLowerCase() === val.text.toLowerCase()) === idx
+      )
+      .filter(w => w.text.toLowerCase() !== correctAnswerLower);
 
-    const shuffled = otherWords.sort(() => Math.random() - 0.5);
-    const wrongAnswers = shuffled.slice(0, 3);
+    if (otherWords.length === 0) {
+      // Fallback if no other words available
+      setOptions([correctAnswer]);
+      return;
+    }
+
+    // Score words by similarity to make distractors harder
+    const scoredWords = otherWords.map(w => {
+      const text = w.text.toLowerCase().trim();
+      let score = 0;
+      
+      // Similar length (closer = higher score)
+      const lengthDiff = Math.abs(text.length - correctAnswerLower.length);
+      score += 10 / (1 + lengthDiff);
+      
+      // Similar starting characters
+      const minStartLen = Math.min(text.length, correctAnswerLower.length, 3);
+      let startMatch = 0;
+      for (let i = 0; i < minStartLen; i++) {
+        if (text[i] === correctAnswerLower[i]) startMatch++;
+      }
+      score += startMatch * 3;
+      
+      // Similar ending characters
+      const minEndLen = Math.min(text.length, correctAnswerLower.length, 3);
+      let endMatch = 0;
+      for (let i = 1; i <= minEndLen; i++) {
+        if (text[text.length - i] === correctAnswerLower[correctAnswerLower.length - i]) endMatch++;
+      }
+      score += endMatch * 3;
+      
+      // Shared characters (case-insensitive)
+      const correctChars = new Set(correctAnswerLower);
+      const textChars = new Set(text);
+      let sharedChars = 0;
+      correctChars.forEach(char => {
+        if (textChars.has(char)) sharedChars++;
+      });
+      score += sharedChars * 2;
+      
+      // Prefer words that have been wrong before (they're confusing)
+      const wordObj = words.find(wo => wo.id === w.id);
+      if (wordObj && wordObj.wrongCount > wordObj.correctCount) {
+        score += 5;
+      }
+      
+      return { ...w, score };
+    });
+
+    // Sort by score (higher = more similar/confusing)
+    scoredWords.sort((a, b) => b.score - a.score);
+    
+    // Take top distractors (need numOptions - 1 wrong answers)
+    const numWrongAnswers = numOptions - 1;
+    let selectedDistractors: typeof scoredWords = [];
+    
+    if (scoredWords.length <= numWrongAnswers) {
+      // Not enough words, use all available
+      selectedDistractors = [...scoredWords];
+    } else {
+      // Take top 60% of similar words, then randomly fill rest
+      const topSimilar = scoredWords.slice(0, Math.ceil(scoredWords.length * 0.6));
+      const remaining = scoredWords.slice(Math.ceil(scoredWords.length * 0.6));
+      
+      // Shuffle both arrays
+      const shuffledTop = [...topSimilar].sort(() => Math.random() - 0.5);
+      const shuffledRemaining = [...remaining].sort(() => Math.random() - 0.5);
+      
+      // Take from top similar first, then fill with remaining
+      selectedDistractors = [
+        ...shuffledTop.slice(0, Math.min(numWrongAnswers, shuffledTop.length)),
+        ...shuffledRemaining.slice(0, numWrongAnswers - Math.min(numWrongAnswers, shuffledTop.length))
+      ].slice(0, numWrongAnswers);
+    }
+
+    // Get the text values
+    const wrongAnswers = selectedDistractors.map(w => w.text);
+    
+    // Combine with correct answer and shuffle
     const allOptions = [correctAnswer, ...wrongAnswers].sort(() => Math.random() - 0.5);
     setOptions(allOptions);
   };
 
-  if (currentWord && mode === 'multiple' && options.length === 0) {
-    generateOptions(currentWord);
-  }
+  // Regenerate options when word or settings change
+  useEffect(() => {
+    if (currentWord && mode === 'multiple') {
+      generateOptions(currentWord);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentWord, mode, direction, numOptions]);
 
   const handleMultipleChoice = (answer: string) => {
     if (feedback) return;
@@ -127,8 +221,8 @@ export default function DifficultWords({ courseId, words, course, onUpdate }: Di
           handleNext();
         }
       } else if (mode === 'multiple') {
-        // Multiple choice: 1-4 select options
-        if (e.key >= '1' && e.key <= '4') {
+        // Support up to 6 options (1-6 keys)
+        if (e.key >= '1' && e.key <= '6') {
           e.preventDefault();
           const index = parseInt(e.key) - 1;
           if (options[index]) {
@@ -186,6 +280,39 @@ export default function DifficultWords({ courseId, words, course, onUpdate }: Di
           Type Answer
         </button>
       </div>
+
+      {mode === 'multiple' && (
+        <div className="card" style={{ marginBottom: '16px' }}>
+          <div className="form-group">
+            <label className="form-label">Number of Multiple Choice Options</label>
+            <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
+              <button
+                className={`btn ${numOptions === 4 ? 'btn-primary' : ''}`}
+                onClick={() => {
+                  setNumOptions(4);
+                  setOptions([]); // Regenerate options with new count
+                }}
+                style={{ flex: 1 }}
+              >
+                4 Options
+              </button>
+              <button
+                className={`btn ${numOptions === 6 ? 'btn-primary' : ''}`}
+                onClick={() => {
+                  setNumOptions(6);
+                  setOptions([]); // Regenerate options with new count
+                }}
+                style={{ flex: 1 }}
+              >
+                6 Options
+              </button>
+            </div>
+            <div style={{ fontSize: '12px', color: '#656d76', marginTop: '4px' }}>
+              Choose how many options you want in multiple choice questions. More options = harder challenge.
+            </div>
+          </div>
+        </div>
+      )}
 
       <div style={{ marginBottom: '16px', display: 'flex', gap: '8px', justifyContent: 'center' }}>
         <button

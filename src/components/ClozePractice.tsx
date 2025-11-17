@@ -34,6 +34,7 @@ export default function ClozePractice({ appState, updateState }: ClozePracticePr
   const [questionsAnswered, setQuestionsAnswered] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
   const [startTime, setStartTime] = useState<number | null>(null);
+  const [endTime, setEndTime] = useState<number | null>(null); // Capture end time when session finishes
   const [newItemsLearned, setNewItemsLearned] = useState(0);
   const [showSummary, setShowSummary] = useState(false);
   const [practiceSentences, setPracticeSentences] = useState<ClozeSentence[]>([]);
@@ -178,6 +179,7 @@ export default function ClozePractice({ appState, updateState }: ClozePracticePr
     if (!feedback) return;
 
     if (questionsAnswered >= questionCount) {
+      setEndTime(Date.now()); // Capture end time before showing summary
       setShowSummary(true);
       return;
     }
@@ -191,6 +193,7 @@ export default function ClozePractice({ appState, updateState }: ClozePracticePr
         }
       }, 100);
     } else {
+      setEndTime(Date.now()); // Capture end time before showing summary
       setShowSummary(true);
     }
   }, [feedback, questionsAnswered, questionCount, currentIndex, practiceSentences.length]);
@@ -518,7 +521,7 @@ export default function ClozePractice({ appState, updateState }: ClozePracticePr
         <LessonSummary
           correct={correctCount}
           total={questionsAnswered}
-          timeElapsed={startTime ? Math.floor((Date.now() - startTime) / 1000) : 0}
+          timeElapsed={startTime && endTime ? Math.floor((endTime - startTime) / 1000) : (startTime ? Math.floor((Date.now() - startTime) / 1000) : 0)}
           newWordsLearned={newItemsLearned}
           onClose={handleSummaryClose}
         />
