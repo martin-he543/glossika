@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { userProfile } from '../utils/userProfile';
 import { auth } from '../utils/auth';
 import { UserProfile } from '../types';
+import { storage } from '../storage';
 
 export default function UserSettings() {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ export default function UserSettings() {
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [storageInfo, setStorageInfo] = useState<{ used: string; quota?: string } | null>(null);
 
   useEffect(() => {
     if (!currentUser) {
@@ -29,6 +31,11 @@ export default function UserSettings() {
       setEmail(userProfileData.email);
       setIsPublic(userProfileData.isPublic);
     }
+    
+    // Load storage info
+    storage.getStorageSize().then(info => {
+      setStorageInfo({ used: info.usedMB, quota: info.quotaMB });
+    });
   }, [currentUser, navigate]);
 
   const handleSave = async () => {
@@ -240,6 +247,87 @@ export default function UserSettings() {
           <label className="form-label">Followers</label>
           <div style={{ padding: '12px', backgroundColor: '#f6f8fa', borderRadius: '6px' }}>
             {profile.followers.length} {profile.followers.length === 1 ? 'follower' : 'followers'}
+          </div>
+        </div>
+
+        <div style={{ marginTop: '32px', paddingTop: '24px', borderTop: '1px solid #d0d7de' }}>
+          <h2 style={{ fontSize: '20px', fontWeight: 600, marginBottom: '16px' }}>Storage Management</h2>
+          
+          {storageInfo && (
+            <div style={{ marginBottom: '16px', padding: '12px', backgroundColor: '#f6f8fa', borderRadius: '6px' }}>
+              <div style={{ fontSize: '14px', color: '#656d76', marginBottom: '8px' }}>
+                Storage Used: <strong style={{ color: parseFloat(storageInfo.used) > 4 ? '#cf222e' : '#24292f' }}>{storageInfo.used} MB</strong>
+                {storageInfo.quota && ` / ${storageInfo.quota} MB`}
+              </div>
+              {parseFloat(storageInfo.used) > 4 && (
+                <div style={{ fontSize: '12px', color: '#cf222e', marginTop: '4px' }}>
+                  ⚠️ Storage is near quota limit. Clear old data to free up space.
+                </div>
+              )}
+            </div>
+          )}
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <button
+              className="btn"
+              onClick={() => {
+                if (confirm('Clear old study activity data? This will keep only the 1000 most recent activities.')) {
+                  const result = storage.clearOldStudyActivity(1000);
+                  setMessage({ 
+                    type: 'success', 
+                    text: `Cleared ${result.removed} old activities, freed ${result.freedMB} MB` 
+                  });
+                  storage.getStorageSize().then(info => {
+                    setStorageInfo({ used: info.usedMB, quota: info.quotaMB });
+                  });
+                }
+              }}
+            >
+              Clear Old Study Activity
+            </button>
+            
+            <button
+              className="btn"
+              onClick={() => {
+                if (confirm('Clear unused courses (courses with no progress or words)?')) {
+                  const result = storage.clearUnusedCourses();
+                  if (result.removed > 0) {
+                    setMessage({ 
+                      type: 'success', 
+                      text: `Removed ${result.removed} unused courses, freed ${result.freedMB} MB` 
+                    });
+                  } else {
+                    setMessage({ 
+                      type: 'success', 
+                      text: 'No unused courses found' 
+                    });
+                  }
+                  storage.getStorageSize().then(info => {
+                    setStorageInfo({ used: info.usedMB, quota: info.quotaMB });
+                  });
+                }
+              }}
+            >
+              Clear Unused Courses
+            </button>
+            
+            <button
+              className="btn"
+              onClick={() => {
+                if (confirm('Optimize storage by removing duplicate words?')) {
+                  const result = storage.optimizeStorage();
+                  setMessage({ 
+                    type: 'success', 
+                    text: `Removed ${result.removed} duplicate words, freed ${result.freedMB} MB` 
+                  });
+                  storage.getStorageSize().then(info => {
+                    setStorageInfo({ used: info.usedMB, quota: info.quotaMB });
+                  });
+                }
+              }}
+            >
+              Remove Duplicate Words
+            </button>
           </div>
         </div>
 

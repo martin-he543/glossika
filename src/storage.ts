@@ -4,6 +4,148 @@ import { migrateRadical, migrateKanji, migrateVocabulary, migrateSRSStage } from
 const STORAGE_KEY = 'glossika_app_state';
 
 export const storage = {
+  /**
+   * Get current storage size in MB
+   */
+  async getStorageSize(): Promise<{ used: number; usedMB: string; quota?: number; quotaMB?: string }> {
+    try {
+      const data = localStorage.getItem(STORAGE_KEY);
+      const used = data ? new Blob([data]).size : 0;
+      const usedMB = (used / (1024 * 1024)).toFixed(2);
+      
+      // Try to get quota (this varies by browser)
+      if ('storage' in navigator && 'estimate' in navigator.storage) {
+        try {
+          const estimate = await navigator.storage.estimate();
+          const quota = estimate.quota || undefined;
+          const quotaMB = quota ? (quota / (1024 * 1024)).toFixed(2) : undefined;
+          return { used, usedMB, quota, quotaMB };
+        } catch (e) {
+          // Fallback if estimate fails
+          return { used, usedMB };
+        }
+      }
+      
+      return { used, usedMB };
+    } catch (e) {
+      console.error('Failed to get storage size:', e);
+      return { used: 0, usedMB: '0.00' };
+    }
+  },
+  
+  getStorageSizeSync(): { used: number; usedMB: string } {
+    try {
+      const data = localStorage.getItem(STORAGE_KEY);
+      const used = data ? new Blob([data]).size : 0;
+      const usedMB = (used / (1024 * 1024)).toFixed(2);
+      return { used, usedMB };
+    } catch (e) {
+      console.error('Failed to get storage size:', e);
+      return { used: 0, usedMB: '0.00' };
+    }
+  },
+
+  /**
+   * Clear old study activity data to free up space
+   * Keeps only the most recent N activities
+   */
+  clearOldStudyActivity(keepRecent: number = 1000): { removed: number; freedMB: string } {
+    const state = this.load();
+    const activities = state.studyActivity || [];
+    
+    if (activities.length <= keepRecent) {
+      return { removed: 0, freedMB: '0.00' };
+    }
+    
+    // Sort by date (newest first) and keep only recent ones
+    const sorted = [...activities].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    const toKeep = sorted.slice(0, keepRecent);
+    const toRemove = activities.length - toKeep.length;
+    
+    // Calculate size of data to be removed
+    const removedData = activities.filter(a => !toKeep.includes(a));
+    const removedSize = new Blob([JSON.stringify(removedData)]).size;
+    const freedMB = (removedSize / (1024 * 1024)).toFixed(2);
+    
+    state.studyActivity = toKeep;
+    this.save(state);
+    
+    return { removed: toRemove, freedMB };
+  },
+
+  /**
+   * Clear unused courses (courses with no progress)
+   */
+  clearUnusedCourses(): { removed: number; freedMB: string } {
+    const state = this.load();
+    const courses = state.courses || [];
+    const progress = state.courseProgress || [];
+    const words = state.words || [];
+    
+    const coursesWithProgress = new Set(progress.map(p => p.courseId));
+    const coursesWithWords = new Set(words.map(w => w.courseId));
+    
+    const unusedCourses = courses.filter(c => 
+      !coursesWithProgress.has(c.id) && !coursesWithWords.has(c.id)
+    );
+    
+    if (unusedCourses.length === 0) {
+      return { removed: 0, freedMB: '0.00' };
+    }
+    
+    const removedSize = new Blob([JSON.stringify(unusedCourses)]).size;
+    const freedMB = (removedSize / (1024 * 1024)).toFixed(2);
+    
+    // Remove unused courses and their associated words
+    const unusedCourseIds = new Set(unusedCourses.map(c => c.id));
+    state.courses = courses.filter(c => !unusedCourseIds.has(c.id));
+    state.words = words.filter(w => !unusedCourseIds.has(w.courseId));
+    
+    this.save(state);
+    
+    return { removed: unusedCourses.length, freedMB };
+  },
+
+  /**
+   * Optimize storage by removing duplicate words and cleaning up
+   */
+  optimizeStorage(): { removed: number; freedMB: string } {
+    const state = this.load();
+    const words = state.words || [];
+    const originalSize = JSON.stringify(state).length;
+    
+    // Remove duplicate words (same native+target+courseId)
+    const seen = new Map<string, Word>();
+    const uniqueWords: Word[] = [];
+    let duplicates = 0;
+    
+    for (const word of words) {
+      const key = `${word.courseId}:${word.native.toLowerCase()}:${word.target.toLowerCase()}`;
+      if (!seen.has(key)) {
+        seen.set(key, word);
+        uniqueWords.push(word);
+      } else {
+        duplicates++;
+      }
+    }
+    
+    state.words = uniqueWords;
+    
+    // Update course word counts
+    for (const course of state.courses || []) {
+      const courseWords = uniqueWords.filter(w => w.courseId === course.id);
+      course.wordCount = courseWords.length;
+    }
+    
+    this.save(state);
+    
+    const newSize = JSON.stringify(state).length;
+    const freed = originalSize - newSize;
+    const freedMB = (freed / (1024 * 1024)).toFixed(2);
+    
+    return { removed: duplicates, freedMB };
+  },
+
   load(): AppState {
     const defaultState: AppState = {
       courses: [],
@@ -86,8 +228,15 @@ export const storage = {
   save(state: AppState): void {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    } catch (e) {
+    } catch (e: any) {
       console.error('Failed to save state:', e);
+      // If quota exceeded, try to provide helpful error message
+      if (e?.name === 'QuotaExceededError' || e?.code === 22) {
+        const stateSize = JSON.stringify(state).length;
+        const mbSize = (stateSize / (1024 * 1024)).toFixed(2);
+        throw new Error(`Storage quota exceeded. Total data size: ${mbSize} MB. Please clear some data or use a browser with more storage capacity.`);
+      }
+      throw e;
     }
   },
 
@@ -145,6 +294,18 @@ export const storage = {
   addWords(newWords: Word[]): void {
     const state = this.load();
     if (!state.words) state.words = [];
+    
+    // Check storage size before adding
+    const currentSize = JSON.stringify(state).length;
+    const newWordsSize = JSON.stringify(newWords).length;
+    const estimatedNewSize = currentSize + newWordsSize;
+    const estimatedNewSizeMB = estimatedNewSize / (1024 * 1024);
+    
+    // Warn if approaching quota (5MB is typical limit)
+    if (estimatedNewSizeMB > 4.5) {
+      console.warn(`Storage size will be ~${estimatedNewSizeMB.toFixed(2)} MB after adding ${newWords.length} words`);
+    }
+    
     state.words.push(...newWords);
     this.save(state);
   },

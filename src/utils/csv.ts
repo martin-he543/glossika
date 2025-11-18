@@ -288,6 +288,20 @@ export function createWordsFromCSV(
 
   // Process each row
   let skippedCount = 0;
+  let firstSkippedRows: Array<{index: number; native: string; target: string; keys: string[]}> = [];
+  
+  // Debug: Check if column names match actual row keys
+  if (rows.length > 0) {
+    const firstRowKeys = Object.keys(rows[0]);
+    const normalizedKeys = firstRowKeys.map(k => k.toLowerCase().trim());
+    if (!normalizedKeys.includes(normalizedNativeCol)) {
+      console.error(`Column "${normalizedNativeCol}" not found in CSV. Available columns:`, firstRowKeys);
+    }
+    if (!normalizedKeys.includes(normalizedTargetCol)) {
+      console.error(`Column "${normalizedTargetCol}" not found in CSV. Available columns:`, firstRowKeys);
+    }
+  }
+  
   for (let i = 0; i < rows.length; i++) {
     const row = rows[i];
     if (!row || typeof row !== 'object') {
@@ -301,11 +315,16 @@ export function createWordsFromCSV(
     let target = getValueFromRow(row, normalizedTargetCol);
 
     // Skip rows with empty required fields
-    // Log first few skipped rows for debugging
+    // Collect first few skipped rows for detailed debugging
     if (!native || native.length === 0 || !target || target.length === 0) {
       skippedCount++;
-      if (skippedCount <= 5) {
-        console.warn(`Skipping row ${i}: native="${native}", target="${target}", row keys:`, Object.keys(row));
+      if (firstSkippedRows.length < 10) {
+        firstSkippedRows.push({
+          index: i,
+          native,
+          target,
+          keys: Object.keys(row)
+        });
       }
       continue;
     }
@@ -362,6 +381,12 @@ export function createWordsFromCSV(
   }
 
   console.log(`createWordsFromCSV: Processed ${rows.length} rows, created ${words.length} words, skipped ${skippedCount}`);
+  
+  // Log detailed information about skipped rows
+  if (skippedCount > 0 && firstSkippedRows.length > 0) {
+    console.warn('First skipped rows:', firstSkippedRows);
+    console.warn(`Using columns: native="${normalizedNativeCol}", target="${normalizedTargetCol}"`);
+  }
 
   return words;
 }

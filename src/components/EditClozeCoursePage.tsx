@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { AppState, ClozeSentence, ClozeCourse } from '../types';
 import { storage } from '../storage';
-import { parseCSV, createClozeFromTatoeba } from '../utils/csv';
+import { parseCSV, createClozeFromTatoeba, CSVRow } from '../utils/csv';
 
 interface EditClozeCoursePageProps {
   appState: AppState;
@@ -22,6 +22,7 @@ export default function EditClozeCoursePage({ appState, updateState }: EditCloze
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [delimiter, setDelimiter] = useState<string>('auto');
+  const [csvPreviewRows, setCsvPreviewRows] = useState<CSVRow[]>([]);
   
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -226,6 +227,9 @@ export default function EditClozeCoursePage({ appState, updateState }: EditCloze
         throw new Error('CSV file is empty or could not be parsed');
       }
 
+      // Store rows for preview
+      setCsvPreviewRows(rows);
+
       setLoading(false);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to parse CSV file');
@@ -332,6 +336,42 @@ export default function EditClozeCoursePage({ appState, updateState }: EditCloze
                 style={{ width: '100%', padding: '8px', fontSize: '14px' }}
               />
             </div>
+
+            {csvPreviewRows.length > 0 && (
+              <div style={{ marginBottom: '16px' }}>
+                <div style={{ fontSize: '14px', fontWeight: 600, marginBottom: '8px' }}>
+                  CSV Preview
+                </div>
+                <div style={{ fontSize: '12px', color: '#656d76', marginBottom: '8px' }}>
+                  Preview of first 3 rows · Total rows: <strong>{csvPreviewRows.length}</strong>
+                </div>
+                <div style={{ overflowX: 'auto', border: '1px solid #d0d7de', borderRadius: '4px', maxHeight: '200px', overflowY: 'auto' }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px' }}>
+                    <thead style={{ backgroundColor: '#f6f8fa', position: 'sticky', top: 0 }}>
+                      <tr>
+                        {csvPreviewRows.length > 0 && Object.keys(csvPreviewRows[0]).map(col => (
+                          <th key={col} style={{ padding: '8px', textAlign: 'left', borderBottom: '1px solid #d0d7de', fontWeight: 600 }}>
+                            {col}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {csvPreviewRows.slice(0, 3).map((row, idx) => (
+                        <tr key={idx}>
+                          {Object.keys(row).map(col => (
+                            <td key={col} style={{ padding: '8px', borderBottom: '1px solid #eaeef2' }}>
+                              {String(row[col.toLowerCase()] || row[col] || '').slice(0, 50)}
+                              {String(row[col.toLowerCase()] || row[col] || '').length > 50 ? '...' : ''}
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
 
             {file && !loading && (
               <button className="btn btn-primary" onClick={handleImportSentences}>

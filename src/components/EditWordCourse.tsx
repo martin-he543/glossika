@@ -37,6 +37,7 @@ export default function EditWordCourse({ course, words, onClose, onUpdate }: Edi
   const [pronunciationCol, setPronunciationCol] = useState('');
   const [delimiter, setDelimiter] = useState<string>('auto');
   const [availableColumns, setAvailableColumns] = useState<string[]>([]);
+  const [csvPreviewRows, setCsvPreviewRows] = useState<CSVRow[]>([]);
 
   const filteredWords = useMemo(() => {
     if (!searchQuery) return words;
@@ -229,6 +230,9 @@ export default function EditWordCourse({ course, words, onClose, onUpdate }: Edi
       if (detectedPronunciation) {
         setPronunciationCol(detectedPronunciation.toLowerCase().trim());
       }
+
+      // Store rows for preview
+      setCsvPreviewRows(rows);
 
       setLoading(false);
     } catch (err) {
@@ -601,6 +605,41 @@ export default function EditWordCourse({ course, words, onClose, onUpdate }: Edi
 
                   {file && !loading && availableColumns.length > 0 && (
                     <div>
+                      {csvPreviewRows.length > 0 && (
+                        <div style={{ marginBottom: '16px' }}>
+                          <div style={{ fontSize: '14px', fontWeight: 600, marginBottom: '8px' }}>
+                            CSV Preview
+                          </div>
+                          <div style={{ fontSize: '12px', color: '#656d76', marginBottom: '8px' }}>
+                            Preview of first 3 rows · Total rows: <strong>{csvPreviewRows.length}</strong>
+                          </div>
+                          <div style={{ overflowX: 'auto', border: '1px solid #d0d7de', borderRadius: '4px', maxHeight: '200px', overflowY: 'auto' }}>
+                            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px' }}>
+                              <thead style={{ backgroundColor: '#f6f8fa', position: 'sticky', top: 0 }}>
+                                <tr>
+                                  {availableColumns.map(col => (
+                                    <th key={col} style={{ padding: '8px', textAlign: 'left', borderBottom: '1px solid #d0d7de', fontWeight: 600 }}>
+                                      {col}
+                                    </th>
+                                  ))}
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {csvPreviewRows.slice(0, 3).map((row, idx) => (
+                                  <tr key={idx}>
+                                    {availableColumns.map(col => (
+                                      <td key={col} style={{ padding: '8px', borderBottom: '1px solid #eaeef2' }}>
+                                        {String(row[col.toLowerCase().trim()] || row[col] || '').slice(0, 50)}
+                                        {String(row[col.toLowerCase().trim()] || row[col] || '').length > 50 ? '...' : ''}
+                                      </td>
+                                    ))}
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      )}
                       <div style={{ marginBottom: '12px', fontSize: '14px' }}>
                         <strong>Column Mapping:</strong>
                       </div>

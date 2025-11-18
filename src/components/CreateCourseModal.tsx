@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Course } from '../types';
 import { storage } from '../storage';
 import { LANGUAGES } from '../utils/languages';
-import { parseCSV, createWordsFromCSV } from '../utils/csv';
+import { parseCSV, createWordsFromCSV, CSVRow } from '../utils/csv';
 import { auth } from '../utils/auth';
 import { userProfile } from '../utils/userProfile';
 
@@ -28,6 +28,7 @@ export default function CreateCourseModal({ onClose, onSuccess }: CreateCourseMo
   const [pronunciationCol, setPronunciationCol] = useState('');
   const [delimiter, setDelimiter] = useState<string>('auto');
   const [availableColumns, setAvailableColumns] = useState<string[]>([]);
+  const [csvPreviewRows, setCsvPreviewRows] = useState<CSVRow[]>([]);
 
   const finalNativeLanguage = nativeLanguage === 'Other' ? customNative : nativeLanguage;
   const finalTargetLanguage = targetLanguage === 'Other' ? customTarget : targetLanguage;
@@ -173,6 +174,9 @@ export default function CreateCourseModal({ onClose, onSuccess }: CreateCourseMo
         setPronunciationCol(detectedPronunciation.toLowerCase().trim());
       }
 
+      // Store rows for preview
+      setCsvPreviewRows(rows);
+
       setLoading(false);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to parse CSV file');
@@ -289,15 +293,98 @@ export default function CreateCourseModal({ onClose, onSuccess }: CreateCourseMo
       const uniqueLevels = Array.from(new Set(allWords.map(w => w.level || 1))).sort((a, b) => a - b);
       course.levels = uniqueLevels.length > 0 ? uniqueLevels : [1];
 
+      // Check storage size before importing
+      const storageInfo = storage.getStorageSizeSync();
+      const currentSizeMB = parseFloat(storageInfo.usedMB);
+      
+      // Estimate size of new words (rough estimate: ~200 bytes per word)
+      const estimatedWordSizeMB = (allWords.length * 200) / (1024 * 1024);
+      const estimatedTotalMB = currentSizeMB + estimatedWordSizeMB;
+      
+      if (estimatedTotalMB > 4.5) {
+        const needsCleanup = estimatedTotalMB > 5;
+        const errorMsg = needsCleanup
+          ? `Importing ${allWords.length} words would exceed storage quota (estimated ${estimatedTotalMB.toFixed(2)} MB). Please clear old data first.`
+          : `Warning: Importing ${allWords.length} words will use ~${estimatedTotalMB.toFixed(2)} MB of storage (close to quota limit).`;
+        
+        if (needsCleanup) {
+          setError(errorMsg);
+          setLoading(false);
+          setProgress(0);
+          return;
+        } else {
+          // Show warning but continue
+          console.warn(errorMsg);
+        }
+      }
+
       // Save words in batches to avoid localStorage issues
       setProgress(90);
       const SAVE_BATCH_SIZE = 500;
+      let savedCount = 0;
+      let lastError: any = null;
+      
       for (let i = 0; i < allWords.length; i += SAVE_BATCH_SIZE) {
         const batch = allWords.slice(i, i + SAVE_BATCH_SIZE);
-        storage.addWords(batch);
+        try {
+          storage.addWords(batch);
+          savedCount += batch.length;
+          console.log(`Saved batch ${Math.floor(i / SAVE_BATCH_SIZE) + 1}: ${batch.length} words (total saved: ${savedCount}/${allWords.length})`);
+        } catch (e: any) {
+          console.error(`Failed to save batch starting at index ${i}:`, e);
+          lastError = e;
+          
+          // If quota exceeded, stop here
+          if (e?.message?.includes('quota') || e?.name === 'QuotaExceededError' || e?.code === 22) {
+            // Try to optimize storage and retry
+            try {
+              const optimizeResult = storage.optimizeStorage();
+              console.log(`Optimized storage: removed ${optimizeResult.removed} duplicates, freed ${optimizeResult.freedMB} MB`);
+              
+              // Try saving this batch again
+              try {
+                storage.addWords(batch);
+                savedCount += batch.length;
+                console.log(`Successfully saved batch after optimization`);
+                continue;
+              } catch (retryError) {
+                // Still failed, give up
+                break;
+              }
+            } catch (optimizeError) {
+              // Optimization failed, give up
+              break;
+            }
+          } else {
+            // Other error, give up
+            break;
+          }
+        }
         
         const saveProgress = 90 + Math.floor((i / allWords.length) * 10);
         setProgress(Math.min(99, saveProgress));
+      }
+      
+      // Update course with actual word count
+      const finalWordCount = storage.getWordsByCourse(course.id).length;
+      course.wordCount = finalWordCount;
+      course.levels = Array.from(new Set(allWords.slice(0, savedCount).map(w => w.level || 1))).sort((a, b) => a - b);
+      
+      if (savedCount < allWords.length) {
+        const storageInfo = storage.getStorageSizeSync();
+        const errorMsg = `Storage quota exceeded. Saved ${savedCount} of ${allWords.length} words. ` +
+          `Current storage: ${storageInfo.usedMB} MB. ` +
+          `To import more words, go to Settings and clear old study activity or unused courses.`;
+        setError(errorMsg);
+        setLoading(false);
+        setProgress(0);
+        return;
+      }
+      
+      // Verify all words were saved
+      if (finalWordCount !== allWords.length) {
+        console.warn(`Word count mismatch: Expected ${allWords.length}, but found ${finalWordCount} in storage`);
+        setError(`Warning: Expected to save ${allWords.length} words, but only ${finalWordCount} were found in storage.`);
       }
 
       storage.addCourse(course);
@@ -426,6 +513,39 @@ export default function CreateCourseModal({ onClose, onSuccess }: CreateCourseMo
 
           {file && !loading && availableColumns.length > 0 && (
             <>
+              {csvPreviewRows.length > 0 && (
+                <div className="form-group">
+                  <label className="form-label">CSV Preview</label>
+                  <div style={{ fontSize: '12px', color: '#656d76', marginBottom: '8px' }}>
+                    Preview of first 3 rows · Total rows: <strong>{csvPreviewRows.length}</strong>
+                  </div>
+                  <div style={{ overflowX: 'auto', border: '1px solid #d0d7de', borderRadius: '4px', maxHeight: '200px', overflowY: 'auto' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px' }}>
+                      <thead style={{ backgroundColor: '#f6f8fa', position: 'sticky', top: 0 }}>
+                        <tr>
+                          {availableColumns.map(col => (
+                            <th key={col} style={{ padding: '8px', textAlign: 'left', borderBottom: '1px solid #d0d7de', fontWeight: 600 }}>
+                              {col}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {csvPreviewRows.slice(0, 3).map((row, idx) => (
+                          <tr key={idx}>
+                            {availableColumns.map(col => (
+                              <td key={col} style={{ padding: '8px', borderBottom: '1px solid #eaeef2' }}>
+                                {String(row[col.toLowerCase().trim()] || row[col] || '').slice(0, 50)}
+                                {String(row[col.toLowerCase().trim()] || row[col] || '').length > 50 ? '...' : ''}
+                              </td>
+                            ))}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
               <div className="form-group">
                 <label className="form-label">Native Language Column</label>
                 <select
