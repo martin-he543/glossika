@@ -69,6 +69,8 @@ npm run deploy
 Notes:
 - Production builds automatically use the repository base path (e.g. `/glossika/`).
 - Routing is configured with hash-based URLs so deep links work on GitHub Pages.
+- In GitHub repo settings, set **Pages → Build and deployment → Source** to **GitHub Actions**.
+- If Pages is set to deploy from the `main` branch root, GitHub will serve `index.html` source instead of the compiled `dist` app.
 
 ## Usage
 

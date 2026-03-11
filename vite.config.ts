@@ -3,8 +3,8 @@ import react from '@vitejs/plugin-react'
 
 const repositoryName = process.env.GITHUB_REPOSITORY?.split('/')[1] ?? 'glossika'
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   plugins: [react()],
-  base: process.env.NODE_ENV === 'production' ? `/${repositoryName}/` : '/',
-})
+  base: command === 'build' ? `/${repositoryName}/` : '/',
+}))
 
