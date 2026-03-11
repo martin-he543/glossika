@@ -54,6 +54,22 @@ npm run dev
 npm run build
 ```
 
+### Type Check
+
+```bash
+npm run typecheck
+```
+
+### Deploy to GitHub Pages
+
+```bash
+npm run deploy
+```
+
+Notes:
+- Production builds automatically use the repository base path (e.g. `/glossika/`).
+- Routing is configured with hash-based URLs so deep links work on GitHub Pages.
+
 ## Usage
 
 1. **Create a Course**: Click "Create Course" and upload a CSV file with word pairs

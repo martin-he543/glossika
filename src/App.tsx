@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Link, useLocation, useParams, useNavigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Link, useLocation, useParams, useNavigate } from 'react-router-dom';
 import { AppState } from './types';
 import { storage } from './storage';
 import { auth, AuthUser } from './utils/auth';
@@ -114,7 +114,7 @@ function App() {
   }
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <div className="app">
         <Navigation onLogout={handleLogout} />
         <main className="main-content">
@@ -135,7 +135,7 @@ function App() {
           </Routes>
         </main>
       </div>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
